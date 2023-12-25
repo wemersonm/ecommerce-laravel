@@ -45,7 +45,7 @@ class ResetPasswordEmail extends Mailable
             view: 'mail.ResetPassword',
             with: [
                 "name" => $this->user->name,
-                "url" => $this->domain . '/reset-password/?token=' . $this->token,
+                "url" => $this->domain . '/reset-password?token=' . $this->token,
             ],
         );
     }
