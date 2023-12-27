@@ -15,12 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            $user = new User;
-            $user->name = 'Novo Usuário' + now();
-            $user->email = 'novo_usuario@example.com';
-            $user->password = bcrypt('senha');
-            $user->save();
-            Log::info("Novo usuário inserido: " . $user->email);
+            Log::info("Testando o Schedule");
         })->everyMinute();
 
     }
