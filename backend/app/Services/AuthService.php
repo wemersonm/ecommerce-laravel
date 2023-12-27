@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Events\ForgotPassword;
 use App\Events\UserRegistered;
+use App\Exceptions\CredentialsInvalidResetTokenException;
 use App\Exceptions\EmailAlreadyExistExeception;
 use App\Exceptions\EmailNotExistsException;
 use App\Exceptions\LoginInvalidException;
-use App\Http\Requests\UserRegisterRequest;
+use App\Exceptions\UserNotExistsException;
 use App\Models\ResetPassword;
 use App\Models\User;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -71,6 +72,21 @@ class AuthService
     } catch (\Exception $e) {
       dd($e->getMessage());
     }
+  }
+  public function resetPassword(array $data)
+  {
+    $tokenExist = ResetPassword::where('email', $data['email'])->where('token', $data['token'])->first();
+    if (!$tokenExist) {
+      throw new CredentialsInvalidResetTokenException();
+    }
+    $user = User::where('email', $data['email'])->first();
+    if (!$user) {
+      throw new UserNotExistsException();
+    }
+    $user->password = bcrypt($data['password']);
+    $user->save();
+
+    $tokenExist->delete();
 
   }
 

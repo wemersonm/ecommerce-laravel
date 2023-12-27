@@ -1,10 +1,10 @@
 <template>
   <Default>
     <template #main>
-      <section :class="{ 'menu-active': statusMenu, 'container-xl container-fluid ': true }">
+      <section class="container-xl container-fluid">
         <div class="row">
           <div class="col-lg-3 p-0 mt-5">
-            <Categories @statusMenu="getStatusMenu" />
+            <Categories />
           </div>
           <div class="col-1">
             <div class="d-none d-lg-block div-y"></div>
@@ -14,7 +14,6 @@
           </div>
         </div>
       </section>
-      <!-- {{ authStore }} -->
     </template>
   </Default>
 </template>
@@ -30,18 +29,12 @@ export default {
     Default, Categories, Banner,
   },
   data() {
-    // const authStore = useAuthStore();
     return {
-      statusMenu: false,
-      // authStore,
 
     };
   },
   methods: {
-    getStatusMenu(value) {
-      this.statusMenu = value;
-    },
-
+   
   },
 }
 </script>

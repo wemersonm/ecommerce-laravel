@@ -11,6 +11,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   let _next = null;
   let authIsValid = false;
+  console.log('executado');
   try {
     authIsValid = await AuthService.getDataUserAuth(useAuthStore());
   } catch (error) {

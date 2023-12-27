@@ -38,7 +38,27 @@ const makeRegisterAndLogin = async (payload, authStore) => {
     const { data } = await axios.post("/v1/register", payload);
     updateSession(data, authStore);
   } catch (error) {
-    return error;
+    throw error;
+  }
+};
+
+const forgotPassword = async (payload) => {
+  try {
+    await axios.post("/v1/forgot-password", payload);
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const resetPassword = async (payload) => {
+  try {
+    if (!payload.token) {
+      throw new Error("token invalid");
+    }
+   await axios.post("/v1/reset-password", payload);
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -64,4 +84,6 @@ export default {
   makeLogin,
   makeLogout,
   makeRegisterAndLogin,
+  forgotPassword,
+  resetPassword,
 };

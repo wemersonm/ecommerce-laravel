@@ -30,6 +30,8 @@ Route::prefix('v1')->group(function () {
         route::post('/logout', 'destroy')->name('destroy');
         route::post('/register', 'register')->name('register');
         route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
+        route::post('/reset-password', 'resetPassword')->name('reset-password');
+
 
     });
 

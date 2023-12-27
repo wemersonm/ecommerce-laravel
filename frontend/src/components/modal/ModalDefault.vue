@@ -1,7 +1,8 @@
 <template>
   <div class="modal fade" :id="idModal" tabindex="1" :aria-labelledby="`${idModal}Label`" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content border border-danger">
+    <div class="modal-dialog" :style="style">
+      <div class="modal-content border border-danger p-sm-3">
+        <slot name="modal-top"></slot>
         <div class="modal-header">
           <slot name="modal-header"></slot>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -25,6 +26,10 @@ export default {
       type: String,
       default: 'exampleModal'
     },
+    style: {
+      type: String,
+      default: "",
+    }
   },
   emits: ['closeModal'],
 
