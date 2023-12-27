@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 mx-auto text-center small alert alert-secondary" v-if="showForm">
+    <div class="col-md-6 mx-auto text-center small alert alert-secondary" v-if="response.showForm">
       <p>Sua senha deve conter tamanho mínimo de 6 caracteres e máximo de 32.</p>
     </div>
   </div>
