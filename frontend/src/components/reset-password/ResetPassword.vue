@@ -24,7 +24,7 @@
 <script>
 
 import FormResetPassword from '../reset-password/FormResetPassword.vue';
-import Message from '../messages/Message.vue'
+import Message from '../notifications/Message.vue'
 export default {
   data() {
     return {

@@ -24,7 +24,7 @@
 <script>
 import validations from "../../plugins/vee-validate";
 import AuthService from "../../services/AuthService";
-import Message from "../messages/Message.vue";
+import Message from "../notifications/Message.vue";
 const { Form, Field } = validations;
 
 export default {

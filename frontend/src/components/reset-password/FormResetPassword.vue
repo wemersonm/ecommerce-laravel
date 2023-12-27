@@ -31,12 +31,11 @@
   </Form>
 </template>
 
-<script>
-//  
+<script>  
 import validations from '../../plugins/vee-validate';
 import AuthService from '../../services/AuthService.js'
 import Messages from '../../utils/MessagesError.js'
-import Message from '../messages/Message.vue';
+import Message from '../notifications/Message.vue';
 import axios from '../../plugins/Axios';
 const { Form, Field } = validations;
 export default {

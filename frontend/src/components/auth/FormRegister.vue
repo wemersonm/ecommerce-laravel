@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import AuthMessage from "../messages/Message.vue";
+import AuthMessage from "../notifications/Message.vue";
 import MessagesError from "../../utils/MessagesError";
 import { useAuthStore } from '../../stores/auth.js';
 import AuthService from '../../services/AuthService.js';

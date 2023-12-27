@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import AuthMessage from "../messages/Message.vue";
+import AuthMessage from "../notifications/Message.vue";
 import validations from "../../plugins/vee-validate";
 import AuthService from "../../services/AuthService.js";
 import { useAuthStore } from "../../stores/auth";
