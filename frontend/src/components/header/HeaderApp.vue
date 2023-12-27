@@ -9,7 +9,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+      <div class="offcanvas offcanvas-start"  tabindex="-1" id="offcanvasWithBothOptions"
         aria-labelledby="offcanvasWithBothOptionsLabel">
         <NavbarOffcanvasHeader @openModalLoginFromNavbar="openModalLogin" @openModalLoginFromNavIcons="openModalLogin"
           @openModalRegisterFromNavIcons="openModalRegister" />
@@ -36,21 +36,18 @@ import { useAuthStore } from '../../stores/auth';
 import NavbarHeader from './navigationheader.vue';
 import LogoHeader from './LogoHeader.vue';
 
-// @ts-ignore
+// 
 import NavIconsHeader from './NavIconsHeader.vue'
 import FormSearch from './FormHeader.vue';
 import NavbarOffcanvasHeader from './NavbarOffcanvasHeader.vue';
 
 const Login = defineAsyncComponent({
-  // @ts-ignore
   loader: () => import('../auth/Login.vue'),
 });
 const Register = defineAsyncComponent({
-  // @ts-ignore
   loader: () => import('../auth/Register.vue'),
 });
 const ForgotPassword = defineAsyncComponent({
-  // @ts-ignore
   loader: () => import('../auth/ForgotPassword.vue'),
 });
 export default {

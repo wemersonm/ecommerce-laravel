@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\ForgotPasswordRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Resources\UserResouce;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
-
+use Exception;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -18,7 +20,7 @@ class AuthController extends Controller
     public function __construct(
         private AuthService $authService
     ) {
-        $this->middleware(['auth:sanctum'])->except('register', 'store', 'forgotPassword');
+        $this->middleware(['auth:sanctum'])->only('destroy');
     }
 
     public function store(AuthLoginRequest $request)
@@ -44,6 +46,17 @@ class AuthController extends Controller
     {
         $requestData = $request->validated();
         $this->authService->forgotPassword($requestData['email']);
+        return response(null, 200);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        try {
+            $requestData = $request->validated();
+        } catch (ValidationException $e) {
+            return $e->getMessage();
+        }
+        $this->authService->resetPassword($requestData);
         return response(null, 200);
     }
 
