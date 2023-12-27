@@ -1,11 +1,7 @@
 <?php
 
-use App\Jobs\SendEmailJob;
-use App\Jobs\SendEmailRegisteredJob;
-use App\Mail\UserRegisteredEmail;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\ResetPassword;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-  return (config('app.client'));
-  
+  $data = '2023-12-25 23:51:22';
+  $carbon = Carbon::parse($data);
+  return ($carbon)->diffInHours();
+
+
+/*   return now();
+  $createdAndTreeDays = (ResetPassword::first()->created_at)->addDays(1)->subHours(3);
+  return (now()->subHours(3))->greaterThan($createdAndTreeDays) ? "Sim" : "Não"; */
 
 });
