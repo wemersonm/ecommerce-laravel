@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-start" style="min-width: 250px;">
+  <div class="card text-start">
     <img class="card-img-top" :src="'https://via.placeholder.com/600/d' + Math.floor(1000 + Math.random() * 9000)"
       alt="Title" />
     <div class="card-body">
@@ -25,8 +25,11 @@ export default {
 <style lang="scss" scoped>
 .card {
   &:hover {
-    border: 1px solid #1db4e2 !important;
+    border-color: $red;
     transform: scale(1.01);
+    transition: 0.5s ease-in-out;
   }
+
+  min-width: calc(19% + 0.4%);
 }
 </style>

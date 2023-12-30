@@ -4,7 +4,7 @@
       <button class="btn btn-secondary btn-sm dropdown-toggle w-100 " type="button" @click="toggleMenu" @mouseover="showMenu">
         Todos os Departamentos
       </button>
-      <ModalCategories v-if="isMenuOpen" />
+      <DropdownDepartaments v-if="isMenuOpen" />
     </div>
 
     <nav class="mt-3">
@@ -21,8 +21,8 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
-const ModalCategories = defineAsyncComponent({
-  loader: () => import('../../modal/ModalCategories.vue')
+const DropdownDepartaments = defineAsyncComponent({
+  loader: () => import('../departaments/ListDepartaments.vue')
 });
 
 export default {
@@ -61,7 +61,7 @@ export default {
     }
   },
   components: {
-    ModalCategories,
+    DropdownDepartaments,
   },
 }
 </script>

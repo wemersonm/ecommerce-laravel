@@ -1,21 +1,23 @@
 <template>
   <!-- TOP FLASH-SALES -->
-  <HeaderSection name="Hoje" />
-  <FlashSalesHeader class="mt-4" @leftSlider="clickLeftFunc" @rightSlider="rightSlider" />
-  <ContainerCard class="mt-4 container-card-ref" ref="containerCardRef" />
-
-  <div class="mt-4 w-100 d-flex justify-content-center align-items-center">
-    <a href="#" class="btn btn-danger px-5" @click.prevent>Ver Todos</a>
+  <div>
+    <NameSection name="Hoje" />
+    <FlashSalesHeader class="mt-4" @leftSlider="clickLeftFunc" @rightSlider="rightSlider" />
+    <ContainerCard class="my-3" ref="containerCardRef" />
+    <div class="my-5 w-100 d-flex justify-content-center align-items-center">
+      <a href="#" class="btn btn-danger px-5" @click.prevent>Ver Todos</a>
+    </div>
+    <div class="div-x my-5"></div>
   </div>
 </template>
 
 <script>
 // @ts-ignore
-import HeaderSection from '../utils/HeaderSection.vue';
+import NameSection from '../utils/NameSection.vue';
 // @ts-ignore
 import FlashSalesHeader from './FlashSalesHeader.vue';
 // @ts-ignore
-import ContainerCard from '../utils/ContainerCard.vue';
+import ContainerCard from './ContainerFlashSales.vue';
 export default {
   data() {
     return {
@@ -24,7 +26,7 @@ export default {
     };
   },
   components: {
-    HeaderSection, FlashSalesHeader, ContainerCard
+    NameSection, FlashSalesHeader, ContainerCard
   },
   methods: {
     rightSlider() {
@@ -49,14 +51,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.container-card-ref {
-
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-}
-</style>
+<style lang="scss" scoped></style>

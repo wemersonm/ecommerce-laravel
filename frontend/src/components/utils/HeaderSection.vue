@@ -1,16 +1,14 @@
 <template>
-  <div class="d-flex gap-2">
-    <div class="boxsize bg-danger rounded "></div>
-    <span class="align-self-center fw-bold text-danger"> {{ name }}</span>
-  </div>
+  <span class="responsive-font">{{ name }}</span>
 </template>
 
 <script>
+
 export default {
   props: {
     name: {
       type: String,
-      default: '',
+      default: "Seção",
       required: true,
     },
   },
@@ -18,8 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.boxsize {
-  width: 20px;
-  height: 40px;
+.responsive-font {
+  font-size: calc(12px + 0.7vw);
 }
 </style>
