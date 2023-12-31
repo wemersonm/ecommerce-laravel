@@ -1,9 +1,8 @@
 <template>
-  <!-- TOP FLASH-SALES -->
   <div>
     <NameSection name="Hoje" />
-    <FlashSalesHeader class="mt-4" @leftSlider="clickLeftFunc" @rightSlider="rightSlider" />
-    <ContainerCard class="my-3" ref="containerCardRef" />
+    <FlashSalesHeader class="mt-4"   />
+    <ContainerCard :next="next" />
     <div class="my-5 w-100 d-flex justify-content-center align-items-center">
       <a href="#" class="btn btn-danger px-5" @click.prevent>Ver Todos</a>
     </div>
@@ -21,8 +20,8 @@ import ContainerCard from './ContainerFlashSales.vue';
 export default {
   data() {
     return {
-      containerCard: null,
-      widthScroll: null,
+      next: false,
+      prev: false,
     };
   },
   components: {
@@ -30,24 +29,10 @@ export default {
   },
   methods: {
     rightSlider() {
-      const currentWidth = this.containerCard.scrollLeft + this.containerCard.offsetWidth;
-      if (currentWidth < this.containerCard.scrollWidth) {
-        this.containerCard.scrollLeft += this.widthScroll;
-      }
-      return;
+      console.log('clicado');
+      this.next = true;
     },
-    clickLeftFunc() {
-      if (this.containerCard.scrollLeft > 0) {
-        this.containerCard.scrollLeft -= this.widthScroll;
-      }
-      return;
-    },
-  },
-  async mounted() {
-    await this.$nextTick();
-    this.containerCard = this.$refs.containerCardRef?.$el;
-    this.widthScroll = 250;
-  },
+  }
 }
 </script>
 

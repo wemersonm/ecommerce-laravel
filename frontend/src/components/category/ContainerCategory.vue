@@ -1,16 +1,25 @@
 <template>
-  <div class="d-flex gap-4 overflow-x-scroll container-category-ref w-100 border justify-content-center p-1">
-    <CardCategory v-for="category in categories" :category="category" :key="category"></CardCategory>
+  <div id="carouselCategories" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item" v-for="(slide, index) in  slides " :key="index" :class="{ 'active': index === 0 }">
+        <div class="d-flex gap-4 justity-content-center"
+          :class="{ 'justify-content-center': qtyPerSlide == 1 || qtyPerSlide == 2 || qtyPerSlide == 3 }">
+          <CardCategory v-for="category in slide" :category="category" :key="category"></CardCategory>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import CardCategory from '../utils/CardCategory.vue';
+import CardCategory from './CardCategory.vue';
 export default {
   data() {
     return {
+      slides: [],
+      qtyPerSlide: 6,
       categories: [
-        { path: '../../../public/assets/images/category-icons/Category-VGA.svg', name: 'Placa de Video' },
+        { path: '../../../public/assets/images/category-icons/Category-VGA.svg', name: 'Placa de VideoVideoVideoVideoVideoVideo' },
         { path: '../../../public/assets/images/category-icons/Category-Motherboard.svg', name: 'Placa Mãe' },
         { path: '../../../public/assets/images/category-icons/Category-Cpu.svg', name: 'Processadores' },
         { path: '../../../public/assets/images/category-icons/Category-Ram.svg', name: 'Memoria RAM' },
@@ -28,20 +37,47 @@ export default {
 
     }
   },
+  methods: {
+    createSlides() {
+      this.slides = [];
+      for (let i = 0; i < this.categories.length; i += this.qtyPerSlide) {
+        this.slides.push(this.categories.slice(i, i + this.qtyPerSlide));
+      }
+    },
+    adjustQtyCardsPerScreen() {
+
+      if (window.innerWidth < 391) {
+        return 1;
+      } else if (window.innerWidth < 632) {
+        return 2;
+      } else if (window.innerWidth < 768) {
+        return 3;
+      } else if (window.innerWidth < 992) {
+        return 4;
+      } else if (window.innerWidth < 1200) {
+        return 5;
+      } else {
+        return 6;
+      }
+    },
+    handlerResize() {
+      this.qtyPerSlide = this.adjustQtyCardsPerScreen();
+      this.createSlides();
+    }
+  },
+
+  mounted() {
+    window.addEventListener('resize', this.handlerResize);
+    this.qtyPerSlide = this.adjustQtyCardsPerScreen();
+    this.createSlides();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handlerResize);
+  },
   components: {
     CardCategory,
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.container-category-ref {
-
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-}
-</style>
+<style lang="scss" scoped></style> 

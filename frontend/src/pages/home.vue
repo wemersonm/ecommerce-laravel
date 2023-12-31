@@ -16,7 +16,7 @@
       </section>
 
       <section class="container-xl container-fluid mt-5">
-        <FlashSales  class="border border-danger"/>
+        <FlashSales />
       </section>
 
       <section class="container-xl container-fluid mt-5">

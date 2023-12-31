@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-start">
+  <div class="card text-start ">
     <img class="card-img-top" :src="'https://via.placeholder.com/600/d' + Math.floor(1000 + Math.random() * 9000)"
       alt="Title" />
     <div class="card-body">
@@ -30,6 +30,9 @@ export default {
     transition: 0.5s ease-in-out;
   }
 
-  min-width: calc(19% + 0.4%);
+  max-width: 250px;
+  max-height: 400px;
+  min-height: 400px;
+  
 }
 </style>
