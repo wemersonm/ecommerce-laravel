@@ -1,29 +1,33 @@
 <template>
   <div>
-    <NameSection name="Hoje" />
-    <FlashSalesHeader class="my-4" />
-    <ContainerCard />
-    <ButtonLink href="/flash-sales" title="Ver Todos Produtos"></ButtonLink>
-    <div class="div-x my-5"></div>
+    <HeaderSection name="Ofertas" title="Ofertas Relâmpago" :target="target" class="mb-3">
+      <template v-slot:middle>
+        <CountDown />
+      </template>
+    </HeaderSection>
+    <ContainerCard :target="target" />
+    <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
+    <HorizontalBar />
   </div>
 </template>
 
 <script>
-// @ts-ignore
-import NameSection from '../utils/NameSection.vue';
-// @ts-ignore
-import FlashSalesHeader from './FlashSalesHeader.vue';
-// @ts-ignore
+import HeaderSection from '../utils/HeaderSection.vue';
 import ContainerCard from './ContainerFlashSales.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
+import CountDown from '../utils/CountDown.vue';
+import HorizontalBar from '../utils/HorizontalBar.vue';
 export default {
   data() {
     return {
+      target: "FlashSales",
     };
   },
   components: {
-    NameSection, FlashSalesHeader, ContainerCard,
-    ButtonLink
+    ContainerCard, HeaderSection,
+    ButtonLink,
+    CountDown,
+    HorizontalBar
   },
   methods: {
   }

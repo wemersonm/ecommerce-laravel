@@ -1,5 +1,5 @@
 <template>
-  <div id="carouselExample" class="carousel slide">
+  <div :id="'carousel' + target" class="carousel slide">
     <div class="carousel-inner p-1">
       <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in slides" :key="index">
         <div class="d-flex gap-2 justify-content-start"
@@ -16,7 +16,15 @@
 // @ts-ignore
 import CardProduct from '../product/CardProduct.vue';
 export default {
+  props: {
+    target: {
+      type: String,
+      default: "Example",
+      required: true,
+    },
+  },
   data() {
+
     return {
       products: [
         {
@@ -104,5 +112,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,27 +1,25 @@
 <template>
-  <NameSection name="Categorias" />
-  <CategoryHeader class="my-4"  />
-  <ContainerCategory  />
-
-  <div class="div-x my-5"></div>
+  <HeaderSection name="Categorias" title="Todas as Categorias" :target="target" class="mb-3" />
+  <ContainerCategory :target="target" />
+  <HorizontalBar class="my-5" />
 </template>
 
 <script>
+import HorizontalBar from '../utils/HorizontalBar.vue';
 //@ts-ignore
+import HeaderSection from '../utils/headersection.vue';
 import ContainerCategory from './ContainerCategory.vue';
-//@ts-ignore
-import NameSection from '../utils/NameSection.vue';
-//@ts-ignore
-import CategoryHeader from './CategoryHeader.vue';
 export default {
 
   data() {
     return {
+      target: "Category",
     }
   },
-
   components: {
-    ContainerCategory, NameSection, CategoryHeader
+    ContainerCategory,
+    HeaderSection,
+    HorizontalBar
   },
 }
 </script>

@@ -1,10 +1,11 @@
 <template>
-  <div id="carouselCategories" class="carousel slide" data-bs-ride="carousel">
+  <div :id="'carousel' + target" class=" carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item" v-for="(slide, index) in  slides " :key="index" :class="{ 'active': index === 0 }">
+      <div class="carousel-item" v-for="( slide, index ) in   slides  " :key="index"
+        :class="{ 'active': index === 0 }">
         <div class="d-flex gap-4 justity-content-center"
           :class="{ 'justify-content-center': qtyPerSlide == 1 || qtyPerSlide == 2 || qtyPerSlide == 3 }">
-          <CardCategory v-for="category in slide" :category="category" :key="category"></CardCategory>
+          <CardCategory v-for=" category  in  slide " :category="category" :key="category"></CardCategory>
         </div>
       </div>
     </div>
@@ -14,6 +15,13 @@
 <script>
 import CardCategory from './CardCategory.vue';
 export default {
+  props: {
+    target: {
+      type: String,
+      default: "Example",
+      required: true,
+    },
+  },
   data() {
     return {
       slides: [],

@@ -1,18 +1,20 @@
 <template>
-  <div class="d-flex align-items-end gap-1 align-items-end">
+  <div class="d-flex align-items-end gap-1 align-items-end responsive-font">
     <div v-if="dias > 0">
-      <span class="responsive-font">{{ dias }}</span>
-      <span class="responsive-font text-danger ps-1">:</span>
+      <span>{{ dias }}</span>
+      <span>:</span>
     </div>
     <div>
-      <span class="responsive-font">{{ horas }}</span>
-      <span class="responsive-font text-danger  ps-1">:</span>
+      <span>{{ horas }}</span>
     </div>
+    <span>:</span>
     <div>
-      <span class=" responsive-font">{{ minutos }}</span>
-      <span class="responsive-font text-danger  ps-1">:</span>
+      <span>{{ minutos }}</span>
     </div>
-    <div> <span class=" responsive-font">{{ segundos }}</span></div>
+    <span>:</span>
+    <div>
+      <span>{{ segundos }}</span>
+    </div>
   </div>
 </template>
 <script>
