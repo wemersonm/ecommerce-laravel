@@ -1,5 +1,5 @@
 <template>
-  <span class="responsive-font">{{ name }}</span>
+  <span class="responsive-font fw-bold">{{ name }}</span>
 </template>
 
 <script>

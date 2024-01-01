@@ -1,13 +1,14 @@
 <template>
-  <div id="carouselExample" class="carousel slide border ">
-    <div class="carousel-inner border">
+  <div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner p-1">
       <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in slides" :key="index">
-        <div class="d-flex gap-2  justify-content-center">
+        <div class="d-flex gap-2 justify-content-start"
+          :class="{ 'justify-content-center': itemsPerPage == 1 || itemsPerPage == 2 }">
           <CardProduct v-for="product in slide" :product="product" :key="product.name" />
         </div>
       </div>
     </div>
- 
+
   </div>
 </template>
 
@@ -15,12 +16,6 @@
 // @ts-ignore
 import CardProduct from '../product/CardProduct.vue';
 export default {
-  props: {
-    next: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       products: [
@@ -70,11 +65,6 @@ export default {
       currentPage: 0,
     };
   },
-  watch: {
-    next(newValue, oldValue) {
-      console.log('Mudou');
-    }
-  },
   components: {
     CardProduct,
   },
@@ -115,5 +105,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* Seus estilos aqui... */
 </style>

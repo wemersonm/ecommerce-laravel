@@ -30,7 +30,7 @@ export default {
     transition: 0.5s ease-in-out;
   }
 
-  max-width: 250px;
+  max-width: 200px;
   max-height: 400px;
   min-height: 400px;
   

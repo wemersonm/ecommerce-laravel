@@ -1,11 +1,9 @@
 <template>
   <div>
     <NameSection name="Hoje" />
-    <FlashSalesHeader class="mt-4"   />
-    <ContainerCard :next="next" />
-    <div class="my-5 w-100 d-flex justify-content-center align-items-center">
-      <a href="#" class="btn btn-danger px-5" @click.prevent>Ver Todos</a>
-    </div>
+    <FlashSalesHeader class="my-4" />
+    <ContainerCard />
+    <ButtonLink href="/flash-sales" title="Ver Todos Produtos"></ButtonLink>
     <div class="div-x my-5"></div>
   </div>
 </template>
@@ -17,21 +15,17 @@ import NameSection from '../utils/NameSection.vue';
 import FlashSalesHeader from './FlashSalesHeader.vue';
 // @ts-ignore
 import ContainerCard from './ContainerFlashSales.vue';
+import ButtonLink from '../utils/ButtonLink.vue';
 export default {
   data() {
     return {
-      next: false,
-      prev: false,
     };
   },
   components: {
-    NameSection, FlashSalesHeader, ContainerCard
+    NameSection, FlashSalesHeader, ContainerCard,
+    ButtonLink
   },
   methods: {
-    rightSlider() {
-      console.log('clicado');
-      this.next = true;
-    },
   }
 }
 </script>
