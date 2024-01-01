@@ -22,23 +22,28 @@
       <section class="container-xl container-fluid mt-5">
         <Categories />
       </section>
+
+      <section class="container-xl container-fluid mt-5">
+        <BestSellers />
+      </section>
     </template>
   </Default>
 </template>
 
 <script>
 import Categories from '../components/category/Category.vue';
+// @ts-ignore
 import Default from '../layouts/default.vue';
 import Departaments from '../components/home/departaments/Departaments.vue';
-// @ts-ignore
 import Banner from '../components/carousel/CarouselBanner.vue';
 // @ts-ignore
 import FlashSales from '../components/flash-sales/FlashSales.vue';
-// import { useAuthStore } from '../stores/auth';
+import BestSellers from '../components/best-sellers/BestSellers.vue';
 
 export default {
   components: {
-    Default, Departaments, Banner, FlashSales, Categories
+    Default, Departaments, Banner, FlashSales, Categories,
+    BestSellers
   },
   data() {
     return {
