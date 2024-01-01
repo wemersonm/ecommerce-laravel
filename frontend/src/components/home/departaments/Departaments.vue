@@ -1,12 +1,15 @@
 <template>
-  <div class="body m-1">
+  <div class="m-1">
     <div class="dropdown" @mouseleave="hideMenu">
-      <button class="btn btn-secondary btn-sm dropdown-toggle w-100 " type="button" @click="toggleMenu" @mouseover="showMenu">
+      <button class="btn btn-secondary btn-sm dropdown-toggle w-100 " type="button" @click="toggleMenu"
+        @mouseover="showMenu">
         Todos os Departamentos
       </button>
-      <DropdownDepartaments v-if="isMenuOpen" />
+      <DropdownDepartaments class="z-index-dropdown" v-if="isMenuOpen" />
     </div>
+    <div class="body">
 
+    </div>
     <nav class="mt-3">
       <ul class="nav flex-column">
         <li class="nav-item text-center mb-2" v-for="category in categories" :key="category.id">
@@ -22,6 +25,7 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 const DropdownDepartaments = defineAsyncComponent({
+  //@ts-ignore
   loader: () => import('../departaments/ListDepartaments.vue')
 });
 
@@ -69,5 +73,9 @@ export default {
 <style scoped>
 .dropdown {
   width: 100%;
+}
+
+.z-index-dropdown {
+  z-index: 99999;
 }
 </style>
