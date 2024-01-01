@@ -52,7 +52,7 @@ export default {
         return 2;
       } else if (window.innerWidth < 768) {
         return 3;
-      } else if (window.innerWidth < 992) {
+      } else if (window.innerWidth < 1118) {
         return 4;
       } else {
         return 5;
