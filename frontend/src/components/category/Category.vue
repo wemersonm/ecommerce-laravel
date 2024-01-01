@@ -1,6 +1,6 @@
 <template>
   <HeaderSection name="Categorias" title="Todas as Categorias" :target="target" class="mb-3" />
-  <ContainerCategory :target="target" />
+  <SliderCategory :target="target" />
   <HorizontalBar class="my-5" />
 </template>
 
@@ -8,7 +8,7 @@
 import HorizontalBar from '../utils/HorizontalBar.vue';
 //@ts-ignore
 import HeaderSection from '../utils/headersection.vue';
-import ContainerCategory from './ContainerCategory.vue';
+import SliderCategory from './SliderCategory.vue';
 export default {
 
   data() {

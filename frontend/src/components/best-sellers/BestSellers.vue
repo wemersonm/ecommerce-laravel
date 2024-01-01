@@ -1,27 +1,18 @@
 <template>
-  <div>
-    <HeaderSection name="Ofertas" title="Ofertas Relâmpago" :target="target" class="mb-3">
-      <template v-slot:middle>
-        <CountDown />
-      </template>
-    </HeaderSection>
-    <SliderProduct :target="target" :products="products" />
-    <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
-    <HorizontalBar />
-  </div>
+  <HeaderSection :target="target" name="Mais Vendidos" title="Produtos mais vendidos" class="mb-3" />
+  <SliderProduct :products="products" :target="target" />
 </template>
 
 <script>
-import HeaderSection from '../utils/HeaderSection.vue';
 import SliderProduct from '../product/SliderProduct.vue';
-import ButtonLink from '../utils/ButtonLink.vue';
-import CountDown from '../utils/CountDown.vue';
-import HorizontalBar from '../utils/HorizontalBar.vue';
+//@ts-ignore
+import HeaderSection from '../utils/HeaderSection.vue'
 export default {
+
   data() {
     return {
-      target: "FlashSales",
-      products: [ // request do backend ... '-'
+      target: "BestSellers",
+      products: [ // resultado do request no backend .... '-'
         {
           name: "Placa de video Zotac GTX 1660 GB",
           newValue: 1533,
@@ -63,16 +54,13 @@ export default {
           oldValue: 250,
         }
       ],
-    };
+    }
   },
+
   components: {
-    SliderProduct, HeaderSection,
-    ButtonLink,
-    CountDown,
-    HorizontalBar
+    HeaderSection,
+    SliderProduct
   },
-  methods: {
-  }
 }
 </script>
 
