@@ -1,6 +1,8 @@
 <?php
 
+use App\Mail\ResetPasswordEmail;
 use App\Models\ResetPassword;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
@@ -16,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-  $data = '2023-12-25 23:51:22';
-  $carbon = Carbon::parse($data);
-  return ($carbon)->diffInHours();
 
-
-/*   return now();
-  $createdAndTreeDays = (ResetPassword::first()->created_at)->addDays(1)->subHours(3);
-  return (now()->subHours(3))->greaterThan($createdAndTreeDays) ? "Sim" : "Não"; */
+  try {
+    $user = User::find(1);
+    Mail::to($user)->queue(new ResetPasswordEmail($user, 'eo1533'));
+  } catch (\Throwable $th) {
+    return $th->getMessage();
+  }
+  return 'mandado';
 
 });
