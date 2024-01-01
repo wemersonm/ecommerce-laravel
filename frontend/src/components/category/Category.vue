@@ -17,7 +17,7 @@ export default {
     }
   },
   components: {
-    ContainerCategory,
+    SliderCategory,
     HeaderSection,
     HorizontalBar
   },
