@@ -1,10 +1,10 @@
 <template>
   <div>
-    <HeaderSection name="Ofertas" title="Ofertas Relâmpago" :target="target" class="mb-3">
+    <header-section name="Ofertas" title="Ofertas Relâmpago" :target="target" class="mb-3">
       <template v-slot:middle>
         <CountDown />
       </template>
-    </HeaderSection>
+    </header-section>
     <SliderProduct :target="target" :products="products" />
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
     <HorizontalBar />
