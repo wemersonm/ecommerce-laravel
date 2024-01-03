@@ -1,7 +1,7 @@
 <template>
   <HeaderSection name="Nosso Produtos" title="Conheça nossos produtos" :showNavigation="false" />
   <GridProduct :products="products" class="mt-4" />
-  <ButtonLink href="/products" title="Ver Todos os Produtos" class="mt-4" />
+  <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-5" />
 </template>
 
 <script>

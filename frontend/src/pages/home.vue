@@ -34,6 +34,9 @@
       <section class="container-xl container-fluid my-5">
         <OurProducts />
       </section>
+      <section class="container-xl container-fluid my-5">
+        <ServiceAdvantages />
+      </section>
     </template>
   </Default>
 </template>
@@ -50,14 +53,16 @@ import BestSellers from '../components/best-sellers/BestSellers.vue';
 //@ts-ignore
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
 import OurProducts from '../our-products/OurProducts.vue';
+import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
 
 export default {
   components: {
     Default, Departaments, Banner, FlashSales, Categories,
     BestSellers,
     OfferBanner,
-    OurProducts
-  },
+    OurProducts,
+    ServiceAdvantages
+},
   data() {
     return {
       dataOfferBanner: {
