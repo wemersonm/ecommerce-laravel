@@ -7,10 +7,10 @@
       <div class="fw-bold">
         <span class="responsive-font">{{ title }}</span>
       </div>
-      <div class="px-1">
+      <div class="px-1" v-if="showMiddle">
         <slot name="middle"></slot>
       </div>
-      <div class="d-flex gap-2 justify-content-end">
+      <div class="d-flex gap-2 justify-content-end" v-if="showNavigation">
         <i class="bi bi-arrow-left-circle fs-3" type="button" :data-bs-target="`#carousel${target}`"
           data-bs-slide="prev"></i>
         <i class="bi bi-arrow-right-circle fs-3" type="button" :data-bs-target="`#carousel${target}`"
@@ -36,8 +36,20 @@ export default {
     },
     target: {
       type: String,
-      required: true,
       default: "Example",
+    },
+    showNavigation: {
+      type: Boolean,
+      default: true,
+    },
+    showMiddle: {
+      type: Boolean,
+      default: true,
+    }
+  },
+  data() {
+    return {
+
     }
   },
   methods: {

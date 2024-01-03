@@ -1,4 +1,5 @@
 <template>
+  
   <div>
     <a :href="offerBanner.product_slug">
       <img :src="offerBanner.src" alt="offerBanner" class="img-fluid rounded">

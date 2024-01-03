@@ -30,6 +30,10 @@
       <section class="container-xl container-fluid my-5">
         <OfferBanner :offerBanner="dataOfferBanner" />
       </section>
+
+      <section class="container-xl container-fluid my-5">
+        <OurProducts />
+      </section>
     </template>
   </Default>
 </template>
@@ -43,20 +47,25 @@ import Banner from '../components/carousel/CarouselBanner.vue';
 // @ts-ignore
 import FlashSales from '../components/flash-sales/FlashSales.vue';
 import BestSellers from '../components/best-sellers/BestSellers.vue';
+//@ts-ignore
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
+import OurProducts from '../our-products/OurProducts.vue';
 
 export default {
   components: {
     Default, Departaments, Banner, FlashSales, Categories,
     BestSellers,
-    OfferBanner
+    OfferBanner,
+    OurProducts
   },
   data() {
     return {
       dataOfferBanner: {
         src: 'https://fastly.picsum.photos/id/833/1400/500.jpg?hmac=cH9p46o3cruEIwezIHv9TQ6xq2S0WQ-oTgliO2n98BU',
         product_slug: '/product/placa-de-video-gtx-1660-6gb-zotac',
-      }
+      },
+
+
     };
   },
   methods: {
