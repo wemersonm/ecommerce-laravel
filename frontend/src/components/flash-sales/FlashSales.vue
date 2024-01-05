@@ -15,6 +15,7 @@
 import HeaderSection from '../utils/HeaderSection.vue';
 import SliderProduct from '../product/SliderProduct.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
+//@ts-ignore
 import CountDown from '../utils/CountDown.vue';
 import HorizontalBar from '../utils/HorizontalBar.vue';
 export default {
@@ -23,7 +24,7 @@ export default {
       target: "FlashSales",
       products: [ // request do backend ... '-'
         {
-          name: "Placa de video Zotac GTX 1660 GB",
+          name: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita reprehenderit odio quis amet accusamus quos. Nobis delectus placeat quo provident sit, explicabo ratione laborum quisquam inventore amet ut aliquam exercitationem.",
           newValue: 1533,
           oldValue: 1788,
         },

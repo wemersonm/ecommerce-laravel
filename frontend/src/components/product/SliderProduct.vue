@@ -2,9 +2,8 @@
   <div :id="'carousel' + target" class="carousel slide">
     <div class="carousel-inner p-1">
       <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in slides" :key="index">
-        <div class="d-flex gap-2 justify-content-start"
-          :class="{ 'justify-content-center': itemsPerPage == 1 || itemsPerPage == 2 }">
-          <CardProduct v-for="product in slide" :product="product" :key="product.name" />
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
+          <CardProduct v-for="product in slide" :product="product" :key="product.name" class="col" :showHorizontalCard="true" />
         </div>
       </div>
     </div>

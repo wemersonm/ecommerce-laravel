@@ -65,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .responsive-font {
   font-size: calc(15px + 1vw);
+  font-family: 'Aclonica', sans-serif;
   /* Defina o tamanho da fonte em vw */
 }
 </style>

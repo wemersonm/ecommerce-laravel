@@ -8,6 +8,7 @@
 
 
 <script>
+// @ts-ignore
 import CardProduct from './CardProduct.vue';
 
 export default {
