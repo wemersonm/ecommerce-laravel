@@ -1,7 +1,7 @@
 <template>
   <Default>
     <template #main>
-      <section class="container-xl container-fluid">
+      <section class="container-xxl">
         <div class="row">
           <div class="col-lg-3 p-0 mt-5 d-lg-block d-none">
             <Departaments />
@@ -15,26 +15,26 @@
         </div>
       </section>
 
-      <section class="container-xl container-fluid mt-5">
+      <section class="container-xxl mt-5">
         <FlashSales />
       </section>
 
-      <section class="container-xl container-fluid mt-5">
+      <section class="container-xxl mt-5">
         <Categories />
       </section>
 
-      <section class="container-xl container-fluid mt-5">
+      <section class="container-xxl mt-5">
         <BestSellers />
       </section>
 
-      <section class="container-xl container-fluid my-5">
+      <section class="container-xxl my-5">
         <OfferBanner :offerBanner="dataOfferBanner" />
       </section>
 
-      <section class="container-xl container-fluid my-5">
+      <section class="container-xxl my-5">
         <OurProducts />
       </section>
-      <section class="container-xl container-fluid my-5">
+      <section class="container-xxl my-5">
         <ServiceAdvantages />
       </section>
     </template>
@@ -62,7 +62,7 @@ export default {
     OfferBanner,
     OurProducts,
     ServiceAdvantages
-},
+  },
   data() {
     return {
       dataOfferBanner: {

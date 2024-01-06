@@ -1,9 +1,12 @@
 <template>
   <div :id="'carousel' + target" class="carousel slide">
-    <div class="carousel-inner p-1">
-      <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in slides" :key="index">
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
-          <CardProduct v-for="product in slide" :product="product" :key="product.name" class="col" :showHorizontalCard="true" />
+    <div class="carousel-inner">
+
+      <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in  slides " :key="index">
+        <div class="row m-0 p-0" :class="row">
+          <CardProduct v-for=" product  in  slide " :product="product" :showHorizontalCard="showHorizontalCard"
+            :key="product.name" class="col" :class="{ 'd-flex justify-content-center': itemsPerPage === 1 }" />
+
         </div>
       </div>
     </div>
@@ -25,13 +28,17 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    showHorizontalCard: {
+      type: Boolean,
+      default: false,
+    },
 
   },
   data() {
     return {
       slides: [],
       itemsPerPage: 5,
-      currentPage: 0,
+      row: '',
     };
   },
   components: {
@@ -45,15 +52,20 @@ export default {
       }
     },
     itemsPerPageResponsive() {
-      if (window.innerWidth < 391) {
+      if (window.innerWidth < 576) {
+        this.row = 'row-cols-1 border'
         return 1;
-      } else if (window.innerWidth < 632) {
+      } else if (window.innerWidth < 682) {
+        this.row = 'row-cols-2 border me-3'
         return 2;
-      } else if (window.innerWidth < 768) {
+      } else if (window.innerWidth < 923) {
+        this.row = 'row-cols-3'
         return 3;
-      } else if (window.innerWidth < 1118) {
+      } else if (window.innerWidth < 1200) {
+        this.row = 'row-cols-4';
         return 4;
       } else {
+        this.row = 'row-cols-5';
         return 5;
       }
     },

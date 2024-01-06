@@ -5,7 +5,7 @@
         <CountDown />
       </template>
     </header-section>
-    <SliderProduct :target="target" :products="products" />
+    <SliderProduct :target="target" :products="products" :showHorizontalCard="true" />
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
     <HorizontalBar />
   </div>

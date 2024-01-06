@@ -1,6 +1,6 @@
 <template>
   <HeaderSection :target="target" name="Mais Vendidos" title="Produtos mais vendidos" class="mb-3" />
-  <SliderProduct :products="products" :target="target" />
+  <SliderProduct :products="products" :target="target" :showHorizontalCard="false" />
 </template>
 
 <script>
