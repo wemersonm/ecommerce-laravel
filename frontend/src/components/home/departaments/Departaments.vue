@@ -22,7 +22,8 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 const DropdownDepartaments = defineAsyncComponent({
-  loader: () => import('../departaments/ListDepartaments.vue')
+  // @ts-ignore
+  loader: () => import('./ListDepartaments.vue')
 });
 
 export default {

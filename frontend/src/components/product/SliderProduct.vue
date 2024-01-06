@@ -1,6 +1,6 @@
 <template>
   <div :id="'carousel' + target" class="carousel slide">
-    <div class="carousel-inner">
+    <div class="carousel-inner p-1">
 
       <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in  slides " :key="index">
         <div class="row m-0 p-0" :class="row">
@@ -53,10 +53,10 @@ export default {
     },
     itemsPerPageResponsive() {
       if (window.innerWidth < 576) {
-        this.row = 'row-cols-1 border'
+        this.row = 'row-cols-1 '
         return 1;
       } else if (window.innerWidth < 682) {
-        this.row = 'row-cols-2 border me-3'
+        this.row = 'row-cols-2  me-3'
         return 2;
       } else if (window.innerWidth < 923) {
         this.row = 'row-cols-3'

@@ -2,17 +2,7 @@
   <Default>
     <template #main>
       <section class="container-xxl">
-        <div class="row">
-          <div class="col-lg-3 p-0 mt-5 d-lg-block d-none">
-            <Departaments />
-          </div>
-          <div class="col-1">
-            <div class="d-none d-lg-block div-y"></div>
-          </div>
-          <div class="col-lg-8 p-0 order-first order-lg-last mt-5">
-            <Banner />
-          </div>
-        </div>
+        <TopHomepage />
       </section>
 
       <section class="container-xxl mt-5">
@@ -53,7 +43,9 @@ import BestSellers from '../components/best-sellers/BestSellers.vue';
 //@ts-ignore
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
 import OurProducts from '../our-products/OurProducts.vue';
+//@ts-ignore
 import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
+import TopHomepage from '../components/home/TopHomepage.vue';
 
 export default {
   components: {
@@ -61,8 +53,9 @@ export default {
     BestSellers,
     OfferBanner,
     OurProducts,
-    ServiceAdvantages
-  },
+    ServiceAdvantages,
+    TopHomepage
+},
   data() {
     return {
       dataOfferBanner: {

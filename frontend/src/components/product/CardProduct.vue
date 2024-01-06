@@ -25,13 +25,14 @@
               <RatingProduct :rating="rating" />
             </div>
             <div class="text-center pt-2">
-              <a href="#" class="position-absolute bottom-0 text-center btn btn-dark py-2 w-100 start-0">Comprar</a>
+              <a href="#" @click.prevent.stop="buyProduct"
+                class="position-absolute bottom-0 text-center btn btn-dark btn-sm py-2 w-100 start-0">Comprar</a>
             </div>
           </div>
         </div>
       </a>
     </div>
-    <HorizontalCardProduct v-if="showHorizontalCard" :product="product" />
+    <HorizontalCardProduct v-if="showHorizontalCard" :product="product" @buyProduct="buyProduct" />
   </div>
 </template>
 
@@ -63,6 +64,9 @@ export default {
     async handlerHoverCard(hover) {
       // await new Promise(resolve => setTimeout(resolve, 100));
       this.hoverCard = hover;
+    },
+    buyProduct() {
+      this.$router.push({ path: '/carrinho' });
     }
   },
   components: { HorizontalCardProduct, RatingProduct, IconsCard }
