@@ -2,7 +2,7 @@
   <div>
     <Header />
     <div class="d-none d-lg-block div-x"></div>
-    <main :style="styles">
+    <main>
       <slot name="main"></slot>
     </main>
 
@@ -16,7 +16,6 @@ import Header from '../components/header/HeaderApp.vue'
 export default {
   data() {
     return {
-      styles: [],
     };
   },
   components: {

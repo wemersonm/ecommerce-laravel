@@ -1,5 +1,12 @@
 const routes = [
   {
+    path: "/login",
+    name: "login",
+    alias: "/login",
+    meta: { requiresAuth: false },
+    component: () => import("../pages/login.vue"),
+  },
+  {
     path: "/",
     name: "home",
     alias: "/home",
@@ -7,11 +14,24 @@ const routes = [
     component: () => import("../pages/home.vue"),
   },
   {
-    path: "/login",
-    name: "login",
-    alias: "/login",
+    path: "/minha-conta",
+    name: "account",
     meta: { requiresAuth: false },
-    component: () => import("../pages/login.vue"),
+    component: () => import("../pages/account.vue"),
+    children: [
+      {
+        path: "",
+        name: "account-profile",
+        meta: { requiresAuth: false },
+        component: () => import("../components/account/Profile.vue"),
+      },
+      {
+        path: "enderecos",
+        name: "account-address",
+        meta: { requiresAuth: false },
+        component: () => import("../components/account/Address.vue"),
+      },
+    ],
   },
 
   {
