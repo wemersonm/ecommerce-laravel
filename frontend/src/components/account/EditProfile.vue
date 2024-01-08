@@ -2,14 +2,33 @@
   <div>
     <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#ConfirmPassword"
       ref="modalRef">
-
     </button>
+
     <ModalDefault id="ConfirmPassword">
+      <template v-slot:modal-header>
+        CONFIRME SUA SENHA
+        <button type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"
+          ref="btnCloseModal"></button>
+      </template>
       <template v-slot:modal-body>
-        <form @submit.stop.prevent="getPassword">
-          <input type="password">
-          <button>Enviar</button>
-        </form>
+        <Form @submit="getPassword" v-slot="{ errors }">
+          <div class="form-floating mb-3">
+            <Field type="password" name="password" :class="{ 'form-control': true, 'is-invalid': errors['password'] }"
+              id="floatingPassword" placeholder="*******" rules="required|min:6|max:32" v-model="password_confirm" />
+            <label for="floatingPassword">Senha</label>
+            <div class="invalid-feedback"> {{ errors['password'] }}</div>
+          </div>
+          <div class="d-flex gap-3">
+            <button class="btn btn-sm btn-danger w-100 my-3" @click.prevent.stop="closeModal">
+              Cancelar
+            </button>
+            <button class="btn btn-sm btn-secondary w-100 my-3" type="submit">
+              <span class="spinner-grow spinner-grow-sm" v-if="response.loading" v-for="i in 3" :key="i"
+                aria-hidden="true"></span>
+              <span role="status" v-if="!response.loading">Confirmar</span>
+            </button>
+          </div>
+        </Form>
       </template>
     </ModalDefault>
 
@@ -30,12 +49,6 @@
             <label for="floatingEmail">Email</label>
             <div class="invalid-feedback"> {{ errors['email'] }}</div>
           </div>
-
-
-          <!-- <AuthMessage v-if="response.messageError" class="mt-3 text-center"
-          style="padding: 1rem; padding-left: 0.5rem; font-size: 0.9em;">
-          <template v-slot:message>{{ response.messageError }}</template>
-        </AuthMessage> -->
 
           <div class="d-flex gap-3">
             <button class="btn btn-sm btn-danger w-100 my-3" @click.prevent.stop="$emit('cancel')">
@@ -75,11 +88,18 @@ export default {
       response: {
         loading: false,
       },
+      password_confirm: '',
     }
   },
   methods: {
     submitEdit() {
+      this.openModal();
+    },
+    openModal() {
       this.$refs.modalRef.click();
+    },
+    closeModal() {
+      this.$refs.btnCloseModal.click();
     },
     getPassword() {
       alert('pegado!!');
