@@ -19,9 +19,10 @@
           aria-expanded="false"> {{ authStore.getNameUser }}
 
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId">
-            <a class="dropdown-item" href="#">Perfil</a>
-            <a class="dropdown-item" href="#">Pedidos</a>
-            <button class="dropdown-item " href="#" @click.prevent.stop.self="logout"> Sair </button>
+            <button class="dropdown-item" @click.stop="$router.push({ path: '/minha-conta' })">Perfil</button>
+
+            <a class="dropdown-item" href="/pedidos">Pedidos</a>
+            <button class="dropdown-item" @click.prevent.stop.self="logout"> Sair </button>
 
           </div>
         </span>

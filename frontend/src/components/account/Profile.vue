@@ -22,10 +22,10 @@
 
       <div class="row mt-auto pb-2">
         <div class="col-4">
-          <a href="#" class="btn btn-sm btn-secondary w-100" @click.prevent.stop="edit">Editar Informações</a>
+          <a href="#" class="btn btn-sm btn-secondary w-100" @click.prevent.stop="editProfile">Editar Informações</a>
         </div>
         <div class="col-4">
-          <a href="#" class="btn btn-sm btn-secondary  w-100">Alterar Senha</a>
+          <a href="#" class="btn btn-sm btn-secondary  w-100" @click.prevent.stop="editPassword">Alterar Senha</a>
         </div>
       </div>
     </div>
@@ -33,12 +33,22 @@
   <template v-if="showEdit">
     <EditProfile :data="data" @cancel="cancel" />
   </template>
+  <template v-if="changePassword">
+    <ChangePassword  @cancel="cancel" />
+  </template>
 </template>
 
 <script>
 
+import { defineAsyncComponent } from 'vue';
 import { useAuthStore } from '../../stores/auth';
-import EditProfile from './EditProfile.vue';
+const EditProfile = defineAsyncComponent({
+  //@ts-ignore
+  loader: () => import('./EditProfile.vue'),
+});
+const ChangePassword = defineAsyncComponent({
+  loader: () => import('./ChangePassword.vue'),
+});
 export default {
   data() {
     const authStore = useAuthStore();
@@ -49,20 +59,27 @@ export default {
       },
       showInfo: true,
       showEdit: false,
+      changePassword: false,
     }
   },
   methods: {
-    edit() {
+    editProfile() {
       this.showInfo = false;
       this.showEdit = true;
     },
     cancel() {
       this.showInfo = true;
       this.showEdit = false;
+      this.changePassword = false;
+    },
+    editPassword() {
+      this.showInfo = false;
+      this.showEdit = false;
+      this.changePassword = true;
     }
   },
   components: {
-    EditProfile,
+    EditProfile, ChangePassword
   },
 }
 </script>

@@ -7,7 +7,7 @@
       </a>
     </li>
     <li class="nav-item d-lg-none">
-      <a href="#" class="nav-link d-flex align-items-center gap-2">
+      <a href="/minha-conta" class="nav-link d-flex align-items-center gap-2">
         <i class="bi bi-person-vcard fs-4"></i>
         <span>Perfil</span>
       </a>
