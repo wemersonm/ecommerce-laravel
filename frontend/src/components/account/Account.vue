@@ -5,11 +5,11 @@
       <li class="breadcrumb-item active">Minha Conta</li>
     </template>
   </Breadcrumb>
-  <div class="row border border-danger p-1">
-    <div class="col-3 border h-100">
+  <div class="row  p-1">
+    <div class="col-3  h-100">
       <MenuAccount />
     </div>
-    <div class="col-9 border">
+    <div class="col-9 rounded shadow p-4">
       <router-view></router-view>
     </div>
   </div>

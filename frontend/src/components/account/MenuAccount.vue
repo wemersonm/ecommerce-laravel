@@ -1,27 +1,28 @@
 <template>
   <div>
+
     <nav class="nav">
-      <ul class="nav flex-column border ">
+      <ul class="nav flex-column  ">
         <span class="fw-bold">Gerenciar minha conta</span>
         <li class="nav-item">
-          <router-link class="nav-link text-body-secondary active " :to="{ name: 'account-profile' }">Meu
+          <router-link class="nav-link" :to="{ name: 'account-profile' }" exact-active>Meu
             Perfil</router-link>
         </li>
         <li class="nav-item  ">
-          <router-link class="nav-link text-body-secondary " :to="{ name: 'account-address' }" @click.prevent>Meus
+          <router-link class="nav-link" :to="{ name: 'account-address' }">Meus
             Endereços</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-body-secondary" href="#">Meus Cartões</a>
+          <a class="nav-link" href="#">Meus Cartões</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-body-secondary" href="#">Meus Pedidos</a>
+          <router-link class="nav-link" :to="{ name: 'account-orders' }">Meus Pedidos</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-body-secondary" href="#">Meus Favoritos</a>
+          <a class="nav-link" href="#">Meus Favoritos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-body-secondary" href="#">Meus Cupons</a>
+          <a class="nav-link" href="#">Meus Cupons</a>
         </li>
       </ul>
     </nav>
@@ -33,15 +34,14 @@ export default {
 
 }
 </script>
-
 <style lang="scss" scoped>
-.nav-item {
-  &:active {
+.nav {
+  .nav-link.router-link-exact-active {
     color: $red !important;
   }
 
-  .active {
-    color: $red !important;
+  .nav-link {
+    color: $gray !important;
   }
 }
 </style>

@@ -1,10 +1,15 @@
 <template>
-  <div class="d-flex align-items-center border">
-    <p class="fs-4 me-auto">Meus Endereços</p>
-    <p class="d-flex align-items-center gap-1" @click.prevent.stop="formAddAddress">
-      <i class="bi bi-plus-circle fs-4"></i>
-      <span> Adicionar endereço</span>
-    </p>
+  <div class="d-flex align-items-center">
+    <template v-if="showAddresses">
+      <p class="fs-4 me-auto">Meus Endereços</p>
+      <button class="btn btn-sm btn-light d-flex align-items-center gap-1" @click.prevent.stop="formAddAddress">
+        <i class="bi bi-plus-circle fs-4"></i>
+        <span> Adicionar endereço</span>
+      </button>
+    </template>
+    <template v-if="showAddAddress">
+      <p class="fs-4 me-auto">Adicionar Endereço</p>
+    </template>
   </div>
   <template v-if="showAddresses">
     <div class="row">
@@ -15,9 +20,9 @@
   </template>
 
   <template v-if="showAddAddress">
-    <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <AddAddress />
+    <div class="row justify-content-center mt-3">
+      <div class="col-lg-8">
+        <AddAddress @cancel="closeAddAddress" />
       </div>
     </div>
   </template>
@@ -76,6 +81,10 @@ export default {
     formAddAddress() {
       this.showAddresses = false;
       this.showAddAddress = true;
+    },
+    closeAddAddress() {
+      this.showAddresses = true;
+      this.showAddAddress = false;
     }
   },
   components: { CardAddress, AddAddress }

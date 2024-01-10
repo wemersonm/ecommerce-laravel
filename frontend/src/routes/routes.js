@@ -31,6 +31,12 @@ const routes = [
         meta: { requiresAuth: false },
         component: () => import("../components/account/Address.vue"),
       },
+      {
+        path: "pedidos",
+        name: "account-orders",
+        meta: { requiresAuth: false },
+        component: () => import("../components/account/Orders.vue"),
+      },
     ],
   },
 

@@ -34,7 +34,7 @@
 
 
     <div class="row justify-content-center mt-4">
-      <div class="col-6">
+      <div class="col-lg-6">
         <Form class="w-100" v-slot="{ errors }" @submit="submitEdit">
           <div class="form-floating mb-3">
             <Field type="text" name="name" :class="{ 'form-control': true, 'is-invalid': errors['name'] }"
@@ -50,17 +50,16 @@
             <div class="invalid-feedback"> {{ errors['email'] }}</div>
           </div>
 
-          <div class="d-flex gap-3">
-            <button class="btn btn-sm btn-danger w-100 my-3" @click.prevent.stop="$emit('cancel')">
+          <div class="d-flex gap-3 justify-content-end my-4">
+            <span class="text-center  align-self-center" @click.prevent.stop="$emit('cancel')" style="cursor:pointer;">
               Cancelar
-            </button>
-            <button class="btn btn-sm btn-secondary w-100 my-3" type="submit">
+            </span>
+            <button class="btn btn-sm btn-danger py-2 px-3" type="submit">
               <span class="spinner-grow spinner-grow-sm" v-if="response.loading" v-for="i in 3" :key="i"
                 aria-hidden="true"></span>
               <span role="status" v-if="!response.loading">Salvar Alterações</span>
             </button>
           </div>
-
         </Form>
       </div>
     </div>
@@ -69,6 +68,7 @@
 </template>
 
 <script>
+// @ts-ignore
 import validation from '../../plugins/vee-validate';
 import ModalDefault from '../modal/ModalDefault.vue';
 const { Form, Field } = validation;
