@@ -1,18 +1,21 @@
 <template>
   <div>
-    <div class="card">
-      <div class="row">
-        <div class="col-2">
-          <img :src="order.img" :alt="'imageProduct' + order.idOrder" class="img-fluid img-order">
-
-        </div>
-        <div class="col-8">
-          as
-        </div>
-        <div class="col-2">as</div>
+    <div class="row">
+      <div class="col-2">
+        <img :src="order.img" :alt="'imageProduct' + order.idOrder" class="img-fluid img-order">
       </div>
+      <div class="col-8">
+        <span>
+          {{ order.name }}
+        </span><br>
+        <span class="small">x{{ order.qty }}</span>
+      </div>
+      <div class="col-2">
+        R$ {{ order.price }}
 
+      </div>
     </div>
+
   </div>
 </template>
 
