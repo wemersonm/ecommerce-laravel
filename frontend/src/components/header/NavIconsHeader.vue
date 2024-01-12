@@ -1,10 +1,10 @@
 <template>
   <ul class="navbar-nav align-items-lg-center d-lg-flex gap-lg-2 ">
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2" href="#">
+      <router-link class="nav-link d-flex align-items-center gap-2" :to="{ name: 'favorites' }">
         <i class="bi bi-heart fs-4 text-danger"></i>
         <span class="d-lg-none d-inline-block">Favoritos</span>
-      </a>
+      </router-link>
     </li>
     <li class="nav-item">
       <a class="nav-link d-flex align-items-center gap-2" href="#">

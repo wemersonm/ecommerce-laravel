@@ -41,6 +41,13 @@ const routes = [
   },
 
   {
+    path:'/favoritos',
+    name:'favorites',
+    meta:{requiresAuth: false},
+    component: () => import('../pages/favorites.vue'),
+  },
+
+  {
     path: "/auth/reset-password",
     name: "resetPassword",
     meta: { requiresAuth: false },

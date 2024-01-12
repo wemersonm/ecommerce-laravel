@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GridProduct from '../product/GridProduct.vue'
+import GridProduct from '../product/GridProduct.vue';
 export default {
   data() {
     return {
@@ -56,14 +56,12 @@ export default {
           oldValue: 1214,
         }
       ],
-    };
-  }
-},
-components: {
-
-  GridProduct,
+    }
   },
-} 
+  components: {
+    GridProduct,
+  },
+}
 </script>
 
 <style lang="scss" scoped></style>
