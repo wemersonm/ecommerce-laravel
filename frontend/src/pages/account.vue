@@ -1,7 +1,7 @@
 <template>
   <Default>
     <template v-slot:main>
-      <div class="container mt-5">
+      <div class="container-fluid container-lg mt-5">
         <Account />
       </div>
     </template>

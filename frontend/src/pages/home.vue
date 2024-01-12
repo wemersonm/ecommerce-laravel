@@ -42,7 +42,7 @@ import FlashSales from '../components/flash-sales/FlashSales.vue';
 import BestSellers from '../components/best-sellers/BestSellers.vue';
 //@ts-ignore
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
-import OurProducts from '../our-products/OurProducts.vue';
+import OurProducts from '../components/our-products/OurProducts.vue';
 //@ts-ignore
 import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
 import TopHomepage from '../components/home/TopHomepage.vue';

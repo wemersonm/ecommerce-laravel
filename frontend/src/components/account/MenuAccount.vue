@@ -1,9 +1,8 @@
 <template>
   <div>
-
     <nav class="nav">
-      <ul class="nav flex-column  ">
-        <span class="fw-bold">Gerenciar minha conta</span>
+      <ul class="nav flex-lg-column">
+        <span class="fw-bold d-none d-lg-block">Gerenciar minha conta</span>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'account-profile' }" exact-active>Meu
             Perfil</router-link>

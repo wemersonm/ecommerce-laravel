@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-2">
-        <img :src="order.img" :alt="'imageProduct' + order.idOrder" class="img-fluid img-order">
+    <div class="d-flex">
+      <div class="border img-order ">
+        <img :src="order.img" :alt="'imageProduct' + order.idOrder" class="img-fluid">
       </div>
-      <div class="col-8">
-        <span>
-          {{ order.name }}
-        </span><br>
-        <span class="small">x{{ order.qty }}</span>
-      </div>
-      <div class="col-2">
-        R$ {{ order.price }}
-
+      <div class="row ms-1 flex-grow-1">
+        <div class="col-md-10">
+          <span class="text-secondary text-limit ">
+            {{ order.name }}
+          </span>
+          <span class="small">x{{ order.qty }}</span>
+        </div>
+        <div class="col-md-2 ">
+          R$ <span class="text-danger">{{ order.price }}</span>
+        </div>
       </div>
     </div>
 
@@ -33,9 +34,22 @@ export default {
 
 <style lang="scss" scoped>
 .img-order {
+
+  min-height: 82px;
+  min-width: 82px;
+
+  max-height: 100px;
   max-width: 100px;
-  max-height: 100%;
   width: 100%;
   height: 100%;
+}
+
+.text-limit {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.text-reponsive{
 }
 </style>

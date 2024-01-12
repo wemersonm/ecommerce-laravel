@@ -1,15 +1,11 @@
 <template>
-  <HeaderSection name="Nosso Produtos" title="Conheça nossos produtos" :showNavigation="false" />
-  <GridProduct :products="products" class="mt-4" />
-  <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-5" />
+  <div>
+    <GridProduct :products="products" />
+  </div>
 </template>
 
 <script>
-//@ts-ignore
-import GridProduct from '../components/product/GridProduct.vue';
-import ButtonLink from '../components/utils/ButtonLink.vue';
-import HeaderSection from '../components/utils/HeaderSection.vue';
-
+import GridProduct from '../product/GridProduct.vue'
 export default {
   data() {
     return {
@@ -61,9 +57,13 @@ export default {
         }
       ],
     };
+  }
+},
+components: {
+
+  GridProduct,
   },
-  components: { GridProduct, HeaderSection, ButtonLink }
-}
+} 
 </script>
 
 <style lang="scss" scoped></style>

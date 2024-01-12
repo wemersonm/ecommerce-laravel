@@ -1,7 +1,7 @@
 <template>
   <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
     <CardProduct v-for="(product, index) in products" :product="product" :key="index" class="col"
-      :showHorizontalCard="true" />
+      :showHorizontalCard="horizontalCard" />
   </div>
 </template>
 
@@ -18,6 +18,10 @@ export default {
       default: {},
       required: true,
     },
+    horizontalCard: {
+      type: Boolean,
+      default: true,
+    }
   },
   components: { CardProduct }
 }

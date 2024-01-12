@@ -8,7 +8,7 @@
         <div class="position-absolute top-0 end-0 m-1" v-if="hoverCard">
           <IconsCard />
         </div>
-        <div class="card-body h-100 mb-3">
+        <div class="card-body h-100 mb-5 ">
           <p class="card-title mb-1">
             <span class="small fw-semibold ">{{ product.name }}
             </span>
@@ -18,7 +18,7 @@
               <span class="small text-danger">R$</span> <span class="text-danger fst-italic me-3 ms-1">
                 {{ product.newValue }}
               </span>
-              <span class="small text-secondary">R$</span> <span
+              <span class="small text-secondary ">R$</span> <span
                 class=" small text-decoration-line-through ms-1 text-secondary"> {{ product.oldValue }}</span>
             </p>
             <div class="small">
