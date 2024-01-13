@@ -19,3 +19,12 @@ body {
 .font-family-logo {
   font-family: "Akaya Kanadaka", display;
 }
+
+.link-breadcrumb-active{
+  color: #4A5157 !important;
+}
+.no-decoration {
+  a {
+    text-decoration: none !important;
+  }
+}

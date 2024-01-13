@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb class="mb-5">
+  <Breadcrumb class="mb-5 no-decoration">
     <template v-slot:list>
       <li class="breadcrumb-item"><a href="/">Pagina Inicial</a></li>
       <li class="breadcrumb-item active">Minha Conta</li>

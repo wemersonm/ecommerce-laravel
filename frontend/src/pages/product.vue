@@ -1,15 +1,22 @@
 <template>
   <div>
-    <h2>Produto 1533</h2>
+    <Default>
+      <template v-slot:main>
+        <div class="container-lg">
+          <Product></Product>
+        </div>
+      </template>
+    </Default>
   </div>
 </template>
 
 <script>
-  export default {
-    
-  }
+import Product from '../components/product/Product.vue';
+import Default from '../layouts/default.vue';
+
+export default {
+  components: { Product, Default }
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

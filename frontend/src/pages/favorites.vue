@@ -1,15 +1,21 @@
 <template>
   <div>
-    
-    <FavoritesVue />
+    <Default>
+      <template v-slot:main>
+        <div class="container-lg">
+          <Favorites />
+        </div>
+      </template>
+    </Default>
   </div>
 </template>
 
 <script>
-import FavoritesVue from '../components/favorites/Favorites.vue';
+import Default from '../layouts/default.vue';
+import Favorites from '../components/favorites/Favorites.vue';
 
 export default {
-  components: { FavoritesVue }
+  components: { Favorites, Default }
 }
 </script>
 

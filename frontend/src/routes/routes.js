@@ -41,10 +41,17 @@ const routes = [
   },
 
   {
-    path:'/favoritos',
-    name:'favorites',
-    meta:{requiresAuth: false},
-    component: () => import('../pages/favorites.vue'),
+    path: "/produto/:slug",
+    name: "product",
+    meta: { requiresAuth: false },
+    component: () => import("../pages/product.vue"),
+  },
+
+  {
+    path: "/favoritos",
+    name: "favorites",
+    meta: { requiresAuth: false },
+    component: () => import("../pages/favorites.vue"),
   },
 
   {

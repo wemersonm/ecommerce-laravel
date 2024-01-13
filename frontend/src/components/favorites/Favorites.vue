@@ -1,10 +1,25 @@
 <template>
   <div>
+    <Breadcrumb class="mb-3 mt-4 border-bottom">
+      <template v-slot:list>
+        <li class="breadcrumb-item"><a href="/">Pagina Inicial</a></li>
+        <li class="breadcrumb-item active">Meus Favoritos</li>
+      </template>
+    </Breadcrumb>
+    <div class="header mb-3">
+      <span class="fs-4 text-danger">
+        Meus Favoritos
+      </span>
+      <span>({{ favoritesQty }})</span>
+
+    </div>
+
     <GridProduct :products="products" />
   </div>
 </template>
 
 <script>
+import Breadcrumb from '../utils/Breadcrumb.vue';
 import GridProduct from '../product/GridProduct.vue';
 export default {
   data() {
@@ -56,10 +71,14 @@ export default {
           oldValue: 1214,
         }
       ],
+      favoritesQty: null,
     }
   },
+  created() {
+    this.favoritesQty = this.products.length;
+  },
   components: {
-    GridProduct,
+    GridProduct, Breadcrumb
   },
 }
 </script>
