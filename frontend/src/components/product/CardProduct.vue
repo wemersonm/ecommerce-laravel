@@ -22,7 +22,7 @@
                 class=" small text-decoration-line-through ms-1 text-secondary"> {{ product.oldValue }}</span>
             </p>
             <div class="small">
-              <RatingProduct :rating="rating" />
+              <RatingProduct :rating="rating" :qtyReview="59" />
             </div>
             <div class="text-center pt-2">
               <a href="#" @click.prevent.stop="buyProduct"
