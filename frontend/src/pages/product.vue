@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Product from '../components/product/Product.vue';
+import Product from '../components/product/page-product/Product.vue';
 import Default from '../layouts/default.vue';
 
 export default {
