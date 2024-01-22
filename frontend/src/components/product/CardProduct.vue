@@ -2,7 +2,7 @@
   <div>
     <div class="card card-vertical text-start shadow-sm h-100" :class="{ 'd-none d-sm-block': showHorizontalCard }"
       @mouseleave="handlerHoverCard(false)" @mouseover="handlerHoverCard(true)">
-      <a href="#" class="no-decoration h-100">
+      <a :href="'/produto/' + (product.slug ?? 'poduto-aleatorio-1512')" class="no-decoration h-100">
 
         <img class="card-img-top " :src="'https://via.placeholder.com/600/d1212'" alt="Title" />
         <div class="position-absolute top-0 end-0 m-1" v-if="hoverCard">

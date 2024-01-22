@@ -4,11 +4,6 @@
       <span class="fs-5">{{ product.name }}</span>
       <div class="d-flex justify-content-between align-items-center">
         <span><a class="text-secondary" :href="'/marcas/' + product.brand.slug">{{ product.brand.name }}</a></span>
-        <span class="me-2 text-danger">
-          <i class="bi bi-heart-fill fs-3 " v-if="product.favorite"></i>
-          <i class="bi bi-heart  fs-3" v-else></i>
-        </span>
-
 
       </div>
     </div>
@@ -53,6 +48,10 @@
       <button class="btn btn-danger">
         <i class="bi bi-cart-plus fs-5"></i>
       </button>
+      <span class="ms-auto me-3 text-danger">
+        <i class="bi bi-heart-fill fs-3 " v-if="product.favorite"></i>
+        <i class="bi bi-heart  fs-3" v-else></i>
+      </span>
     </div>
 
 

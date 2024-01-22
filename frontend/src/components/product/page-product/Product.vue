@@ -9,30 +9,15 @@
     </Breadcrumb>
     <div class="row w-100" :style="style.heightContainerProduct">
       <div class="col-7">
-        <div class="d-flex h-100">
-          <div class="d-flex flex-column">
-            <div class="border p-1"><img src="https://via.placeholder.com/100/f1212" alt="image"></div>
-            <div class="border p-1"><img src="https://via.placeholder.com/100/f1212" alt="image"></div>
-            <div class="border p-1"><img src="https://via.placeholder.com/100/f1212" alt="image"></div>
-            <div class="border p-1"><img src="https://via.placeholder.com/100/f1212" alt="image"></div>
-            <div class="border p-1"><img src="https://via.placeholder.com/100/f1212" alt="image"></div>
-          </div>
-          <div class="ms-4 bg-success flex-grow-1">
-            <img src="https://via.placeholder.com/600/fdsg" alt="imageMain" class="img-fluid w-100">
-          </div>
-        </div>
-
+        <ImagesProduct />
       </div>
       <div class="col-5 shadow ps-3">
-        <InfoProduct :product="product"/>
+        <InfoProduct :product="product" />
       </div>
     </div>
 
     <div class="mt-5">
       <Accordion :vHtml="true" :items="description" />
-
-      <!-- <p class="fs-5">Descrição do Produto</p>
-      <div v-html="product.description"></div> -->
     </div>
   </div>
 </template>
@@ -41,10 +26,11 @@
 // @ts-ignore
 import Accordion from '../../utils/accordion.vue';
 import Breadcrumb from '../../utils/Breadcrumb.vue';
+import ImagesProduct from './ImagesProduct.vue';
 import InfoProduct from './InfoProduct.vue';
 export default {
   data() {
-   
+
     return {
 
 
@@ -80,7 +66,7 @@ export default {
     };
   },
   methods: {
-   
+
   },
   created() {
     this.description.push({
@@ -91,11 +77,9 @@ export default {
   mounted() {
     this.slug = this.$route?.params?.slug;
   },
-  components: { Breadcrumb, Accordion, InfoProduct },
- 
+  components: { Breadcrumb, Accordion, InfoProduct, ImagesProduct },
+
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
