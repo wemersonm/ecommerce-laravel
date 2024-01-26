@@ -1,5 +1,5 @@
 <template>
-  <div :id="'carousel' + target" class="carousel slide">
+  <!--   <div :id="'carousel' + target" class="carousel slide">
     <div class="carousel-inner p-1">
 
       <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in  slides " :key="index">
@@ -10,12 +10,24 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+  <pre>
+    {{  slides }}
+  </pre>
+  <Slider :slides="slides">
+    <template v-slot:slide="{ slide }">
+      <div class="row m-0 p-0" :class="row">
+        <CardProduct v-for=" product  in  slide " :product="product" :showHorizontalCard="showHorizontalCard"
+          :key="product.name" class="col" :class="{ 'd-flex justify-content-center': itemsPerPage === 1 }" />
+      </div>
+    </template>
+  </Slider>
 </template>
 
 <script>
 // @ts-ignore
 import CardProduct from '../product/CardProduct.vue';
+import Slider from '../utils/Slider.vue';
 export default {
   props: {
     target: {
@@ -43,7 +55,8 @@ export default {
   },
   components: {
     CardProduct,
-  },
+    Slider
+},
   methods: {
     createSlides() {
       this.slides = [];

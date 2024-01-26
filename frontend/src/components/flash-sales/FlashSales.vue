@@ -8,6 +8,9 @@
     <SliderProduct :target="target" :products="products" :showHorizontalCard="true" />
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
     <HorizontalBar />
+
+  
+
   </div>
 </template>
 
@@ -18,6 +21,7 @@ import ButtonLink from '../utils/ButtonLink.vue';
 //@ts-ignore
 import CountDown from '../utils/CountDown.vue';
 import HorizontalBar from '../utils/HorizontalBar.vue';
+import Slider from '../utils/Slider.vue';
 export default {
   data() {
     return {
@@ -70,7 +74,8 @@ export default {
     SliderProduct, HeaderSection,
     ButtonLink,
     CountDown,
-    HorizontalBar
+    HorizontalBar,
+    Slider
   },
   methods: {
   }

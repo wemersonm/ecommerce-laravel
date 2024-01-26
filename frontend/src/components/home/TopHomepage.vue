@@ -20,7 +20,18 @@ import CarouselBanner from '../carousel/CarouselBanner.vue';
 export default {
 
   components: {
-    CarouselBanner,Departaments
+    CarouselBanner, Departaments
+  },
+  methods: {
+    mouseDown() {
+      console.log("Apertado");
+    },
+    mouseUp() {
+      console.log("Soltado");
+    },
+    move() {
+      console.log("Movendo");
+    }
   },
 }
 </script>

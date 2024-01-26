@@ -3,7 +3,7 @@
     <div :id="id" class="carousel slide">
       <div class="carousel-indicators" v-if="indicators">
         <div>
-          <button v-for="(item, index) in itens" type="button" :data-bs-target="'#' + id" :data-bs-slide-to="index"
+          <button v-for="(item, index) in qtyItens" type="button" :data-bs-target="'#' + id" :data-bs-slide-to="index"
             class="active" aria-current="true" :aria-label="'Slide' + index"></button>
         </div>
 
@@ -29,13 +29,6 @@
       </button>
     </div>
   </div>
-
-
-
-  
-
-
-
 </template>
 
 <script>
@@ -48,12 +41,20 @@ export default {
     indicators: {
       type: Boolean,
       default: true
+    },
+    itens: {
+      type: Array,
+      default: {},
+      required: true,
     }
   },
   data() {
     return {
-      itens: 4,
+      qtyItens: 0,
     }
+  },
+  created() {
+    this.qtyItens = props.itens.lenght;
   },
 }
 </script>
