@@ -1,16 +1,13 @@
 <template>
   <div>
-    <header-section name="Ofertas" title="Ofertas Relâmpago" :target="target" class="mb-3">
+    <HeaderSection name="Ofertas" title="Ofertas Relâmpago" class="mb-3" @prev="prevSlider" @next="nextSlider">
       <template v-slot:middle>
         <CountDown />
       </template>
-    </header-section>
-    <SliderProduct :target="target" :products="products" :showHorizontalCard="true" />
+    </HeaderSection>
+    <SliderProduct :products="products" :showHorizontalCard="true" @swiper="onSwiper"  />
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
     <HorizontalBar />
-
-  
-
   </div>
 </template>
 
@@ -25,7 +22,7 @@ import Slider from '../utils/Slider.vue';
 export default {
   data() {
     return {
-      target: "FlashSales",
+      swiper: null,
       products: [ // request do backend ... '-'
         {
           name: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita reprehenderit odio quis amet accusamus quos. Nobis delectus placeat quo provident sit, explicabo ratione laborum quisquam inventore amet ut aliquam exercitationem.",
@@ -68,7 +65,22 @@ export default {
           oldValue: 250,
         }
       ],
+
+     
     };
+  },
+  methods: {
+    onSwiper(swiper) {
+      this.swiper = swiper;
+    },
+    prevSlider() {
+      console.log("GG prev");
+      this.swiper.slidePrev();
+    },
+    nextSlider() {
+      console.log("GG next");
+      this.swiper.slideNext();
+    }
   },
   components: {
     SliderProduct, HeaderSection,
@@ -77,8 +89,7 @@ export default {
     HorizontalBar,
     Slider
   },
-  methods: {
-  }
+
 }
 </script>
 

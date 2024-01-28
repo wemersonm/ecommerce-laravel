@@ -11,10 +11,8 @@
         <slot name="middle"></slot>
       </div>
       <div class="d-flex gap-2 justify-content-end" v-if="showNavigation">
-        <i class="bi bi-arrow-left-circle fs-3" type="button" :data-bs-target="`#carousel${target}`"
-          data-bs-slide="prev"></i>
-        <i class="bi bi-arrow-right-circle fs-3" type="button" :data-bs-target="`#carousel${target}`"
-          data-bs-slide="next"></i>
+        <i class="bi bi-arrow-left-circle fs-3" type="button" @click.prevent.stop="$emit('prev')"></i>
+        <i class="bi bi-arrow-right-circle fs-3" type="button" @click.prevent.stop="$emit('next')"></i>
       </div>
     </div>
   </div>
@@ -34,10 +32,7 @@ export default {
       default: "Titulo",
       required: true,
     },
-    target: {
-      type: String,
-      default: "Example",
-    },
+   
     showNavigation: {
       type: Boolean,
       default: true,
@@ -47,6 +42,7 @@ export default {
       default: true,
     }
   },
+  emits: ['prev','next'],
   data() {
     return {
 

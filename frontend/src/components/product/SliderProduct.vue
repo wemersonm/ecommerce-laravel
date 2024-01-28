@@ -1,25 +1,7 @@
 <template>
-  <!--   <div :id="'carousel' + target" class="carousel slide">
-    <div class="carousel-inner p-1">
-
-      <div class="carousel-item" :class="{ 'active': index === 0 }" v-for="(slide, index) in  slides " :key="index">
-        <div class="row m-0 p-0" :class="row">
-          <CardProduct v-for=" product  in  slide " :product="product" :showHorizontalCard="showHorizontalCard"
-            :key="product.name" class="col" :class="{ 'd-flex justify-content-center': itemsPerPage === 1 }" />
-
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <pre>
-    {{  slides }}
-  </pre>
-  <Slider :slides="slides">
+  <Slider :slides="products" :slidesPerView="itemsPerPage" :spaceBetween="10">
     <template v-slot:slide="{ slide }">
-      <div class="row m-0 p-0" :class="row">
-        <CardProduct v-for=" product  in  slide " :product="product" :showHorizontalCard="showHorizontalCard"
-          :key="product.name" class="col" :class="{ 'd-flex justify-content-center': itemsPerPage === 1 }" />
-      </div>
+      <CardProduct :product="slide" :showHorizontalCard="showHorizontalCard" :key="slide.name" />
     </template>
   </Slider>
 </template>
@@ -30,12 +12,6 @@ import CardProduct from '../product/CardProduct.vue';
 import Slider from '../utils/Slider.vue';
 export default {
   props: {
-    target: {
-      type: String,
-      default: "Example",
-      required: true,
-    },
-
     products: {
       type: Object,
       default: () => ({}),
@@ -50,13 +26,12 @@ export default {
     return {
       slides: [],
       itemsPerPage: 5,
-      row: '',
     };
   },
   components: {
     CardProduct,
     Slider
-},
+  },
   methods: {
     createSlides() {
       this.slides = [];
@@ -64,21 +39,17 @@ export default {
         this.slides.push(this.products.slice(i, i + this.itemsPerPage));
       }
     },
+
     itemsPerPageResponsive() {
       if (window.innerWidth < 576) {
-        this.row = 'row-cols-1 '
         return 1;
       } else if (window.innerWidth < 682) {
-        this.row = 'row-cols-2  me-3'
         return 2;
       } else if (window.innerWidth < 923) {
-        this.row = 'row-cols-3'
         return 3;
       } else if (window.innerWidth < 1200) {
-        this.row = 'row-cols-4';
         return 4;
       } else {
-        this.row = 'row-cols-5';
         return 5;
       }
     },
@@ -92,6 +63,7 @@ export default {
     this.createSlides();
     window.addEventListener('resize', this.handlerResize);
   },
+
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
   },
