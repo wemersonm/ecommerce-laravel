@@ -1,18 +1,26 @@
 <template>
-  <div :id="'carousel' + target" class=" carousel slide" data-bs-ride="carousel">
+  <!--   <div :id="'carousel' + target" class=" carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item" v-for="( slide, index ) in   slides  " :key="index"
-        :class="{ 'active': index === 0 }">
+      <div class="carousel-item" v-for="( slide, index ) in   slides  " :key="index" :class="{ 'active': index === 0 }">
         <div class="d-flex gap-4 justity-content-center"
           :class="{ 'justify-content-center': qtyPerSlide == 1 || qtyPerSlide == 2 || qtyPerSlide == 3 }">
           <CardCategory v-for=" category  in  slide " :category="category" :key="category"></CardCategory>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+
+
+  <Slider :slides="categories"  :breakpoints="swiperBreakpoints">
+    <template v-slot:slide="{ slide }">
+      <CardCategory :category="slide" :key="slide.name"></CardCategory>
+    </template>
+  </Slider>
 </template>
 
 <script>
+import Slider from '../utils/Slider.vue';
+// @ts-ignore
 import CardCategory from './CardCategory.vue';
 export default {
   props: {
@@ -42,6 +50,26 @@ export default {
         { path: '../../../public/assets/images/category-icons/Category-Camera.svg', name: 'Câmeras' },
         { path: '../../../public/assets/images/category-icons/Category-SmartWatch.svg', name: 'Smarthwatch' },
       ],
+      swiperBreakpoints: {
+        391: {
+          slidesPerView: 1,
+        },
+        576: {
+          slidesPerView: 3,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+        992: {
+          slidesPerView: 5,
+        },
+        1200: {
+          slidesPerView: 6,
+        },
+        1201: {
+          slidesPerView: 6,
+        },
+      },
 
     }
   },
@@ -84,6 +112,7 @@ export default {
   },
   components: {
     CardCategory,
+    Slider
   },
 }
 </script>
