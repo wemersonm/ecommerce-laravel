@@ -1,6 +1,6 @@
 <template>
   <HeaderSection name="Categorias" title="Todas as Categorias" class="mb-3" @prev="onPrevSlide" @next="onNextSlide" />
-  <SliderCategory @swiper="onSwiper" />
+  <SliderCategory @swiper="onSwiper" @reachEnd="final" />
   <HorizontalBar class="my-5 " />
 </template>
 
@@ -25,6 +25,9 @@ export default {
     },
     onNextSlide() {
       this.swiper.slideNext()
+    },
+    final() {
+      alert('chegou no final');
     }
   },
 

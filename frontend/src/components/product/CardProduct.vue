@@ -8,7 +8,7 @@
         <div class="position-absolute top-0 end-0 m-1" v-if="hoverCard">
           <IconsCard />
         </div>
-        <div class="card-body h-100 mb-5 ">
+        <div class="card-body">
           <p class="card-title mb-1">
             <span class="small fw-semibold ">{{ product.name }}
             </span>
