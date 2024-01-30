@@ -1,7 +1,7 @@
 <template>
-  <HeaderSection name="Categorias" title="Todas as Categorias" :target="target" class="mb-3" />
-  <SliderCategory :target="target" />
-  <HorizontalBar class="my-5" />
+  <HeaderSection name="Categorias" title="Todas as Categorias" class="mb-3" @prev="onPrevSlide" @next="onNextSlide" />
+  <SliderCategory @swiper="onSwiper" />
+  <HorizontalBar class="my-5 " />
 </template>
 
 <script>
@@ -13,9 +13,22 @@ export default {
 
   data() {
     return {
-      target: "Category",
+      swiper: null,
     }
   },
+  methods: {
+    onSwiper(swiper) {
+      this.swiper = swiper;
+    },
+    onPrevSlide() {
+      this.swiper.slidePrev();
+    },
+    onNextSlide() {
+      this.swiper.slideNext()
+    }
+  },
+
+
   components: {
     SliderCategory,
     HeaderSection,
