@@ -67,6 +67,13 @@ const routes = [
     meta: { requiresAuth: true },
     component: () => import("../pages/dashboard.vue"),
   },
+
+  {
+    path: "/carrinho",
+    name: "cart",
+    meta: { requiresAuth: true },
+    component: () => import("../pages/cart.vue"),
+  },
 ];
 
 export default routes;
