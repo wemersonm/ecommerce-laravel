@@ -1,7 +1,9 @@
 <template>
   <Default>
-    <template #main>
-      <Cart></Cart>
+    <template v-slot:main>
+      <div class="container-lg container-fluid">
+        <Cart></Cart>
+      </div>
     </template>
   </Default>
 </template>
