@@ -1,55 +1,42 @@
 <template>
-  <div>
-    <Breadcrumb class="my-5 my-5">
+  <div class="border border-warning">
+    <Breadcrumb class="my-5">
       <template v-slot:list>
         <li class="breadcrumb-item"><a href="/">Pagina Inicial</a></li>
         <li class="breadcrumb-item active ">Carrinho</li>
       </template>
     </Breadcrumb>
 
-    <div class="row border">
-      <div class="col-9 border border-danger">
-        produtos
+
+    <div class="d-flex">
+      <div class="border border-danger" style="flex:7.5;">
+
+        <div class="row p-1 mx-0 my-2 bg-light" v-for="(product, index) in products" :key="product.name">
+          <div class="col-2">
+            <img :src="product.image" :alt="'image' + index">
+          </div>
+          <div class="col-7">
+            <p class="small text-secondary mb-0">{{ product.brand }}</p>
+            <a class="link-name fw-semibold small text-dark" :href="'produto/' + product.slug">
+              <span>
+                {{ product.name }}
+              </span>
+            </a>
+            <div class="d-flex">
+              <p></p>
+            </div>
+          </div>
+          <div class="col-3">
+            actions
+          </div>
+        </div>
+
       </div>
-      <div class="col-3 border border-success position-fixed ">
+      <div class="border border-success sticky-top h-100" style="flex:2.5; ">
         <h1>resumo dos valores</h1>
       </div>
     </div>
 
-
-    <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, dicta dignissimos quos obcaecati eaque in. Sequi
-      commodi tempora obcaecati accusantium, nulla, alias saepe optio quisquam, quidem ex quas illum aut?
-      Vero eligendi ducimus consequuntur minima eaque magni assumenda itaque, tempore illo! Laboriosam cumque id mollitia
-      quisquam, saepe vitae commodi tempora officia. Pariatur laboriosam odit totam animi nulla ipsum porro
-      exercitationem!
-      Doloremque eius explicabo vitae error temporibus tempora reprehenderit similique veritatis recusandae eum, enim
-      sequi est ad, asperiores nesciunt quibusdam. Modi mollitia, nobis omnis expedita reiciendis hic vero consequuntur ea
-      repudiandae!
-      A corrupti suscipit expedita! Deserunt eius eos eaque perspiciatis! Praesentium quisquam suscipit aperiam ratione
-      consequatur maxime tenetur perferendis, molestias laborum, consequuntur vitae vero debitis itaque! Consectetur nulla
-      veniam consequatur quos?</h1>
-    <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, dicta dignissimos quos obcaecati eaque in. Sequi
-      commodi tempora obcaecati accusantium, nulla, alias saepe optio quisquam, quidem ex quas illum aut?
-      Vero eligendi ducimus consequuntur minima eaque magni assumenda itaque, tempore illo! Laboriosam cumque id mollitia
-      quisquam, saepe vitae commodi tempora officia. Pariatur laboriosam odit totam animi nulla ipsum porro
-      exercitationem!
-      Doloremque eius explicabo vitae error temporibus tempora reprehenderit similique veritatis recusandae eum, enim
-      sequi est ad, asperiores nesciunt quibusdam. Modi mollitia, nobis omnis expedita reiciendis hic vero consequuntur ea
-      repudiandae!
-      A corrupti suscipit expedita! Deserunt eius eos eaque perspiciatis! Praesentium quisquam suscipit aperiam ratione
-      consequatur maxime tenetur perferendis, molestias laborum, consequuntur vitae vero debitis itaque! Consectetur nulla
-      veniam consequatur quos?</h1>
-    <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, dicta dignissimos quos obcaecati eaque in. Sequi
-      commodi tempora obcaecati accusantium, nulla, alias saepe optio quisquam, quidem ex quas illum aut?
-      Vero eligendi ducimus consequuntur minima eaque magni assumenda itaque, tempore illo! Laboriosam cumque id mollitia
-      quisquam, saepe vitae commodi tempora officia. Pariatur laboriosam odit totam animi nulla ipsum porro
-      exercitationem!
-      Doloremque eius explicabo vitae error temporibus tempora reprehenderit similique veritatis recusandae eum, enim
-      sequi est ad, asperiores nesciunt quibusdam. Modi mollitia, nobis omnis expedita reiciendis hic vero consequuntur ea
-      repudiandae!
-      A corrupti suscipit expedita! Deserunt eius eos eaque perspiciatis! Praesentium quisquam suscipit aperiam ratione
-      consequatur maxime tenetur perferendis, molestias laborum, consequuntur vitae vero debitis itaque! Consectetur nulla
-      veniam consequatur quos?</h1>
 
   </div>
 </template>
@@ -63,8 +50,27 @@ export default {
       products: [
         {
           image: 'https://via.placeholder.com/100/92c952',
-          name: 'Placa de Video'
-        }
+          name: 'Placa de Video ZOTAC GTX 1660 6GB',
+          slug: 'placa-de-video-zotac-gtx-1660-gb',
+          brand: 'Zotac',
+          priceDiscount: 989.90,
+          priceInstalment: 989.90 + 989.90 * 0.05,
+
+        },
+        {
+          image: 'https://via.placeholder.com/100/9sdhg',
+          name: 'Memoria Ram ATERMITER 8GB 3200 Mhz',
+          slug: 'memoria-ram-atermiter-8gb-3200-mhz',
+          brand: 'Atermiter',
+          priceDiscount: 179.99,
+          priceInstalment: 179.99 + 179.99 * 0.05,
+        },
+        {
+          image: 'https://via.placeholder.com/100/a1212',
+          name: 'SSD M.2 NVME 512GB Kingspec',
+          slug: 'ssd-m2-nvme-512gb-kingspec',
+          brand: 'Kingspec'
+        },
       ],
     }
   },
@@ -72,4 +78,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.link-name {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+</style>

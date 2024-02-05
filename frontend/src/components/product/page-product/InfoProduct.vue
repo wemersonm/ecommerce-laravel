@@ -10,16 +10,16 @@
     <RatingProduct :rating="product.rating" :qtyReview="product.qtyReview" />
 
     <div class="d-flex flex-column mt-3">
-      <span class="text-secondary">R$ <span class=" text-decoration-line-through">
+      <span class="text-secondary"><span class=" text-decoration-line-through">
           {{ toBRL(product.priceDiscount * 1.1) }}</span></span>
-      <span class="fs-3 text-danger fw-bold">R$ {{ toBRL(product.priceDiscount)
+      <span class="fs-3 text-danger fw-bold">{{ toBRL(product.priceDiscount)
       }}</span>
       <span class="text-secondary">À vista no PIX com até 5% OFF</span>
     </div>
 
     <div class="mt-3 text-secondary small">
-      <b>R$ {{ toBRL(product.priceInstalment) }}</b>
-      <p class="m-0">Em até 10x de <span class="fw-semibold">R$ {{ toBRL(product.priceInstalment / 10) }}</span>
+      <b>{{ toBRL(product.priceInstalment) }}</b>
+      <p class="m-0">Em até 10x de <span class="fw-semibold">{{ toBRL(product.priceInstalment / 10) }}</span>
         juros no
         cartão</p>
       <p>Ou em 1x no cartão com até <b>5%</b> OFF</p>
@@ -74,6 +74,7 @@
 import RatingProduct from '../RatingProduct.vue';
 import { mask } from 'vue-the-mask'
 import { useCounter } from '../../../composables/Counter.js'
+import FunctionsHelper from '../../../utils/FunctionsHelper';
 export default {
   props: {
     product: {
@@ -83,11 +84,13 @@ export default {
     },
   },
   data() {
+    const { toBRL } = FunctionsHelper;
     const { increment, decrement, counter } = useCounter();
     return {
       counter,
       increment,
       decrement,
+      toBRL,
 
       style: {
         heightContainerProduct: {
@@ -99,9 +102,7 @@ export default {
     };
   },
   methods: {
-    toBRL(number) {
-      return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    },
+
     counterProduct() {
       if (this.product.stock < this.counter) this.counter = this.product.stock;
     }
