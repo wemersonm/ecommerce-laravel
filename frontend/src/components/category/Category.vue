@@ -7,7 +7,8 @@
 <script>
 import HorizontalBar from '../utils/HorizontalBar.vue';
 //@ts-ignore
-import HeaderSection from '../utils/headersection.vue';
+import HeaderSection from '../utils/HeaderSection.vue';
+//@ts-ignore
 import SliderCategory from './SliderCategory.vue';
 export default {
 

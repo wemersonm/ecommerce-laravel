@@ -16,6 +16,7 @@
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
+    "swiper": "^11.0.6",
     "vee-validate": "^4.12.2",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
