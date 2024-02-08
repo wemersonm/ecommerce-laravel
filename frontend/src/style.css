@@ -32,3 +32,6 @@ body {
   border: none;
   background: none;
 }
+.font-small {
+  font-size: 12px !important;
+}

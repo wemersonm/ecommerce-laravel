@@ -8,9 +8,8 @@
     </Breadcrumb>
 
 
-    <div class="d-flex">
-      <div style="flex:7.5;">
-
+    <div class="d-flex gap-3">
+      <div style="flex:7.5;" class="shadow-sm rounded p-3">
         <template v-if="products.length > 0">
           <div class="row p-1 mx-0 my-2 flex-nowrap" v-for="(product, index) in products" :key="product.name">
             <div class="col-1 m-0 p-0">
@@ -57,7 +56,6 @@
                   </div>
                 </div>
 
-
                 <div class="w-100">
                   <div>
                     <p class="small text-end">Preço à vista no PIX:</p>
@@ -74,15 +72,57 @@
         </template>
 
       </div>
-      <div class="border border-success sticky-top h-100" style="flex:2.5; ">
-        <h1>resumo dos valores</h1>
+      <div class="shadow-sm rounded sticky-top h-100" style="flex:2.5; ">
+        <div>
+
+          <div class="mb-3 px-3">
+            <i class="bi bi-file-spreadsheet fs-5 text-danger"></i>
+            <span class="fw-bold ms-2">RESUMO</span>
+          </div>
+
+          <div class="px-2">
+            <div class="d-flex px-1">
+              <span class="small text-secondary">Valor dos Produtos:</span>
+              <span class="fw-bold ms-auto">{{ toBRL($data.totalProducts) }}</span>
+            </div>
+          </div>
+
+          <div class="border-bottom m-2"></div>
+
+          <div class="my-3 px-2">
+            <div class="d-flex px-1">
+              <span class="small text-secondary">Frete:</span>
+              <span class="fw-bold ms-auto">{{ toBRL($data.freight) }}</span>
+            </div>
+          </div>
+          <div class="my-3 px-2">
+            <div class="d-flex align-items-center">
+              <span class="small text-secondary">Total á prazo:</span>
+              <span class="fw-bold ms-auto">{{ toBRL($data.total) }}</span>
+            </div>
+            <div class="font-small text-secondary text-center mt-2">(em até <span class="fw-bold">10x</span> de <span
+                class="fw-bold">{{
+                  toBRL($data.total / 10) }} sem juros) </span>
+            </div>
+          </div>
+
+          <div class="bg-light mx-3 my-3 py-2">
+            <div class="px-1 d-flex flex-column align-items-center">
+              <span class="small">Valor à vista no <b>Pix</b>:</span>
+              <p class="m-0 h4 my-2 fw-semibold text-danger">{{ toBRL($data.totalDiscount) }}</p>
+              <span class="small">(Economize: <b>{{ toBRL($data.diffDiscount) }}</b> )</span>
+            </div>
+          </div>
+
+          <div class="px-3 mb-3">
+            <button class="w-100 btn btn-danger ">IR PARA PAGAMENTO</button>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 
-  <pre>
-    {{ $data.products }}
-    </pre>
 </template>
 
 <script>
@@ -95,7 +135,13 @@ export default {
     return {
       toBRL,
       currentSlugProduct: null,
+      totalProducts: 1392.79,
+      freight: 5,
+      total: 1395.79,
+      totalDiscount: 1179.79,
+      diffDiscount: 198.0,
       products: [
+
         {
           image: 'https://via.placeholder.com/100/92c952',
           name: 'Placa de Video ZOTAC GTX 1660 6GB Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum voluptas officiis asperiores natus? Laudantium modi assumenda non cupiditate. Facere, mollitia. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum voluptas officiis asperiores natus? Laudantium modi assumenda non cupiditate. Facere, mollitia.',
