@@ -36,7 +36,6 @@ import validations from '../../plugins/vee-validate';
 import AuthService from '../../services/AuthService.js'
 import Messages from '../../utils/MessagesError.js'
 import Message from '../notifications/Message.vue';
-import axios from '../../plugins/Axios';
 const { Form, Field } = validations;
 export default {
   emits: ['passwordChanged'],
@@ -46,9 +45,9 @@ export default {
 
     return {
       form: {
-        email: 'teste@email.com',
-        password: 'asasas',
-        confirm_password: 'asasas',
+        email: '',
+        password: '',
+        confirm_password: '',
       },
       response: {
         loading: false,
