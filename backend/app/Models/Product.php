@@ -9,8 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected string $table = "products";
-    protected array $fillable = [
+    protected $fillable = [
         'name',
         'category_id',
         'brand_id',
@@ -19,7 +18,7 @@ class Product extends Model
         'weight',
         'height',
         'width',
-        'lenght',
+        'length',
         'image',
         'rating',
         'reviews',

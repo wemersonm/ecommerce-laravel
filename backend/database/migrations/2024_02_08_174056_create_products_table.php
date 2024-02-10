@@ -26,6 +26,10 @@ return new class extends Migration {
             $table->string('image');
             $table->decimal('rating', 4, 2);
             $table->integer('reviews')->default(0);
+            $table->integer('discount');
+            $table->boolean('is_offer')->default(false);
+            $table->integer('max_quantity')->default(10);
+            $table->string('sku')->default(0);
             $table->timestamps();
         });
     }

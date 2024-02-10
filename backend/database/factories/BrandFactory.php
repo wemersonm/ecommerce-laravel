@@ -16,10 +16,10 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->word();
+        $name = $this->faker->unique()->word();
         return [
             'name' => $name,
-            'slug' => fake()->slug($name),
+            'slug' => str()->slug($name),
             'image' => 'https://via.placeholder.com/500/f' . fake()->randomNumber(4),
         ];
     }

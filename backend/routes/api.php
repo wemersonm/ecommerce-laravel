@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +39,9 @@ Route::prefix('v1')->group(function () {
     Route::group(['prefix' => 'me', 'controller' => MeController::class, 'as' => 'me'], function () {
         route::get('/', 'index')->name('index');
     });
+
+
+    Route::get('/category', CategoryController::class);
+
 
 });

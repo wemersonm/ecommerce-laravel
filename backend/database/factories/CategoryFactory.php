@@ -16,10 +16,10 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->word();
+        $name = fake()->unique()->word();
         return [
             'name' => $name,
-            'slug' => fake()->slug($name),
+            'slug' => str()->slug($name),
             'image' => 'https://www.svgrepo.com/show/493619/tags-category-categories-labels.svg',
         ];
     }
