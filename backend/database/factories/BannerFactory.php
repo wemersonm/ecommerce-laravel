@@ -17,7 +17,11 @@ class BannerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'image' => 'https://via.placeholder.com/800/f' . $this->faker->randomNumber(4),
+            'link' => '/OFERTA-Y',
+            'order' => $this->faker->unique()->randomDigit(),
+            'active' => true,
+            'section' => 'slider',
         ];
     }
 }
