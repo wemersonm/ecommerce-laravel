@@ -22,5 +22,9 @@ class Product extends Model
         'image',
         'rating',
         'reviews',
+        'discount',
+        'is_flash_sale',
+        'max_quantity',
+        'sku',
     ];
 }

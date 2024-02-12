@@ -19,12 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-  try {
-    $user = User::find(1);
-    Mail::to($user)->queue(new ResetPasswordEmail($user, 'eo1533'));
-  } catch (\Throwable $th) {
-    return $th->getMessage();
-  }
-  return 'mandado';
+  return now();
 
 });

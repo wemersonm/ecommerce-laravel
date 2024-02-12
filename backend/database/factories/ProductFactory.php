@@ -34,7 +34,7 @@ class ProductFactory extends Factory
             'rating' => fake()->randomFloat(1, 3, 5),
             'reviews' => fake()->numberBetween(10, 100),
             'discount' => $this->faker->numberBetween(0, 12),
-            'is_offer' => $this->faker->boolean,
+            'is_flash_sale' => $this->faker->boolean,
             'max_quantity' => $this->faker->numberBetween(1, 15),
         ];
     }
