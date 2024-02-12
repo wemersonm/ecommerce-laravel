@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
@@ -42,15 +43,19 @@ Route::prefix('v1')->group(function () {
     });
 
 
-    Route::group(['controller' => ProductController::class, 'as' => 'product'], function () {
+    Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
 
         route::get('/flash_sales', 'getFlashSales')->name('flash_sales');
+        route::get('/best-sellers', 'getBestSellers')->name('best_sellers');
+        route::get('/our-products', 'getOurProducts')->name('our-products');
     });
 
-    Route::group(['controller'=> CategoryController::class, 'as'=>'category'], function(){
-
+    Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
         route::get('/categories', 'index')->name('index');
     });
 
+    Route::group(['controller' => BannerController::class, 'as' => 'banner'], function () {
+        route::get('/banners', 'index')->name('index');
+    });
 
 });

@@ -15,15 +15,17 @@ class CardProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' =>  $this->name,
-            'stock' =>  $this->stock,
-            'price' =>  $this->price,
+            'name' => $this->name,
+            'stock' => $this->stock,
+            'price' => $this->price,
             'slug' => $this->slug,
             'image' => $this->image,
             'rating' => $this->rating,
+            'sold' => $this->sold,
             'reviews' => $this->reviews,
             'is_flash_sale' => $this->is_flash_sale,
             'sku' => $this->is_flash_sale,
+
         ];
     }
 }

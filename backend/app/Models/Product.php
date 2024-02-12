@@ -27,4 +27,10 @@ class Product extends Model
         'max_quantity',
         'sku',
     ];
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
 }
