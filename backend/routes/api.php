@@ -45,9 +45,10 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
 
-        route::get('/flash_sales', 'getFlashSales')->name('flash_sales');
-        route::get('/best-sellers', 'getBestSellers')->name('best_sellers');
+        route::get('/flash_sales', 'getFlashSales')->name('flash-sales');
+        route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
+        route::post('/add-cart','addProductAtCart')->name('add-cart');
     });
 
     Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
