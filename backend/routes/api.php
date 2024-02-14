@@ -38,8 +38,11 @@ Route::prefix('v1')->group(function () {
 
     });
 
-    Route::group(['prefix' => 'me', 'controller' => MeController::class, 'as' => 'me'], function () {
+    Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
         route::get('/', 'index')->name('index');
+        route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
+        route::post('/change-password', 'changePassword')->name('change-password');
+
     });
 
 
@@ -48,7 +51,10 @@ Route::prefix('v1')->group(function () {
         route::get('/flash_sales', 'getFlashSales')->name('flash-sales');
         route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
-        route::post('/add-cart','addProductAtCart')->name('add-cart');
+        route::post('/add-cart', 'addProductAtCart')->name('add-cart');
+        route::post('/remove-cart', 'removeProductAtCart')->name('remove-cart');
+        route::post('/add-favorite', 'addProductToFavorite')->name('add-favorite');
+        route::post('/remove-favorite', 'removeProductToFavorite')->name('remove-favorite');
     });
 
     Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
