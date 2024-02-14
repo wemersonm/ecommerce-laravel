@@ -35,16 +35,17 @@ Route::prefix('v1')->group(function () {
         route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
         route::post('/reset-password', 'resetPassword')->name('reset-password');
 
-
     });
 
     Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
         route::get('/', 'index')->name('index');
         route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
         route::post('/change-password', 'changePassword')->name('change-password');
+        route::post('/profile','changeEmal')->name('change-profile');
+        route::put('/profile','changeEmal')->name('change-profile');
 
+        
     });
-
 
     Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
 

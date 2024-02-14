@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\CurrentPasswordInvalidException;
 use App\Exceptions\PasswordInvalidException;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\EditProfileRequest;
 use App\Http\Resources\UserResouce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,4 +52,26 @@ class MeController extends Controller
         $user->save();
         return $user->fresh();
     }
+
+    public function editProfile(EditProfileRequest $request)
+    {
+        $data = $request->validated();
+        $user = auth()->user();
+        $updated = $user->update($data);
+        return $updated ? $user : throw new \Exception('error at update user');
+    }
+
+    public function changeEmail(Request $request)
+    {
+        $validation = $request->validate([
+            'new_email' => ['required', 'email'],
+        ]);
+        $userEmail = auth()->user()->email;
+        if ($userEmail !== $validation['new_email']) {
+            // envar evento para mandar um email cadastrado para confirmar a alteração;
+        }
+        // retorna nada 
+
+    }
+
 }
