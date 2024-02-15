@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
@@ -41,10 +42,10 @@ Route::prefix('v1')->group(function () {
         route::get('/', 'index')->name('index');
         route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
         route::post('/change-password', 'changePassword')->name('change-password');
-        route::post('/profile','changeEmal')->name('change-profile');
-        route::put('/profile','changeEmal')->name('change-profile');
+        route::post('/profile', 'changeEmal')->name('change-profile');
+        route::put('/profile', 'changeEmal')->name('change-profile');
 
-        
+
     });
 
     Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
@@ -64,6 +65,16 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['controller' => BannerController::class, 'as' => 'banner'], function () {
         route::get('/banners', 'index')->name('index');
+    });
+
+    Route::group(['controller' => AddressController::class, 'as' => 'address', 'prefix' => 'address'], function () {
+
+        route::get('/', 'index')->name('index');
+        route::post('/', 'store')->name('store');
+        route::get('/info', 'show')->name('show');
+        route::put('/', 'update')->name('update');
+        route::delete('/', 'destroy')->name('destroy');
+
     });
 
 });

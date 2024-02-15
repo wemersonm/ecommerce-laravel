@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('Recipient');
             $table->string('cep');
             $table->string('street');
-            $table->string('number');
+            $table->string('number')->default('S/N');
             $table->string('complement')->nullable();
             $table->string('neighborhood');
             $table->string('city');
