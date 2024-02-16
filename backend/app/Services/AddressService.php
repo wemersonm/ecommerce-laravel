@@ -20,7 +20,7 @@ class AddressService
       $this->resetFieldMain($user, $data['main']);
       $user->addresses()->create($data);
       DB::commit();
-      return $user->addresses()->orderBy('main', 'desc')->oldest()->get();
+      return $user->addresses()->OrderByMain()->get();
 
     } catch (\Exception $e) {
       DB::rollBack();
@@ -36,7 +36,6 @@ class AddressService
       $user = auth()->user();
       $address = $user->addresses()->where('id', $data['id'])->first();
       return $address ? $address : throw new AddressNotExistException();
-      // return DB::table('nao_exise')->get();
     } catch (\Throwable $e) {
       return response()->json([
         'error' => class_basename($e),
@@ -52,17 +51,13 @@ class AddressService
     try {
       $user = auth()->user();
       $address = $user->addresses()->where('id', $data['id'])->first();
-      if (!$address) {
-        throw new AddressNotExistException();
-      }
-
+      !$address ? throw new AddressNotExistException() : null;
       DB::transaction(function () use ($address, $data, $user) {
         $this->resetFieldMain($user, $data['main']);
         $address->update($data);
       }, 3);
 
-      return $user->addresses()->orderBy('main', 'desc')->oldest()->get();
-
+      return $user->addresses()->OrderByMain()->get();
 
     } catch (\Exception $e) {
       return response()->json([
@@ -82,7 +77,7 @@ class AddressService
       if (!$address)
         throw new AddressNotExistException();
       $address->delete();
-      return $user->addresses;
+      return $user->addresses()->OrderByMain()->get();
     } catch (\Exception $e) {
       return response()->json([
         'error' => class_basename($e),
@@ -90,11 +85,39 @@ class AddressService
       ], 400);
     }
   }
-  /* helpers */
 
+
+  public function updateToMain(array $data)
+  {
+    /** @var \App\Models\User $user */
+    /** @var \App\Models\Address $address */
+
+    try {
+      DB::beginTransaction();
+      $user = auth()->user();
+      $address = $user->addresses()->WhereId($data['id'])->first();
+      !$address ? throw new AddressNotExistException() : null;
+      $this->resetFieldMain($user, true);
+      $this->setAddressMain($address);
+      DB::commit();
+      return $user->addresses()->orderByMain()->get();
+    } catch (\Throwable $th) {
+      DB::rollBack();
+      return response()->json([
+        'error' => class_basename($th),
+        'message' => 'error at update address to main',
+      ], 400);
+    }
+  }
+
+  
   private function resetFieldMain(User $user, mixed $main)
   {
-    return $main ? $user->addresses()->update(['main' => 0]) : '';
+    return $main ? $user->addresses()->update(['main' => false]) : null;
+  }
+  private function setAddressMain(Address $address)
+  {
+    return $address->update(['main' => true]);
   }
 }
 

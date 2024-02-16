@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\AddressNotExistException;
 use App\Http\Requests\AddAddressRequest;
 use App\Http\Requests\UpdateAddressRequess;
 use App\Http\Resources\AddressResource;
-use App\Models\Address;
 use App\Services\AddressService;
 use Illuminate\Http\Request;
 
@@ -21,9 +19,8 @@ class AddressController extends Controller
     public function index()
     {
         $user = auth()->user();
-
-        $addresses = $user->addresses;
-        return AddressResource::collection($addresses);
+        $addresses = $user->addresses()->OrderByMain()->get();
+        return $addresses ?? AddressResource::collection($addresses);
     }
 
     public function store(AddAddressRequest $request)
@@ -51,7 +48,14 @@ class AddressController extends Controller
     {
         $data = $request->validate(['id' => ['required', 'numeric']]);
         $addresses = $this->addressService->destroy($data);
-        return  $addresses ?? AddressResource::collection($addresses);
+        return $addresses ?? AddressResource::collection($addresses);
 
+    }
+
+    public function mainAddress(Request $request)
+    {
+        $data = $request->validate(['id' => ['required', 'numeric']]);
+        $updatedToMain = $this->addressService->updateToMain($data);
+        return $updatedToMain ?? AddressResource::collection($updatedToMain);
     }
 }

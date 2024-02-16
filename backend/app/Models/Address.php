@@ -23,4 +23,13 @@ class Address extends Model
         "reference",
         "main",
     ];
+
+    public function scopeOrderByMain($query)
+    {
+        return $this->orderByDesc('main')->oldest();
+    }
+    public function scopeWhereId($query, $value, $operator = "=")
+    {
+        return $this->where('id', $operator, $value);
+    }
 }

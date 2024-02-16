@@ -74,6 +74,7 @@ Route::prefix('v1')->group(function () {
         route::get('/info', 'show')->name('show');
         route::put('/', 'update')->name('update');
         route::delete('/', 'destroy')->name('destroy');
+        route::put('/main-address', 'mainAddress')->name('main-address');
 
     });
 
