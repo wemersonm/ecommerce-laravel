@@ -37,19 +37,21 @@ class AddressController extends Controller
     {
         $data = $request->validate(['id' => ['required', 'numeric'],]);
         $address = $this->addressService->show($data);
-        return new AddressResource($address);
+        return $address ?? new AddressResource($address);
 
     }
     public function update(UpdateAddressRequess $request)
     {
         $data = $request->validated();
         $updated = $this->addressService->update($data);
-        return AddressResource::collection($updated);
+        return $updated ?? AddressResource::collection($updated);
     }
 
     public function destroy(Request $request)
     {
         $data = $request->validate(['id' => ['required', 'numeric']]);
+        $addresses = $this->addressService->destroy($data);
+        return  $addresses ?? AddressResource::collection($addresses);
 
     }
 }
