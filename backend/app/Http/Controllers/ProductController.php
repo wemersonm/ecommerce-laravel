@@ -9,65 +9,40 @@ use App\Http\Resources\CardProductResource;
 use App\Models\CartProduct;
 use App\Models\FavoriteProduct;
 use App\Models\Product;
-use Database\Factories\ProductFactory;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 
 
 class ProductController extends Controller
 {
-  public function __construct()
-  {
+  public function __construct(
+    private ProductService $productService
+  ) {
     $this->middleware(['auth:sanctum'])->only(['addProductAtCart', 'removeProductAtCart', 'addProductToFavorite']);
   }
   public function getFlashSales()
   {
-    if (Cache::has('flash_sale_products')) {
-      $products = json_decode(Cache::get('flash_sale_products'));
-      return CardProductResource::collection($products);
-    }
-    $products = Product::where('is_flash_sale', true)->get();
-    return CardProductResource::collection($products);
+    return $this->productService->serviceGetFlashSales();
   }
   public function getBestSellers(Request $request)
   {
-    $request->validate([
-      'limit' => 'numeric',
-    ]);
-
-    if (Cache::has('best_sellers_products')) {
-      return CardProductResource::collection(json_decode(Cache::get('best_sellers_products')));
-    }
-    $products = Product::orderBy('sold', 'desc')->take($request->input('limit', 8))->get();
-    return CardProductResource::collection(($products));
+    $data = $request->validate(['limit' => ['sometimes', 'numeric']]);
+    return $this->productService->serviceGetBestSellers($data['limit'] ?? 8);
   }
 
   public function getOurProducts(Request $request)
   {
-    $request->validate([
-      'limit' => 'numeric',
+    $data = $request->validate([
+      'limit' => 'sometimes|numeric',
     ]);
-    if (Cache::has('our_products')) {
-      return CardProductResource::collection(json_decode(Cache::get('our_products')));
-    }
-    $products = Product::where('rating', '>=', 4.5)->orderBy('sold', 'desc')->take($request->input('limit', 8))->get();
-    return CardProductResource::collection(($products));
+    return $this->productService->serviceGetOurProducts($data['limit'] ?? 8);
   }
 
   public function addProductAtCart(AddProductAtCartRequest $request)
   {
     $data = $request->validated();
-    $product = Product::find($data['id']);
-    if (!$product)
-      throw new \Exception('product not exist');
-    $user = auth()->user();
-
-    $created = $user->cart()->create([
-      'product_id' => $product->id,
-      'quantity' => $data['quantity'],
-    ]);
-    return $created ? (new AddProductAtCartResource($created)) : throw new \Exception('error add product at cart');
+    return $this->productService->serviceAddProductAtCart($data);
   }
 
   public function removeProductAtCart(RemoveProductAtCartRequest $request)
