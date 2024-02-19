@@ -39,7 +39,7 @@ class ProductController extends Controller
     return $this->productService->serviceGetOurProducts($data['limit'] ?? 8);
   }
 
-  public function addProductAtCart(AddProductAtCartRequest $request)
+ /*  public function addProductAtCart(AddProductAtCartRequest $request)
   {
     $data = $request->validated();
     return $this->productService->serviceAddProductAtCart($data);
@@ -56,7 +56,7 @@ class ProductController extends Controller
 
   }
 
-
+ */
   public function addProductToFavorite(Request $request)
   {
     $data = $request->validate([

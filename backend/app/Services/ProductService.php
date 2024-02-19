@@ -54,20 +54,7 @@ class ProductService
       return $this->response(class_basename($th), 'error when get products from our-products session', 400);
     }
   }
-  public function serviceAddProductAtCart(array $data)
-  {
-    try {
-      $product = $this->productRepository->findById($data['id']);
-      $user = auth()->user();
-      $created = $user->cart()->create([
-        'product_id' => $product->id,
-        'quantity' => $data['quantity'],
-      ]);
-      return $created ? (new AddProductAtCartResource($created)) : throw new \Exception('error add product at cart');
-    } catch (\Throwable $th) {
-      dd(class_basename($th));
-    }
-  }
+  
   public function response(string $error, string $message, int $code = 400, $data = [])
   {
     return response()->json([

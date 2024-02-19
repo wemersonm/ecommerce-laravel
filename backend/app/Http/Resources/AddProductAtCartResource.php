@@ -15,7 +15,11 @@ class AddProductAtCartResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'product' => [
+                'id' => $this->id,
+                'product_id' => $this->product_id,
+                'quantity' => $this->quantity,
+            ],
         ];
     }
 }

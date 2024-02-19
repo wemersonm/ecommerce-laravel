@@ -9,7 +9,7 @@ interface ProductRepositoryInterface
   public function getBestSellersProducts(int $limit);
   public function getOurProducts(int $limit);
 
-  public function findById(int $id);
+  public function findById(int $id, bool $modelNotFoundException);
 
 
 }

@@ -21,8 +21,8 @@ class EloquentProductRepository implements ProductRepositoryInterface
     return Product::where('rating', '>=', 4.5)->orderBy('sold', 'desc')->take($limit)->get();
   }
 
-  public function findByIf(int $id)
+  public function findById(int $id, bool $modelNotFoundException = true)
   {
-    return Product::findOrFail($id);
+    return $modelNotFoundException ? Product::findOrFail($id) : Product::find($id);
   }
 }

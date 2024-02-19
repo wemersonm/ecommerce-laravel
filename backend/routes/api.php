@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
@@ -57,6 +58,12 @@ Route::prefix('v1')->group(function () {
         route::post('/remove-cart', 'removeProductAtCart')->name('remove-cart');
         route::post('/add-favorite', 'addProductToFavorite')->name('add-favorite');
         route::post('/remove-favorite', 'removeProductToFavorite')->name('remove-favorite');
+    });
+
+    Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {
+        route::get('/', 'index')->name('index');
+        route::post('/', 'store')->name('store');
+        route::delete('/', 'destroy')->name('destroy');
     });
 
     Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {

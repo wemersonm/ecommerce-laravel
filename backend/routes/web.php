@@ -1,9 +1,8 @@
 <?php
 
-use App\Mail\ResetPasswordEmail;
-use App\Models\ResetPassword;
-use App\Models\User;
-use Illuminate\Support\Carbon;
+use App\Repositories\Eloquent\EloquentCartRepository;
+use App\Services\CartService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-  return now();
+  try {
+    $user = Auth::attempt(['email' => 'admin@email.com', 'password' => 'asasasas']);
+
+    $interface = new EloquentCartRepository();
+    $cartService = new CartService($interface);
+    $data = $cartService->serviceGetProductsInCart();
+    return view('teste')->with(['data' => $data]);
+  } catch (Throwable $th) {
+    dd($th);
+  }
+
+
 
 });
