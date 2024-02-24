@@ -1,9 +1,11 @@
 <?php
 
 use App\Repositories\Eloquent\EloquentCartRepository;
+use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Stavarengo\Sigep\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,16 +20,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-  try {
+ 
+
+  /* try {
     $user = Auth::attempt(['email' => 'admin@email.com', 'password' => 'asasasas']);
 
     $interface = new EloquentCartRepository();
-    $cartService = new CartService($interface);
+    $interface2 = new EloquentProductRepository();
+    $cartService = new CartService($interface,$interface2);
     $data = $cartService->serviceGetProductsInCart();
     return view('teste')->with(['data' => $data]);
   } catch (Throwable $th) {
     dd($th);
-  }
+  } */
 
 
 

@@ -64,6 +64,7 @@ Route::prefix('v1')->group(function () {
         route::get('/', 'index')->name('index');
         route::post('/', 'store')->name('store');
         route::delete('/', 'destroy')->name('destroy');
+        route::patch('/', 'update')->name('update');
     });
 
     Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {

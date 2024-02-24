@@ -24,7 +24,7 @@ class CardProductResource extends JsonResource
             'sold' => $this->sold,
             'reviews' => $this->reviews,
             'is_flash_sale' => $this->is_flash_sale,
-            'sku' => $this->is_flash_sale,
+            'sku' => $this->sku,
 
         ];
     }
