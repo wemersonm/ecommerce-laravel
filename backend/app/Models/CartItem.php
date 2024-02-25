@@ -10,6 +10,12 @@ class CartItem extends Model
     use HasFactory;
 
     protected $fillable = ['product_id', 'cart_id', 'quantity'];
+    protected $appends = ['is_active'];
+
+    protected function getIsActiveAttribute($value)
+    {
+        return $this->product->stock > 0;
+    }
 
 
     public function cart()

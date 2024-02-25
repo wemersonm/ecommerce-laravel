@@ -14,9 +14,12 @@ class CartController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->cartService->serviceGetProductsInCart();
+        $data = $request->validate([
+            'cupon' => ['sometimes','alpha_num'],
+        ]);
+        return $this->cartService->serviceGetProductsInCart($data);
     }
 
     public function store(AddProductAtCartRequest $request)

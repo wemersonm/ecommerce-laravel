@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Classes\CartCalculator;
+use App\Exceptions\DiscountCuponInvalidException;
 use App\Exceptions\MaxProductExceededExecption;
 use App\Exceptions\ProductExistInCartException;
 use App\Exceptions\ProductNotExistException;
@@ -11,6 +12,8 @@ use App\Exceptions\ProductNotExistInCartException;
 use App\Exceptions\ProductOutOfStockException;
 use App\Http\Resources\AddProductAtCartResource;
 use App\Http\Resources\CartProductResource;
+use App\Http\Resources\CartResource;
+use App\Models\DiscounCupon;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Throwable;
@@ -25,45 +28,57 @@ class CartService
 
   }
 
-  public function serviceGetProductsInCart()
+  public function serviceGetProductsInCart(array $data)
   {
     /** @var \App\Models\User $user */
     try {
       $user = auth()->user();
       $products = $this->cartRepository->getAllProducts($user);
 
-      $idsToUpdate = $products->cartItem->filter(function ($item) {
-        if ($item->quantity > $item->product->stock) {
-          $item->quantity_modified = true;
-          $item->quantity = $item->product->stock;
-          return $item;
-        }
-      })->pluck('id')->toArray();
+      return isset($data['cupon']) ? $this->validateCupon($data['cupon']) : 'sem cupom';
+
+        $idsToUpdate = $products->cartItem->filter(function ($item) {
+          if ($item->quantity > $item->product->stock) {
+            $item->quantity = $item->product->stock;
+            return $item;
+          }
+        })->pluck('id')->toArray();
 
       !empty($idsToUpdate) ?
         $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
 
+      $products->cartItem->each(function ($item) {
+        if ($item->isDirty('quantity')) {
+          $item->modified = [
+            'quantity_modified' => true,
+            'old_quantity' => $item->getOriginal('quantity'),
+            'newQuantity' => $item->quantity
+          ];
+        }
+      });
 
-      return response()->json((new CartCalculator($products))->intallments);
+      return (new CartResource($products))->additional([
+        'totals' => (new CartCalculator($products)),
+      ]);
 
-
-      // return $products;
-      /*  return (new CartResource($products))->additional([
-         'totals' => [
-           'cash_total' => 2366,
-           'forward_total' => 2555,
-         ],
-         'shipping' => [
-           'freight' => 346,
-           'type' => 'PAC'
-         ],
-       ]);
-  */
     } catch (Throwable $th) {
       return $th;
       return $this->responseError(class_basename($th), 'error when getting products from cart');
     }
   }
+
+  public function validateCupon($cupon)
+  {
+    $cupon = DiscounCupon::where('name', $cupon)->first();
+    !$cupon ? throw new DiscountCuponInvalidException() : null;
+
+    return $cupon;
+
+
+  }
+
+
+
 
   public function serviceAddProductAtCart(array $data)
   {

@@ -36,6 +36,7 @@ class CartItemResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'is_active' => $this->is_active,
             'id' => $this->id,
             'quantity' => $this->quantity,
             'quantity_modified' => $this->quantity_modified ?? false,
