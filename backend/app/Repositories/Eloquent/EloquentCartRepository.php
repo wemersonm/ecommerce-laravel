@@ -4,6 +4,8 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\CartItem;
 use App\Models\CartProduct;
+use App\Models\DiscountCupon;
+use App\Models\UsageDiscountCupon;
 use App\Models\User;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use Illuminate\Support\Collection;
@@ -48,5 +50,19 @@ class EloquentCartRepository implements CartRepositoryInterface
       throw $th;
     }
   }
+
+
+
+
+  public function getDiscountCupon(string $nameCupon)
+  {
+    return DiscountCupon::where('name', $nameCupon)->first();
+  }
+  public function userUsageCupon(User $user, DiscountCupon $discountCupon)
+  {
+    return UsageDiscountCupon::where('user_id', $user->id)->where('discount_cupon_id', $discountCupon->id)->exists();
+  }
+
+
 
 }

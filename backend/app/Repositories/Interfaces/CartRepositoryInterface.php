@@ -4,6 +4,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\CartProduct;
+use App\Models\DiscountCupon;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -16,4 +17,9 @@ interface CartRepositoryInterface
 
   public function delete($product);
   public function updateQuantityProductInCart(array $ids);
+
+
+  public function getDiscountCupon(string $nameCupon);
+  public function userUsageCupon(User $user, DiscountCupon $discountCupon);
+    
 }

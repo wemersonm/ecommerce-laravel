@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Classes\CartCalculator;
 use App\Exceptions\DiscountCuponInvalidException;
+use App\Exceptions\DiscountCuponUsedByTheUserException;
 use App\Exceptions\MaxProductExceededExecption;
 use App\Exceptions\ProductExistInCartException;
 use App\Exceptions\ProductNotExistException;
@@ -14,6 +15,7 @@ use App\Http\Resources\AddProductAtCartResource;
 use App\Http\Resources\CartProductResource;
 use App\Http\Resources\CartResource;
 use App\Models\DiscounCupon;
+use App\Models\DiscountCupon;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Throwable;
@@ -35,14 +37,14 @@ class CartService
       $user = auth()->user();
       $products = $this->cartRepository->getAllProducts($user);
 
-      return isset($data['cupon']) ? $this->validateCupon($data['cupon']) : 'sem cupom';
+      return isset($data['cupon']) ? $this->validateCupon($data['cupon'], $products->cartItem, $user) : null;
 
-        $idsToUpdate = $products->cartItem->filter(function ($item) {
-          if ($item->quantity > $item->product->stock) {
-            $item->quantity = $item->product->stock;
-            return $item;
-          }
-        })->pluck('id')->toArray();
+      $idsToUpdate = $products->cartItem->filter(function ($item) {
+        if ($item->quantity > $item->product->stock) {
+          $item->quantity = $item->product->stock;
+          return $item;
+        }
+      })->pluck('id')->toArray();
 
       !empty($idsToUpdate) ?
         $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
@@ -57,9 +59,10 @@ class CartService
         }
       });
 
-      return (new CartResource($products))->additional([
-        'totals' => (new CartCalculator($products)),
-      ]);
+      return
+        (new CartResource($products))->additional([
+          'totals' => (new CartCalculator($products)),
+        ]);
 
     } catch (Throwable $th) {
       return $th;
@@ -67,13 +70,18 @@ class CartService
     }
   }
 
-  public function validateCupon($cupon)
+  public function validateCupon($nameCupon, $cartItem, $user)
   {
-    $cupon = DiscounCupon::where('name', $cupon)->first();
+    $cupon = $this->cartRepository->getDiscountCupon($nameCupon);
     !$cupon ? throw new DiscountCuponInvalidException() : null;
+    !$cupon->is_valid ? throw new DiscountCuponInvalidException() : null;
+    $usage = $this->cartRepository->userUsageCupon($user, $cupon);
 
-    return $cupon;
+    $usage ? throw new DiscountCuponUsedByTheUserException : null;
 
+    // $cartItem->each(function($item){
+    //   dd($item);
+    // });
 
   }
 
