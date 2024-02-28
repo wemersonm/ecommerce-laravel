@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\CartItem;
 use App\Models\CartProduct;
 use App\Models\DiscountCupon;
+use App\Models\PromotionProduct;
 use App\Models\UsageDiscountCupon;
 use App\Models\User;
 use App\Repositories\Interfaces\CartRepositoryInterface;
@@ -19,7 +20,8 @@ class EloquentCartRepository implements CartRepositoryInterface
       'cartItem' => function ($query) {
         return $query->latest()->get();
       },
-      'cartItem.product.brand'
+      'cartItem.product.brand',
+      
     ])->latest()->first();
 
   }
@@ -58,11 +60,16 @@ class EloquentCartRepository implements CartRepositoryInterface
   {
     return DiscountCupon::where('name', $nameCupon)->first();
   }
-  public function userUsageCupon(User $user, DiscountCupon $discountCupon)
+  public function userUsedCupon(User $user, DiscountCupon $discountCupon)
   {
     return UsageDiscountCupon::where('user_id', $user->id)->where('discount_cupon_id', $discountCupon->id)->exists();
   }
 
+  public function getProductsInPromotionThatAreInCart(array $idsProducts, int $promotion_id)
+  {
+    return PromotionProduct::where('promotion_id', $promotion_id)->whereIn('product_id', $idsProducts)->get();
+
+  }
 
 
 }

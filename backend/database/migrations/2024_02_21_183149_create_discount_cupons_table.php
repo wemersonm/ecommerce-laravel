@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 120)->unique();
             $table->text('description');
-            $table->enum('type', ['FIXED_VALUE', 'PERCENTAGE']);
+            $table->enum('type', ['FIXED_VALUE', 'PERCENTAGE','FREE_SHIPPING']);
             $table->unsignedFloat('value')->default(0);
             $table->unsignedFloat('min_value')->default(0);
             $table->unsignedInteger('usage_limit')->default(0);

@@ -36,6 +36,7 @@ class ProductFactory extends Factory
             'discount' => $this->faker->numberBetween(0, 12),
             'is_flash_sale' => $this->faker->boolean,
             'max_quantity' => $this->faker->numberBetween(1, 15),
+            'sold' => $this->faker->numberBetween(22,150),
         ];
     }
 }

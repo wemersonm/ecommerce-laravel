@@ -12,9 +12,11 @@ return new class extends Migration {
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cart_id')->constrained('carts', 'id')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreignId('cart_id')->constrained('carts', 'id')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreignId('product_id')->constrained('products', 'id')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->unsignedTinyInteger('quantity');
+            $table->unsignedDecimal('item_price');
+            $table->foreignId('discount_cupon_id')->constrained('discount_cupons', 'id')->nullable()->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

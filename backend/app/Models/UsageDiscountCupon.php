@@ -15,6 +15,7 @@ class UsageDiscountCupon extends Model
     ];
 
 
+  
 
     public function user()
     {

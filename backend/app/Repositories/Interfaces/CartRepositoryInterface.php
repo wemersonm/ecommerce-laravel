@@ -20,6 +20,7 @@ interface CartRepositoryInterface
 
 
   public function getDiscountCupon(string $nameCupon);
-  public function userUsageCupon(User $user, DiscountCupon $discountCupon);
-    
+  public function userUsedCupon(User $user, DiscountCupon $discountCupon);
+  public function getProductsInPromotionThatAreInCart(array $idsProducts, int $promotion_id);
+
 }

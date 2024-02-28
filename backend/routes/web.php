@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserRegistered;
 use App\Repositories\Eloquent\EloquentCartRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Services\CartService;
@@ -20,20 +21,24 @@ use Stavarengo\Sigep\Client;
 
 Route::get('/', function () {
 
- 
 
-  /* try {
-    $user = Auth::attempt(['email' => 'admin@email.com', 'password' => 'asasasas']);
 
-    $interface = new EloquentCartRepository();
-    $interface2 = new EloquentProductRepository();
-    $cartService = new CartService($interface,$interface2);
-    $data = $cartService->serviceGetProductsInCart();
-    return view('teste')->with(['data' => $data]);
-  } catch (Throwable $th) {
-    dd($th);
-  } */
+  // try {
 
+  //   $interface = new EloquentCartRepository();
+  //   $interface2 = new EloquentProductRepository();
+  //   $cartService = new CartService($interface, $interface2);
+  //   $data = $cartService->serviceGetProductsInCart(request()->validate(['cupon' => 'sometimes|alpha_num']));
+
+  // } catch (Throwable $th) {
+  //   dd($th);
+  // }
+  // $data = array ('msg' => 'olá');
+
+  $ids = null;
+    return in_array(1,$ids);
+
+  return view('teste');
 
 
 });

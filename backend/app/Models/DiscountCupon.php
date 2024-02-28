@@ -25,17 +25,13 @@ class DiscountCupon extends Model
         "promotion_id"
     ];
 
-    protected $appends = ['is_valid', 'is_used'];
+    protected $appends = ['is_valid',];
     public function getIsValidAttribute()
     {
         $now = Carbon::now()->format('Y-m-d H:i:s');
-        return $this->valid_from < $now && $this->valid_until > $now;
+        return ($this->valid_from < $now && $this->valid_until > $now) && ($this->usage < $this->usage_limit);
     }
 
-    public function getIsUsedAttribute()
-    {
-        return $this->usage()->with('user');
-    }
 
 
     public function used()

@@ -30,6 +30,7 @@ return new class extends Migration {
             $table->boolean('is_flash_sale')->default(false);
             $table->integer('max_quantity')->default(10);
             $table->string('sku')->default(0);
+            $table->integer('sold')->default(0);
             $table->timestamps();
         });
     }
