@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('name');
-            $table->tinyInteger('address_type');
+            $table->enum('address_type', ['RESIDENTIAL', 'COMMERCIAL', 'OTHER']);
             $table->string('recipient');
             $table->string('cep');
             $table->string('street');

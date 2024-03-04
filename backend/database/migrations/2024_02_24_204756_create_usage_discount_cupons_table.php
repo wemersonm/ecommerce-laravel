@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('usage_discount_cupons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('discount_cupons_id')->constrained('discount_cupons', 'id');
+            $table->foreignId('discount_cupon_id')->constrained('discount_cupons', 'id');
             $table->foreignId('user_id')->constrained('users', 'id');
             $table->timestamps();
         });

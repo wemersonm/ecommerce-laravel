@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('cart_id')->constrained('carts', 'id')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreignId('product_id')->constrained('products', 'id')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->unsignedTinyInteger('quantity');
-            $table->unsignedDecimal('item_price');
-            $table->foreignId('discount_cupon_id')->constrained('discount_cupons', 'id')->nullable()->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->unsignedDecimal('item_price')->nullable();
+            $table->foreignId('discount_cupon_id')->nullable()->constrained('discount_cupons', 'id')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

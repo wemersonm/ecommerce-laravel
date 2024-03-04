@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Classes\CartCalculator;
+use App\Exceptions\DiscountCuponAlreadyAppliedExcepion;
 use App\Exceptions\DiscountCuponInvalidException;
 use App\Exceptions\DiscountCuponUsedByTheUserException;
 use App\Exceptions\MaxProductExceededExecption;
@@ -15,9 +16,12 @@ use App\Http\Resources\AddProductAtCartResource;
 use App\Http\Resources\CartProductResource;
 use App\Http\Resources\CartResource;
 use App\Models\DiscountCupon;
+use App\Models\Product;
 use App\Models\PromotionProduct;
+use App\Models\User;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use Illuminate\Support\Collection;
 use Throwable;
 
 
@@ -36,10 +40,18 @@ class CartService
     try {
       $user = auth()->user();
       $products = $this->cartRepository->getAllProducts($user);
+      // cupon
+      $cuponApplied = $this->checkExisitOnlyOneDiscountCuponApplied($products->cartItem);
+      if ($cuponApplied) {
+        $data['cupon'] ? throw new DiscountCuponAlreadyAppliedExcepion : null;
+      }
 
-      return  isset($data['cupon']) ? $this->serviceValidateCupon($data['cupon'], $products->cartItem, $user) : null;
 
 
+      $dataCupon = $this->validateDiscountCupon($products, $user, $data['cupon']);
+      return $dataCupon;
+      // frete
+      // calcular valores produtos + cupom + frete  
       $idsToUpdate = $products->cartItem->filter(function ($item) {
         if ($item->quantity > $item->product->stock) {
           $item->quantity = $item->product->stock;
@@ -65,17 +77,47 @@ class CartService
         ]);
 
     } catch (Throwable $th) {
-      return $th;
-      return $this->responseError(class_basename($th), 'error when getting products from cart');
+      return $this->responseError(class_basename($th), $th->getMessage());
     }
   }
-  public function serviceValidateCupon($nameCupon, $cartItem, $user)
+  public function checkExisitOnlyOneDiscountCuponApplied(object $cartItem)
+  {
+    $cuponsApplied = $cartItem->whereNotNull('discount_cupon_name')->pluck('discount_cupon_name')->unique();
+    return $cuponsApplied->count() == 1 ? $cuponsApplied[0] : false;
+  }
+  public function validateDiscountCupon(object $products, User $user, $cuponName)
+  {
+    try {
+      // new cupom
+      if ($products->cartItem->contains(fn($item) => $item->discount_cupon_name)) {
+        $cuponDetails = $this->checkDiscountCouponValidityAndUse($cuponName, $user);
+        !$cuponDetails ? throw new DiscountCuponInvalidException : null;
+      }
+      return [
+        'name' => $cuponName,
+        'type' => $cuponDetails->type,
+        'min_value' => $cuponDetails->min_value,
+        'discount' => $cuponDetails->value,
+      ];
+    } catch (Throwable $th) {
+      return [
+        'error' => class_basename($th),
+        'message' => $th->getMessage(),
+      ];
+    }
+  }
+  public function checkDiscountCouponValidityAndUse(string $nameCupon, User $user): DiscountCupon
   {
     $cupon = $this->cartRepository->getDiscountCupon($nameCupon);
     !$cupon ? throw new DiscountCuponInvalidException() : null;
     !$cupon->is_valid ? throw new DiscountCuponInvalidException() : null; // acessor 'is_valid'
     $isUsed = $this->cartRepository->userUsedCupon($user, $cupon);
     $isUsed ? throw new DiscountCuponUsedByTheUserException : null;
+    return $cupon;
+  }
+
+  public function checkCouponsApplicabilityToCartItems($cupon, $cartItem, User $user)
+  {
     $productIds = $cupon->promotion_id ? $cartItem->pluck('product_id')->toArray() : null;
     $productsIsPromotion = !empty($productIds) ? $this->cartRepository->getProductsInPromotionThatAreInCart($productIds, $cupon->promotion_id) : null;
     $cartItem->each(function ($item) use ($cupon, $productsIsPromotion) {
@@ -92,10 +134,8 @@ class CartService
         ];
       }
     });
-    // $isDirty = ? $cartItem : 'deu algum coisa';
-    dd( $cartItem->contains(fn($item) => $item->isDirty()));
+    dd($cartItem->contains(fn($item) => $item->isDirty()));
   }
-
 
 
 
