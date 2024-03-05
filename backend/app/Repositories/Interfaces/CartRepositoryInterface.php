@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\CartItem;
 use App\Models\CartProduct;
 use App\Models\DiscountCupon;
 use App\Models\User;
@@ -23,4 +24,7 @@ interface CartRepositoryInterface
   public function userUsedCupon(User $user, DiscountCupon $discountCupon);
   public function getProductsInPromotionThatAreInCart(array $idsProducts, int $promotion_id);
 
+
+  public function removeDiscountCupon(array $idsCartItem);
+  
 }

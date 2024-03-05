@@ -21,7 +21,7 @@ class EloquentCartRepository implements CartRepositoryInterface
         return $query->latest()->get();
       },
       'cartItem.product.brand',
-      
+
     ])->latest()->first();
 
   }
@@ -70,6 +70,11 @@ class EloquentCartRepository implements CartRepositoryInterface
     return PromotionProduct::where('promotion_id', $promotion_id)->whereIn('product_id', $idsProducts)->get();
 
   }
-
+  public function removeDiscountCupon(array $idsCartItem)
+  {
+    CartItem::whereIn('id', $idsCartItem)->whereNotNull('discount_cupon_name')->update([
+      'discount_cupon_name' => null,
+    ]);
+  }
 
 }

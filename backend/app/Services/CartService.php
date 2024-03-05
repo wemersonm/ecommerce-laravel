@@ -42,41 +42,48 @@ class CartService
       $products = $this->cartRepository->getAllProducts($user);
       // cupon
       $cuponApplied = $this->checkExisitOnlyOneDiscountCuponApplied($products->cartItem);
+      $requestCupon = $data['cupon'] ?? "";
       if ($cuponApplied) {
-        $data['cupon'] ? throw new DiscountCuponAlreadyAppliedExcepion : null;
+        !$requestCupon ? $this->removeDiscountCupon($products->cartItem) : null;
+        $requestCupon ? $discountCupon = $this->checkDiscountCouponValidityAndUse($requestCupon, $user) : null;
+        dd($discountCupon);
       }
+      if (!$cuponApplied) {
+        dd('não tem cupom aplicado');
+      }
+      dd('');
 
+      /* 
+            $dataCupon = $this->validateDiscountCupon($products, $user, $data['cupon']);
+            return $dataCupon;
+            // frete
+            // calcular valores produtos + cupom + frete  
+            $idsToUpdate = $products->cartItem->filter(function ($item) {
+              if ($item->quantity > $item->product->stock) {
+                $item->quantity = $item->product->stock;
+                return $item;
+              }
+            })->pluck('id')->toArray();
 
+            !empty($idsToUpdate) ?
+              $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
 
-      $dataCupon = $this->validateDiscountCupon($products, $user, $data['cupon']);
-      return $dataCupon;
-      // frete
-      // calcular valores produtos + cupom + frete  
-      $idsToUpdate = $products->cartItem->filter(function ($item) {
-        if ($item->quantity > $item->product->stock) {
-          $item->quantity = $item->product->stock;
-          return $item;
-        }
-      })->pluck('id')->toArray();
-
-      !empty($idsToUpdate) ?
-        $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
-
-      $products->cartItem->each(function ($item) {
-        if ($item->isDirty('quantity')) {
-          $item->modified = [
-            'quantity_modified' => true,
-            'old_quantity' => $item->getOriginal('quantity'),
-            'newQuantity' => $item->quantity
-          ];
-        }
-      });
-      return
-        (new CartResource($products))->additional([
-          'totals' => (new CartCalculator($products)),
-        ]);
+            $products->cartItem->each(function ($item) {
+              if ($item->isDirty('quantity')) {
+                $item->modified = [
+                  'quantity_modified' => true,
+                  'old_quantity' => $item->getOriginal('quantity'),
+                  'newQuantity' => $item->quantity
+                ];
+              }
+            });
+            return
+              (new CartResource($products))->additional([
+                'totals' => (new CartCalculator($products)),
+              ]); */
 
     } catch (Throwable $th) {
+      return $th;
       return $this->responseError(class_basename($th), $th->getMessage());
     }
   }
@@ -84,6 +91,12 @@ class CartService
   {
     $cuponsApplied = $cartItem->whereNotNull('discount_cupon_name')->pluck('discount_cupon_name')->unique();
     return $cuponsApplied->count() == 1 ? $cuponsApplied[0] : false;
+  }
+
+  public function removeDiscountCupon(object $cartItem)
+  {
+    $idsCartItem = $cartItem->pluck('id')->toArray();
+    $this->cartRepository->removeDiscountCupon($idsCartItem);
   }
   public function validateDiscountCupon(object $products, User $user, $cuponName)
   {
