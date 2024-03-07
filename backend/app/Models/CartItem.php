@@ -12,6 +12,9 @@ class CartItem extends Model
     protected $fillable = ['product_id', 'cart_id', 'quantity'];
     protected $appends = ['is_active'];
 
+
+    public $timestamps = true;
+
     protected function getIsActiveAttribute($value)
     {
         return $this->product->stock > 0;
