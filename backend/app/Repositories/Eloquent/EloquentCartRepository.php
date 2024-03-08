@@ -77,4 +77,28 @@ class EloquentCartRepository implements CartRepositoryInterface
     ]);
   }
 
+  public function setDiscountCuponValuesInCartItem($idsAplicables, $idsCartItem, $nameDiscountCupon)
+  {
+
+    try {
+      DB::beginTransaction();
+      CartItem::whereIn('id', $idsCartItem)->whereIn('id', $idsAplicables)
+        ->whereRaw('(discount_cupon_name != ? OR discount_cupon_name IS NULL)', [$nameDiscountCupon])
+        ->update(['discount_cupon_name' => $nameDiscountCupon]);
+
+      CartItem::whereIn('id', $idsCartItem)
+        ->whereNotIn('id', $idsAplicables)
+        ->whereNotNull('discount_cupon_name')
+        ->update(['discount_cupon_name' => NULL]);
+      DB::commit();
+      return true;
+    } catch (\Throwable) {
+      DB::rollBack();
+      return null;
+
+    }
+  }
+
+
+
 }

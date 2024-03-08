@@ -7,7 +7,8 @@ use App\Classes\CartCalculator;
 use App\Exceptions\DiscountCuponAlreadyAppliedExcepion;
 use App\Exceptions\DiscountCuponInvalidException;
 use App\Exceptions\DiscountCuponUsedByTheUserException;
-use App\Exceptions\LimitMaxDiscountCuponAppliedExcepion;
+use App\Exceptions\ErrorAtUpdateDiscountCuponInCartItemException;
+use App\Exceptions\ErrorSystem;
 use App\Exceptions\MaxProductExceededExecption;
 use App\Exceptions\ProductExistInCartException;
 use App\Exceptions\ProductNotExistException;
@@ -23,8 +24,10 @@ use App\Models\PromotionProduct;
 use App\Models\User;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Throwable;
 
 
@@ -45,84 +48,92 @@ class CartService
       //itens
       $products = $this->cartRepository->getAllProducts($user);
       // cupon
-      $nameCuponApplied = $this->checkExisitOnlyOneDiscountCuponApplied($products->cartItem);
-      $requestCupon = $data['cupon'] ?? ""; // se nao vir nada do request em cupom e porque e para remover
-      $discountCuponApplied = null;
-      /* 
-        tests:
-        ** Se por acaso o requestCupon for diferente do $nameCuponApplied, o requestCupon assume o cupom que sera o ativo **
-        1 - Se tiver cupom aplicado e o cupom que vier, validar o mesmo cupom ja aplicado
-        2 - Se tiver cupom aplicado, e o request vir vazio, remover todos os cupons aplicados
-        3- se Não tiver cupom aplicado e vier cupom request, validar esse cupom e aplicar
-        4- sE nao tiver cupoom aplicado e nao vier, nao faz nada
-      */
+      $cupon = $this->discountCuponValidate($products, $data['cupon'] ?? "", $user);
+      // frete
 
-      if ($nameCuponApplied) { //tem cupom já aplicado
-        /* 1- */
-        $discountCuponApplied = $this->checkDiscountCouponValidity($nameCuponApplied, $user);
-        $discountCuponApplied['error'] ? $this->removeDiscountCupon($products->cartItem) : null;
 
-        /* 2- */
-        !$requestCupon ? $this->removeDiscountCupon($products->cartItem) : null;
+      $prods = $products->cartItem->map(function ($item) {
+        return [
+          'id' => $item->product->id,
+          'width' => $item->product->width / 2,
+          'height' => $item->product->height / 2,
+          'length' => $item->product->length / 2,
+          'weight' => $item->product->weight / 100,
+          'insurance_value' => $item->product->price,
+          'quantity' => $item->quantity,
+        ];
+      });
 
-      }
-      if (!$nameCuponApplied) {
-        /* 3- */
-        $discountCuponApplied = $requestCupon ? $this->checkDiscountCouponValidity($requestCupon, $user) : null;
 
-      }
-      if (!is_null($discountCuponApplied) && !isset($discountCuponApplied['error'])) { //cupom e OK
-        $productsWithapplicableCupon = $this->validateAndSetDiscountCuponInProducts($products, $discountCuponApplied);
+      $response = Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json',
+        'Authorization' => 'Bearer ' . env('API_KEY_SHIPPING'),
+      ])->post(
+          env('URL_API_SHIPPING'),
+          [
+            "from" => [
+              "postal_code" => "74914050"
+            ],
+            "to" => [
+              "postal_code" => "04382-070"
+            ],
+            'products' => $prods
+          ]
+        );
 
-        // salvar no cart_item os produtos que sao aplicavel o cupom
+      return $response;
 
-        dd($productsWithapplicableCupon);
-      }
-      dd($nameCuponApplied);
-      // retonrar dados do cupom OU erro do cupom, seja cupom invalido ou vazio / nenhum cupom enviado
-      dd('deu ruim no cupom');
 
-      /* 
-            $dataCupon = $this->validateDiscountCupon($products, $user, $data['cupon']);
-            return $dataCupon;
-            // frete
-            // calcular valores produtos + cupom + frete  
-            $idsToUpdate = $products->cartItem->filter(function ($item) {
-              if ($item->quantity > $item->product->stock) {
-                $item->quantity = $item->product->stock;
-                return $item;
-              }
-            })->pluck('id')->toArray();
-
-            !empty($idsToUpdate) ?
-              $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
-
-            $products->cartItem->each(function ($item) {
-              if ($item->isDirty('quantity')) {
-                $item->modified = [
-                  'quantity_modified' => true,
-                  'old_quantity' => $item->getOriginal('quantity'),
-                  'newQuantity' => $item->quantity
-                ];
-              }
-            });
-            return
-              (new CartResource($products))->additional([
-                'totals' => (new CartCalculator($products)),
-              ]); */
-
-      // return [
-      //   'name' => $cuponName,
-      //   'type' => $cuponDetails->type,
-      //   'min_value' => $cuponDetails->min_value,
-      //   'discount' => $cuponDetails->value,
-      // ];
 
     } catch (Throwable $th) {
       return $th;
-      // return $this->responseError(class_basename($th), $th->getMessage());
+      return $this->responseError(
+        class_basename($th),
+        $th->getMessage(),
+        $th->statusCode ?? 500, // phpcs:ignore
+      );
     }
   }
+
+
+
+
+
+
+
+  public function discountCuponValidate(object $products, $cupon, User $user)
+  {
+    $nameCuponApplied = $this->checkExisitOnlyOneDiscountCuponApplied($products->cartItem);
+    $requestCupon = $cupon;
+    $discountCuponApplied = null;
+
+    if (!$requestCupon && !$nameCuponApplied) {
+      return [];
+    }
+    if (!$requestCupon && $nameCuponApplied) {
+      $this->removeDiscountCupon($products->cartItem);
+      return [];
+    }
+    if ($nameCuponApplied) {
+      $discountCuponApplied = $this->checkDiscountCouponValidity($nameCuponApplied, $user);
+    }
+    if (isset($discountCuponApplied['error']) && $discountCuponApplied['error']) {
+      $this->removeDiscountCupon($products->cartItem);
+      return [];
+    }
+    if (!$nameCuponApplied) {
+      $discountCuponApplied = $requestCupon ? $this->checkDiscountCouponValidity($requestCupon, $user) : null;
+    }
+    $statusProductsWithDiscountCuponApplied = false;
+    if (!is_null($discountCuponApplied) && !isset($discountCuponApplied['error'])) {
+      $statusProductsWithDiscountCuponApplied = $this->validateAndSetDiscountCuponInProducts($products, $discountCuponApplied);
+      is_null($statusProductsWithDiscountCuponApplied) ? throw new ErrorSystem('error at update cupons') : null;
+    }
+    return $statusProductsWithDiscountCuponApplied ? $discountCuponApplied : ['is_valid' => false, 'cupon' => $requestCupon,];
+
+  }
+
   public function checkExisitOnlyOneDiscountCuponApplied(object $cartItem)
   {
     $cuponsApplied = $cartItem->whereNotNull('discount_cupon_name')->pluck('discount_cupon_name')->unique();
@@ -137,6 +148,7 @@ class CartService
   {
     $idsCartItem = $cartItem->pluck('id')->toArray();
     $this->cartRepository->removeDiscountCupon($idsCartItem);
+
   }
 
   public function checkDiscountCouponValidity(string $nameCupon, User $user)
@@ -175,28 +187,14 @@ class CartService
     return $this->setAndRemoveDiscountCupon($cartItemProductsForApplyCupon, $discountCupon->name, $idsCartItem);
   }
 
-
   public function setAndRemoveDiscountCupon(object $itemsAplicables, string $nameDiscountCupon, array $idsCartItem)
   {
     if ($itemsAplicables->isEmpty()) {
-      return 'nenhum produto com o cupom aplicavel no carrinho';
+      return false;
     }
     $idsAplicables = $itemsAplicables->pluck('id')->toArray();
-    /* $query =  CartItem::whereIn('id', $idsCartItem)->where(function ($query) use ($idsAplicables, $nameDiscountCupon) {
-      $query->whereIn('id', $idsAplicables)->update(['discount_cupon_name' => $nameDiscountCupon]);
-      $query->whereNotIn('id', $idsAplicables)->update(['discount_cupon_name' => NULL]);
-    }); */
-    $implodeIdsAplicables = implode(',', $idsAplicables);
-    $query = CartItem::whereIn('id', $idsCartItem)
-      ->update([
-        'discount_cupon_name' => DB::raw("CASE 
-            WHEN id IN ($implodeIdsAplicables) THEN '$nameDiscountCupon'
-            WHEN id NOT IN ($implodeIdsAplicables) AND discount_cupon_name IS NOT NULL THEN NULL
-            ELSE '$nameDiscountCupon'
-        END")
-      ]);
-
-    return $query;
+    $updated = $this->cartRepository->setDiscountCuponValuesInCartItem($idsAplicables, $idsCartItem, $nameDiscountCupon);
+    return is_null($updated) ? null : true;
   }
 
 
@@ -278,3 +276,39 @@ class CartService
     ], $code);
   }
 }
+
+/* 
+            $dataCupon = $this->validateDiscountCupon($products, $user, $data['cupon']);
+            return $dataCupon;
+            // frete
+            // calcular valores produtos + cupom + frete  
+            $idsToUpdate = $products->cartItem->filter(function ($item) {
+              if ($item->quantity > $item->product->stock) {
+                $item->quantity = $item->product->stock;
+                return $item;
+              }
+            })->pluck('id')->toArray();
+
+            !empty($idsToUpdate) ?
+              $this->cartRepository->updateQuantityProductInCart($idsToUpdate) : null;
+
+            $products->cartItem->each(function ($item) {
+              if ($item->isDirty('quantity')) {
+                $item->modified = [
+                  'quantity_modified' => true,
+                  'old_quantity' => $item->getOriginal('quantity'),
+                  'newQuantity' => $item->quantity
+                ];
+              }
+            });
+            return
+              (new CartResource($products))->additional([
+                'totals' => (new CartCalculator($products)),
+              ]); */
+
+// return [
+//   'name' => $cuponName,
+//   'type' => $cuponDetails->type,
+//   'min_value' => $cuponDetails->min_value,
+//   'discount' => $cuponDetails->value,
+// ];

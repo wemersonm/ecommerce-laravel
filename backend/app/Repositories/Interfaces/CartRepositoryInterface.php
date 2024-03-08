@@ -26,5 +26,6 @@ interface CartRepositoryInterface
 
 
   public function removeDiscountCupon(array $idsCartItem);
+  public function setDiscountCuponValuesInCartItem(array $idsAplicables, array $idsCartItem,string $nameDiscountCupon);
   
 }
