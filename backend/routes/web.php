@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\UserRegistered;
+use App\Models\CartItem;
 use App\Repositories\Eloquent\EloquentCartRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Services\CartService;
@@ -19,26 +20,10 @@ use Stavarengo\Sigep\Client;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
 
-
-
-  // try {
-
-  //   $interface = new EloquentCartRepository();
-  //   $interface2 = new EloquentProductRepository();
-  //   $cartService = new CartService($interface, $interface2);
-  //   $data = $cartService->serviceGetProductsInCart(request()->validate(['cupon' => 'sometimes|alpha_num']));
-
-  // } catch (Throwable $th) {
-  //   dd($th);
-  // }
-  // $data = array ('msg' => 'olá');
-
-  $ids = null;
-    return in_array(1,$ids);
-
-  return view('teste');
-
-
+  $user = auth()->user();
+  $cartItem = CartItem::where('cart_id', 1)->first();
+  $updated = $cartItem->update(['quantity' => 1]);
+  return view('home', ['updated' => $updated, 'cartItem' => $cartItem]);
 });

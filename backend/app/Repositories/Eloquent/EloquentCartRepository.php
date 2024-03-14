@@ -2,19 +2,18 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\CartProduct;
 use App\Models\DiscountCupon;
 use App\Models\PromotionProduct;
 use App\Models\UsageDiscountCupon;
 use App\Models\User;
 use App\Repositories\Interfaces\CartRepositoryInterface;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class EloquentCartRepository implements CartRepositoryInterface
 {
-  public function getAllProducts(User $user)
+  public function getAllProductsFromCart(User $user)
   {
     return $user->cart()->with([
       'cartItem' => function ($query) {
@@ -25,13 +24,16 @@ class EloquentCartRepository implements CartRepositoryInterface
     ])->latest()->first();
 
   }
-  public function productExistInCart(User $user, int $id)
+  public function productExistInCart(User $user, Cart $cart, int $id)
   {
-    return $user->cart()->where('product_id', $id)->first();
+    return $user->cart()->where('id', $cart->id)->whereHas('cartItem', function ($query) use ($id) {
+      $query->where('product_id', $id);
+    })->exists();
+
   }
-  public function insert(User $user, array $data)
+  public function insertProductInCart(User $user, Cart $cart, array $data)
   {
-    return $user->cart()->create($data);
+    return CartItem::create(array_merge($data, ['cart_id' => $cart->id]));
 
   }
   public function delete($product)
@@ -39,21 +41,24 @@ class EloquentCartRepository implements CartRepositoryInterface
     return $product->delete();
   }
 
-  public function updateQuantityProductInCart(array $idsToUpdate)
+  public function updateQuantityProductThatExceedTheProdutcStok(array $idsToUpdate)
   {
     try {
-      $updated = DB::update("UPDATE cart_items
-                INNER JOIN products
-                ON products.id = cart_items.product_id
-                SET cart_items.quantity = products.stock
-                WHERE cart_items.id IN (" . implode(',', $idsToUpdate) . ")");
+      $updated = CartItem::join('products', 'products.id', '=', 'cart_items.product_id')
+        ->whereIn('cart_items.id', $idsToUpdate)
+        ->update([
+          'cart_items.quantity' => DB::raw("products.stock"),
+        ]);
       return $updated;
     } catch (\Throwable $th) {
       throw $th;
     }
   }
 
-
+  public function updateQuantityProductInCart(CartItem $cartItem, int $quantity)
+  {
+    return $cartItem->update(['quantity' => $quantity]);
+  }
 
 
   public function getDiscountCupon(string $nameCupon)
@@ -100,5 +105,14 @@ class EloquentCartRepository implements CartRepositoryInterface
   }
 
 
+  public function findOrCreateCart(User $user)
+  {
+    return $user->cart()->latest()->firstOrCreate();
+  }
+
+  public function deleteItemFromCart(CartItem $item)
+  {
+    return $item->delete();
+  }
 
 }
