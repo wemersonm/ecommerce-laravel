@@ -38,7 +38,7 @@ class CartService
 
       $user = auth()->user();
       $products = $this->manageItemsFromCart($user, $data['update_qty'] ?? [], $data['delete_item'] ?? 0);
-      $cupon = $this->discountCuponValidate($products, $data['cupon'] ?? "", $user);
+      [$cupon, $products] = $this->discountCuponValidate($products, $data['cupon'] ?? "", $user);
       $shipping = $this->calculateShipping($products, $data['cep'] ?? "", $data['shipping_code'] ?? "");
       $products = $this->calculateProductsWithDiscountCupon($products, $cupon);
       $totals = $this->calculateCartTotals($products, $cupon, $shipping);
@@ -144,7 +144,6 @@ class CartService
       null;
 
     return $products;
-
   }
 
 
@@ -228,18 +227,19 @@ class CartService
     if (!$nameCuponApplied) {
       $discountCuponApplied = $requestCupon ? $this->checkDiscountCuponValidity($requestCupon, $user) : null;
     }
-    $statusProductsWithDiscountCuponApplied = false;
+    $idsProductsForApplyDiscountCupon = false;
     if (!is_null($discountCuponApplied) && !isset ($discountCuponApplied['error'])) {
-      $statusProductsWithDiscountCuponApplied = $this->validateAndSetDiscountCuponInProducts($products, $discountCuponApplied);
-      is_null($statusProductsWithDiscountCuponApplied) ? throw new ErrorSystem('error at update cupons') : null;
-      $products = $products->map(function ($item) use ($statusProductsWithDiscountCuponApplied) {
-        if (!$item->discount_cupon_name && in_array($item->id, $statusProductsWithDiscountCuponApplied)) {
-
+      $idsProductsForApplyDiscountCupon = $this->validateAndSetDiscountCuponInProducts($products, $discountCuponApplied);
+      is_null($idsProductsForApplyDiscountCupon) ? throw new ErrorSystem('error at update cupons') : null;
+      $products = $products->map(function ($item) use ($idsProductsForApplyDiscountCupon, $discountCuponApplied) {
+        if (in_array($item->id, $idsProductsForApplyDiscountCupon)) {
+          $item->discount_cupon_name = $discountCuponApplied->name;
         }
+        return $item;
       });
     }
-    return $statusProductsWithDiscountCuponApplied ? $discountCuponApplied : ['is_valid' => false, 'cupon' => $requestCupon,];
-
+    return $idsProductsForApplyDiscountCupon ?
+      [$discountCuponApplied, $products] : [array('is_valid' => false, 'cupon' => $requestCupon, ), $products];
   }
 
   public function checkExisitOnlyOneDiscountCuponApplied(object $cartItem)
