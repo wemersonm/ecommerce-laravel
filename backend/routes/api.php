@@ -52,6 +52,7 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['controller' => FavoritesController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {
         route::post('/', 'store')->name('store');
+        route::get('/', 'index')->name('index');
     });
 
 

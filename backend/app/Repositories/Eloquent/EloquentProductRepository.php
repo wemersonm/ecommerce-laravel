@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\FavoriteProduct;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\Interfaces\ProductRepositoryInterface;

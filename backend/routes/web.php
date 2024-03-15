@@ -27,7 +27,7 @@ Route::get('/', function (Request $request) {
   // $cartItem = CartItem::where('cart_id', 1)->first();
   // $updated = $cartItem->update(['quantity' => 1]);
   // return view('home', ['updated' => $updated, 'cartItem' => $cartItem]);
-  
- return $user->favorites()->latest()->get();
-  
+
+  return $user->favorites()->latest()->get();
+
 });

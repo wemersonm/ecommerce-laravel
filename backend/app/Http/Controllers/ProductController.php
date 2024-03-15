@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FavoriteProduct;
-use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 

@@ -9,7 +9,8 @@ class EloquentFavoritesRepository implements FavoritesRepositoryInterface
 {
   public function getAllProductFavorites(User $user)
   {
-    return $user->favorites()->get();
+  
+    return $user->favorites()->with('product.brand')->latest()->get();
   }
 
 }
