@@ -34,6 +34,7 @@ class AuthService
 
   public function createUser(array $data)
   {
+
     $userExist = User::where('email', $data['email'])->first();
     if ($userExist)
       throw new EmailAlreadyExistExeception();
@@ -44,8 +45,8 @@ class AuthService
       'password' => $data['password'],
     ]);
 
-    Auth::login($userCreated);
     /** @var \App\Models\User $user */
+    Auth::login($userCreated);
     $user = auth()->user();
     event(new UserRegistered($user));
 

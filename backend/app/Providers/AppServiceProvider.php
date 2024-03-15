@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\Eloquent\EloquentCartRepository;
+use App\Repositories\Eloquent\EloquentFavoritesRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Repositories\Interfaces\CartRepositoryInterface;
+use App\Repositories\Interfaces\FavoritesRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public array $bindings = [
         CartRepositoryInterface::class => EloquentCartRepository::class,
         ProductRepositoryInterface::class => EloquentProductRepository::class,
+        FavoritesRepositoryInterface::class => EloquentFavoritesRepository::class,
     ];
     public function register(): void
     {

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -49,22 +50,22 @@ Route::prefix('v1')->group(function () {
 
     });
 
+    Route::group(['controller' => FavoritesController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {
+        route::post('/', 'store')->name('store');
+    });
+
+
     Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
 
         route::get('/flash_sales', 'getFlashSales')->name('flash-sales');
         route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
-        route::post('/add-cart', 'addProductAtCart')->name('add-cart');
-        route::post('/remove-cart', 'removeProductAtCart')->name('remove-cart');
-        route::post('/add-favorite', 'addProductToFavorite')->name('add-favorite');
-        route::post('/remove-favorite', 'removeProductToFavorite')->name('remove-favorite');
+        route::post('/favorites', 'favorites')->name('favorites');
     });
 
     Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {
         route::get('/', 'index')->name('index');
         route::post('/', 'store')->name('store');
-        route::delete('/', 'destroy')->name('destroy');
-        route::patch('/', 'update')->name('update');
     });
 
     Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
