@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 
 class ProductController extends Controller
@@ -30,6 +32,12 @@ class ProductController extends Controller
     ]);
     return $this->productService->serviceGetOurProducts($data['limit'] ?? 8);
   }
-
+  public function show(Request $request)
+  {
+    $data = $request->validate([
+      'slug' => 'required',
+    ]);
+    return $this->productService->getProduct($data['slug']);
+  }
 
 }

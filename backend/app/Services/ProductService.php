@@ -3,12 +3,11 @@
 namespace App\Services;
 
 
-use App\Exceptions\ProductNotExistException;
-use App\Http\Resources\CardProductResource;
-use App\Models\User;
-use App\Repositories\Interfaces\ProductRepositoryInterface;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\CardProductResource;
+use App\Exceptions\ProductNotExistException;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 
 class ProductService
 {
@@ -58,9 +57,15 @@ class ProductService
     }
   }
 
-
-
- 
+  public function getProduct(string $slug)
+  {
+    $productExist = $this->productRepository->getProductBySlug($slug);
+    if (!$productExist) {
+      throw new ProductNotExistException;
+    }
+    $infoProduct = $this->productRepository->getInfoProduct($productExist);
+    return new ProductResource($infoProduct);
+  }
   public function response(string $error, string $message, int $code = 400, $data = [])
   {
     return response()->json([

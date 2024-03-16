@@ -45,4 +45,14 @@ class EloquentProductRepository implements ProductRepositoryInterface
     return $user->favorites()->count();
   }
 
+  public function getProductBySlug(string $slug)
+  {
+    return Product::where('slug', $slug)->first();
+  }
+
+  public function getInfoProduct(Product $product)
+  {
+    return $product->load(['brand', 'category', 'promotions.promotion']);
+  }
+
 }

@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\Product;
 use App\Models\User;
 
 interface ProductRepositoryInterface
@@ -16,5 +17,7 @@ interface ProductRepositoryInterface
   public function existInFavorites(int $id, User $user);
   public function removeProductAtFavorites(int $idFavorite, User $user);
   public function countFavorites(User $user);
+  public function getProductBySlug(string $slug);
+  public function getInfoProduct(Product $product);
 
 }

@@ -36,9 +36,8 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
-
     public function promotions()
     {
-        return $this->belongsTo(PromotionProduct::class, 'product_id', 'id');
+        return $this->hasMany(PromotionProduct::class, 'product_id', 'id');
     }
 }

@@ -61,7 +61,8 @@ Route::prefix('v1')->group(function () {
         route::get('/flash_sales', 'getFlashSales')->name('flash-sales');
         route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
-        route::post('/favorites', 'favorites')->name('favorites');
+        route::get('/', 'show')->name('show');
+
     });
 
     Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {
