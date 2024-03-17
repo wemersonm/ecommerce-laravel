@@ -1,8 +1,9 @@
 @extends('layout')
 
 @section('content')
-    <h2>Home</h2>
-    <pre>
-      {{$data}}
-    </pre>
+    @foreach ($items as $item)
+        {{ $item }}
+    @endforeach
+
+    {{$items->links()}}
 @endsection

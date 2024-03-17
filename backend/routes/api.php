@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,10 @@ Route::prefix('v1')->group(function () {
         route::get('/our-products', 'getOurProducts')->name('our-products');
         route::get('/', 'show')->name('show');
 
+    });
+
+    Route::group(['controller' => ReviewController::class, 'prefix' => 'review', 'as' => 'review'], function () {
+        route::get('/', 'index')->name('index');
     });
 
     Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {

@@ -5,9 +5,12 @@ namespace App\Providers;
 use App\Repositories\Eloquent\EloquentCartRepository;
 use App\Repositories\Eloquent\EloquentFavoritesRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
+use App\Repositories\Eloquent\EloquentReviewRepository;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\FavoritesRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         CartRepositoryInterface::class => EloquentCartRepository::class,
         ProductRepositoryInterface::class => EloquentProductRepository::class,
         FavoritesRepositoryInterface::class => EloquentFavoritesRepository::class,
+        ReviewRepositoryInterface::class => EloquentReviewRepository::class,
     ];
     public function register(): void
     {
@@ -33,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Paginator::useBootstrap();
     }
 }
