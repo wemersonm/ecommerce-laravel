@@ -107,6 +107,7 @@ class AddressService
         AddressResource::collection($this->addressRepository->getAllAddress($user)) :
         throw new ErrorSystem;
     } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
     }
   }
 
