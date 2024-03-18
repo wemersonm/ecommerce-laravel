@@ -27,17 +27,6 @@ class CartController extends Controller
         $data = $request->validated();
         return $this->cartService->serviceAddProductAtCart($data);
     }
-    /* 
-         public function destroy(Request $request)
-         {
-             $data = $request->validate(['id' => 'required|numeric']);
-             return $this->cartService->serviceRemoveProductAtCart($data);
-         }
 
-         public function update(Request $request)
-         {
-             $data = $request->validate(['id' => 'required|numeric', 'quantity' => 'required|numeric']);
-             return $this->cartService->serviceUpdateProductInCart($data);
-         } */
 
 }
