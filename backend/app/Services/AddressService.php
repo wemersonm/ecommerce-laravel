@@ -3,122 +3,120 @@
 namespace App\Services;
 
 use App\Exceptions\AddressNotExistException;
-use App\Models\Address;
+use App\Exceptions\ErrorSystem;
+use App\Http\Resources\AddressResource;
+use Throwable;
 use App\Models\User;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
+use App\Repositories\Interfaces\AddressRepositoryInterface;
 
 class AddressService
 {
+
+  public function __construct(
+    private AddressRepositoryInterface $addressRepository
+  ) {
+  }
+
+  public function getAllAddresses()
+  {
+    try {
+      /** @var \App\Models\User $user */
+      $user = auth()->user();
+      return AddressResource::collection($this->addressRepository->getAllAddress($user));
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+
+    }
+  }
   public function store(array $data)
+  {
+    try {
+      /** @var \App\Models\User $user */
+      $user = auth()->user();
+      $created = $this->addressRepository->insertNewAddress($user, $data);
+      return $created ?
+        AddressResource::collection($this->addressRepository->getAllAddress($user)) :
+        throw new ErrorSystem;
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+    }
+
+  }
+  public function showAddress(int $id)
+  {
+    try {
+      /** @var \App\Models\User $user */
+      $user = auth()->user();
+      $address = $this->addressRepository->findById($user, $id);
+      if (!$address)
+        throw new AddressNotExistException;
+      return new AddressResource($address);
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+    }
+  }
+
+
+  public function updateAddress(array $data)
+  {
+    try {
+      /** @var \App\Models\User $user */
+      $user = auth()->user();
+      $address = $this->addressRepository->findById($user, $data['id']);
+      !$address ? throw new AddressNotExistException() : null;
+      $updated = $this->addressRepository->updateAddress($user, $data);
+      return $updated ?
+        AddressResource::collection($this->addressRepository->getAllAddress($user)) :
+        throw new ErrorSystem;
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+
+    }
+  }
+
+
+  public function deleteAddress(array $data)
+  {
+    try {
+      /** @var \App\Models\User $user */
+      $user = auth()->user();
+      $address = $this->addressRepository->findById($user, $data['id']);
+      if (!$address)
+        throw new AddressNotExistException();
+      $deleted = $this->addressRepository->deleteAddress($user, $address->id);
+      return $deleted ?
+        AddressResource::collection($this->addressRepository->getAllAddress($user)) :
+        throw new ErrorSystem;
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+
+    }
+  }
+
+
+  public function updateToMain(int $id)
   {
 
     try {
       /** @var \App\Models\User $user */
       $user = auth()->user();
-      DB::beginTransaction();
-      $this->resetFieldMain($user, $data['main']);
-      $user->addresses()->create($data);
-      DB::commit();
-      return $user->addresses()->OrderByMain()->get();
-
-    } catch (\Exception $e) {
-      DB::rollBack();
-      return response()->json([
-        'error' => class_basename($e),
-        'message' => 'unexpected error',
-      ]);
-    }
-  }
-  public function show($data)
-  {
-    try {
-      $user = auth()->user();
-      $address = $user->addresses()->where('id', $data['id'])->first();
-      return $address ? $address : throw new AddressNotExistException();
-    } catch (\Throwable $e) {
-      return response()->json([
-        'error' => class_basename($e),
-        'message' => 'error at edit address',
-      ], 400);
-    }
-  }
-
-
-  public function update(array $data)
-  {
-    /** @var \App\Models\User $user */
-    try {
-      $user = auth()->user();
-      $address = $user->addresses()->where('id', $data['id'])->first();
+      $address = $this->addressRepository->findById($user, $id);
       !$address ? throw new AddressNotExistException() : null;
-      DB::transaction(function () use ($address, $data, $user) {
-        $this->resetFieldMain($user, $data['main']);
-        $address->update($data);
-      }, 3);
-
-      return $user->addresses()->OrderByMain()->get();
-
-    } catch (\Exception $e) {
-      return response()->json([
-        'error' => class_basename($e),
-        'message' => 'error at edit address',
-      ], 500);
+      $updated = $this->addressRepository->setAddressToMain($user, $id);
+      return $updated ?
+        AddressResource::collection($this->addressRepository->getAllAddress($user)) :
+        throw new ErrorSystem;
+    } catch (Throwable $th) {
     }
   }
 
-
-  public function destroy(array $data)
+  public function responseError(string $error, string $message, int $code = 400, $data = [])
   {
-    /** @var \App\Models\User $user */
-    try {
-      $user = auth()->user();
-      $address = $user->addresses()->where('id', $data['id'])->first();
-      if (!$address)
-        throw new AddressNotExistException();
-      $address->delete();
-      return $user->addresses()->OrderByMain()->get();
-    } catch (\Exception $e) {
-      return response()->json([
-        'error' => class_basename($e),
-        'message' => 'Error deleting address',
-      ], 400);
-    }
-  }
-
-
-  public function updateToMain(array $data)
-  {
-    /** @var \App\Models\User $user */
-    /** @var \App\Models\Address $address */
-
-    try {
-      DB::beginTransaction();
-      $user = auth()->user();
-      $address = $user->addresses()->WhereId($data['id'])->first();
-      !$address ? throw new AddressNotExistException() : null;
-      $this->resetFieldMain($user, true);
-      $this->setAddressMain($address);
-      DB::commit();
-      return $user->addresses()->orderByMain()->get();
-    } catch (\Throwable $th) {
-      DB::rollBack();
-      return response()->json([
-        'error' => class_basename($th),
-        'message' => 'error at update address to main',
-      ], 400);
-    }
-  }
-
-  
-  private function resetFieldMain(User $user, mixed $main)
-  {
-    return $main ? $user->addresses()->update(['main' => false]) : null;
-  }
-  private function setAddressMain(Address $address)
-  {
-    return $address->update(['main' => true]);
+    return response()->json([
+      'error' => $error,
+      'message' => $message,
+      'data' => $data,
+    ], $code);
   }
 }
-
 

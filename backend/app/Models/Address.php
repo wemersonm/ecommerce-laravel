@@ -24,12 +24,8 @@ class Address extends Model
         "main",
     ];
 
-    public function scopeOrderByMain($query)
+    public function scopeOrderByMainAndLatest($query)
     {
-        return $this->orderByDesc('main')->oldest();
-    }
-    public function scopeWhereId($query, $value, $operator = "=")
-    {
-        return $this->where('id', $operator, $value);
+        return $this->orderByDesc('main')->latest();
     }
 }

@@ -18,44 +18,41 @@ class AddressController extends Controller
     }
     public function index()
     {
-        $user = auth()->user();
-        $addresses = $user->addresses()->OrderByMain()->get();
-        return $addresses ?? AddressResource::collection($addresses);
+        return $this->addressService->getAllAddresses();
     }
 
     public function store(AddAddressRequest $request)
     {
         $data = $request->validated();
-        $created = $this->addressService->store($data);
-        return AddressResource::collection($created);
+        return $this->addressService->store($data);
+
     }
 
     public function show(Request $request)
     {
         $data = $request->validate(['id' => ['required', 'numeric'],]);
-        $address = $this->addressService->show($data);
-        return $address ?? new AddressResource($address);
+        return $this->addressService->showAddress($data['id']);
 
     }
+
     public function update(UpdateAddressRequess $request)
     {
         $data = $request->validated();
-        $updated = $this->addressService->update($data);
-        return $updated ?? AddressResource::collection($updated);
+        return $this->addressService->updateAddress($data);
+
     }
 
     public function destroy(Request $request)
     {
         $data = $request->validate(['id' => ['required', 'numeric']]);
-        $addresses = $this->addressService->destroy($data);
-        return $addresses ?? AddressResource::collection($addresses);
+        return $this->addressService->deleteAddress($data);
 
     }
 
     public function mainAddress(Request $request)
     {
         $data = $request->validate(['id' => ['required', 'numeric']]);
-        $updatedToMain = $this->addressService->updateToMain($data);
-        return $updatedToMain ?? AddressResource::collection($updatedToMain);
+        return $this->addressService->updateToMain($data['id']);
+
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\Eloquent\EloquentAddressRepository;
 use App\Repositories\Eloquent\EloquentCartRepository;
 use App\Repositories\Eloquent\EloquentFavoritesRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Repositories\Eloquent\EloquentReviewRepository;
+use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\FavoritesRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         ProductRepositoryInterface::class => EloquentProductRepository::class,
         FavoritesRepositoryInterface::class => EloquentFavoritesRepository::class,
         ReviewRepositoryInterface::class => EloquentReviewRepository::class,
+        AddressRepositoryInterface::class => EloquentAddressRepository::class,
     ];
     public function register(): void
     {
