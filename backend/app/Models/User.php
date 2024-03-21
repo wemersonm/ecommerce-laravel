@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-  
+
     /** 
      * The attributes that are mass assignable.
      *
@@ -30,9 +30,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        // 'password',
+        // 'remember_token',
     ];
+
 
     /**
      * The attributes that should be cast.
@@ -57,12 +58,12 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        return $this->hasMany(Address::class,'user_id','id');
+        return $this->hasMany(Address::class, 'user_id', 'id');
     }
 
     public function usedCupon()
     {
-        return $this->hasMany(UsageDiscountCupon::class,'user_id','id');
+        return $this->hasMany(UsageDiscountCupon::class, 'user_id', 'id');
     }
 
 }

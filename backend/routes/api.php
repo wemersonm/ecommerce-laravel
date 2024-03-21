@@ -45,8 +45,9 @@ Route::prefix('v1')->group(function () {
         route::get('/', 'index')->name('index');
         route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
         route::post('/change-password', 'changePassword')->name('change-password');
-        route::post('/profile', 'changeEmal')->name('change-profile');
-        route::put('/profile', 'changeEmal')->name('change-profile');
+        route::put('/profile', 'edit')->name('edit');
+        route::post('/change-email', 'changeEmail')->name('change-email');
+        route::patch('/confirm-change-email', 'confirmChangeEmail')->name('confirm-change-email');
 
 
     });

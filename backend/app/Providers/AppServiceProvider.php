@@ -7,11 +7,13 @@ use App\Repositories\Eloquent\EloquentCartRepository;
 use App\Repositories\Eloquent\EloquentFavoritesRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Repositories\Eloquent\EloquentReviewRepository;
+use App\Repositories\Eloquent\EloquentUserRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\FavoritesRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         FavoritesRepositoryInterface::class => EloquentFavoritesRepository::class,
         ReviewRepositoryInterface::class => EloquentReviewRepository::class,
         AddressRepositoryInterface::class => EloquentAddressRepository::class,
+        UserRepositoryInterface::class => EloquentUserRepository::class,
     ];
     public function register(): void
     {
