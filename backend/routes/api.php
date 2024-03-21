@@ -31,7 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
 
-
     Route::group(['controller' => AuthController::class, 'as' => 'auth'], function () {
         route::post('/login', 'store')->name('store');
         route::post('/logout', 'destroy')->name('destroy');
@@ -72,7 +71,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {
-        route::get('/', 'index')->name('index');
+        route::post('/', 'index')->name('index');
         route::post('/', 'store')->name('store');
     });
 
