@@ -26,38 +26,31 @@ class AuthController extends Controller
     public function store(AuthLoginRequest $request)
     {
         $input = $request->validated();
-        $autorization = $this->authService->createLogin(['email' => $input['email'], 'password' => $input['password']]);
-        return (new UserResouce(auth()->user()))->additional(['authorization' => $autorization]);
+        return $this->authService->createLogin(['email' => $input['email'], 'password' => $input['password']]);
+
     }
     public function destroy()
     {
-        $deleted = auth()->user()->currentAccessToken()->delete();
-        return response()->json($deleted, 200);
+        return $this->authService->deleteSession();
     }
 
     public function register(UserRegisterRequest $request)
     {
         $requestData = $request->validated();
-        $authorization = $this->authService->createUser($requestData);
-        return (new UserResouce(auth()->user()))->additional(['authorization' => $authorization]);
+        return $this->authService->createUser($requestData);
+
     }
 
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $requestData = $request->validated();
-        $this->authService->forgotPassword($requestData['email']);
-        return response(null, 200);
+        return $this->authService->forgotPassword($requestData['email']);
     }
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        try {
-            $requestData = $request->validated();
-        } catch (ValidationException $e) {
-            return $e->getMessage();
-        }
-        $this->authService->resetPassword($requestData);
-        return response(null, 200);
+        $requestData = $request->validated();
+        return $this->authService->resetPassword($requestData);
     }
 
 

@@ -31,8 +31,5 @@ class ResetPasswordRequest extends FormRequest
             "token" => ["required", "string", "size:75"],
         ];
     }
-    protected function failedValidation(Validator $validator)
-    {
-        throw new ErrorValidationException();
-    }
+   
 }

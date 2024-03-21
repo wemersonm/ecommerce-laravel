@@ -2,94 +2,133 @@
 
 namespace App\Services;
 
+use Throwable;
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\ResetPassword;
 use App\Events\ForgotPassword;
 use App\Events\UserRegistered;
-use App\Exceptions\CredentialsInvalidResetTokenException;
-use App\Exceptions\EmailAlreadyExistExeception;
-use App\Exceptions\EmailNotExistsException;
+use App\Http\Resources\UserResouce;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Exceptions\LoginInvalidException;
 use App\Exceptions\UserNotExistsException;
-use App\Models\ResetPassword;
-use App\Models\User;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Laravel\Sanctum\PersonalAccessToken;
+use App\Exceptions\EmailNotExistsException;
+use App\Exceptions\EmailAlreadyExistExeception;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Exceptions\CredentialsInvalidResetTokenException;
 
 class AuthService
 {
 
+  public function __construct(
+    private UserRepositoryInterface $userRepository,
+  ) {
+
+  }
   public function createLogin(array $data)
   {
-    $auth = Auth::attempt($data);
-    if (!$auth) {
-      throw new LoginInvalidException();
+    try {
+      $auth = Auth::attempt($data);
+      if (!$auth) {
+        throw new LoginInvalidException();
+      }
+      $authorization = array(
+        'token' => auth()->user()->createToken('auth')->plainTextToken,
+        'type' => 'Bearer',
+      );
+      return (new UserResouce(auth()->user()))->additional(['authorization' => $authorization]);
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+
     }
-    $authorization = array(
-      'token' => auth()->user()->createToken('auth')->plainTextToken,
-      'type' => 'Bearer',
-    );
-    return $authorization;
   }
 
   public function createUser(array $data)
   {
+    try {
+      $userExist = $this->userRepository->emailExist($data['email']);
+      if ($userExist)
+        throw new EmailAlreadyExistExeception();
 
-    $userExist = User::where('email', $data['email'])->first();
-    if ($userExist)
-      throw new EmailAlreadyExistExeception();
+      $userCreated = $this->userRepository->createUser($data);
+      /** @var \App\Models\User $user */
+      Auth::login($userCreated);
+      $user = auth()->user();
+      event(new UserRegistered($user));
+      $authorization = array(
+        'token' => auth()->user()->createToken('auth')->plainTextToken,
+        'type' => 'Bearer',
+      );
+      return (new UserResouce($user))->additional(
+        ['authorization' => $authorization,]
+      );
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
 
-    $userCreated = User::create([
-      'name' => $data['name'],
-      'email' => $data['email'],
-      'password' => $data['password'],
-    ]);
-
-    /** @var \App\Models\User $user */
-    Auth::login($userCreated);
-    $user = auth()->user();
-    event(new UserRegistered($user));
-
-    $token = auth()->user()->createToken('auth')->plainTextToken;
-
-    return array(
-      'token' => $token,
-      'type' => 'Bearer',
-    );
+    }
   }
-
   public function forgotPassword(string $email)
   {
     try {
-      $emailExist = User::where('email', $email)->first();
+      $emailExist = $this->userRepository->emailExist($email);
       if (!$emailExist) {
         throw new EmailNotExistsException();
       }
-      $token = ResetPassword::create([
+      $token = $this->userRepository->createPasswordReset([
         'email' => $email,
-        'token' => Str::random(75),
+        'token' => Str::random(120),
       ]);
       event(new ForgotPassword($emailExist, $token['token']));
-    } catch (\Exception $e) {
-      dd($e->getMessage());
+      return response()->json(['success' => true, 'message' => 'email sent for user'], 200);
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
     }
   }
   public function resetPassword(array $data)
   {
-    $tokenExist = ResetPassword::where('email', $data['email'])->where('token', $data['token'])->first();
-    if (!$tokenExist) {
-      throw new CredentialsInvalidResetTokenException();
-    }
-    $user = User::where('email', $data['email'])->first();
-    if (!$user) {
-      throw new UserNotExistsException();
-    }
-    $user->password = bcrypt($data['password']);
-    $user->save();
+    try {
+      $tokenExist = $this->userRepository->validateTokenPasswordReset($data['email'], $data['password']);
+      if (!$tokenExist) {
+        throw new CredentialsInvalidResetTokenException();
+      }
+      $user = $this->userRepository->emailExist($data['email']);
+      if (!$user) {
+        throw new UserNotExistsException();
+      }
+      $updated = $this->userRepository->updateUser($user, ['password' => Hash::make($data['password'])]);
 
-    $tokenExist->delete();
+      $deleted = $this->userRepository->deletePasswordReset($tokenExist->id);
 
+      return $updated && $deleted ?
+        response()->json(['success' => true, 'message' => 'password reseted sucessfully']) :
+        response()->json(['success' => false, 'message' => 'error at update password and delete token'], 400);
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+    }
   }
 
+  public function deleteSession()
+  {
+    try {
+      $deleted = auth()->user()->currentAccessToken()->delete();
+      return response()->json([
+        'success' => (bool) $deleted,
+        'message' => 'token deleted with successfully'
+      ], 200);
+    } catch (Throwable $th) {
+      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+
+    }
+  }
+
+  public function responseError(string $error, string $message, int $code = 400, $data = [])
+  {
+    return response()->json([
+      'error' => $error,
+      'message' => $message,
+      'data' => $data,
+    ], $code);
+  }
 
 }
