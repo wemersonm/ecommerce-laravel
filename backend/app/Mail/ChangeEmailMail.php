@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ResetPasswordEmail extends Mailable
+class ChangeEmailMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,11 +18,11 @@ class ResetPasswordEmail extends Mailable
      */
     public $domain;
     public function __construct(
-        public User $user,
+        public  $user,
         public string $token,
     ) {
         //
-        $this->domain =config('app.client') ;
+        $this->domain = config('app.client');
     }
 
     /**
@@ -31,7 +31,7 @@ class ResetPasswordEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "[" . config('app.name') . "]" . " Resetar Senha",
+            subject: "[" . config('app.name') . "]" . " Troca de Email",
         );
     }
 
@@ -44,7 +44,7 @@ class ResetPasswordEmail extends Mailable
             view: 'mail.ResetPassword',
             with: [
                 "name" => $this->user->name,
-                "url" => $this->domain . '/auth/reset-password?token=' . $this->token,
+                "url" => $this->domain . '/profile/confirm-change-email?token=' . $this->token,
             ],
         );
     }

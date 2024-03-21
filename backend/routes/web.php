@@ -1,15 +1,6 @@
 <?php
-
-use App\Events\UserRegistered;
-use App\Models\CartItem;
-use App\Models\Product;
-use App\Models\User;
-use App\Repositories\Eloquent\EloquentCartRepository;
-use App\Repositories\Eloquent\EloquentProductRepository;
-use App\Services\CartService;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Stavarengo\Sigep\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +12,7 @@ use Stavarengo\Sigep\Client;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/produto/{name}/option/{brand}', function (Request $request) {
 
-Route::get('/', function (Request $request) {
 
-
-  $items = Product::paginate(3);
-  return view('home')->with('items', $items);
 });

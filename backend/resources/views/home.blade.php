@@ -1,9 +1,13 @@
 @extends('layout')
 
 @section('content')
-    @foreach ($items as $item)
-        {{ $item }}
-    @endforeach
+    <h1>Home</h1>
+    <ul>
+        @foreach ($users as $user)
+            <li>
+                {{ $user }}
+            </li>
+        @endforeach
 
-    {{$items->links()}}
+    </ul>
 @endsection
