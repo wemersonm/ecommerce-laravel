@@ -1,13 +1,18 @@
 import { defineStore } from "pinia";
 
-const useModalStore = defineStore("modal", {
+export const useModalStore = defineStore("modal", {
   state() {
     return {
       login: false,
       register: false,
       forgotPassword: false,
+      nameModalActive: "",
     };
   },
-  actions: {},
+  actions: {
+    updateModalName(name) {
+      this.nameModalActive = name;
+    },
+  },
   getters: {},
 });

@@ -1,68 +1,43 @@
 <template>
-  <a href="#" class="d-block btn-sm btn btn-danger mt-3 d-none " data-bs-toggle="modal" data-bs-target="#exampleModal"
-    ref="modalButton">Cadastre-se</a>
-
-  <Modal @closeModal="getCloseModal" @click.stop.self="clickedOutside" @keydown.esc.prevent="closeModalEsc" :style="style">
-    <template v-slot:modal-top>
-      <div class="text-center">
-        <p class="h1 font-family-logo">MyStore</p>
-      </div>
-    </template>
-    <template v-slot:modal-header>
-      <button type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"
-        ref="btnCloseModal"></button>
-      <p class="h5 modal-title text-danger">Cadastre-se</p>
+  <ModalDialog idModal="register">
+    <template v-slot:modal-header-title>
+      CRIAR CONTA
     </template>
     <template v-slot:modal-body>
       <FormRegister />
     </template>
     <template v-slot:modal-footer>
-      <p class="me-auto">Já possui cadastro?
-        <a href="#" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-          @click.prevent.stop="goToLogin">ENTRAR</a>
-      </p>
+      <div class="w-100 text-center">
+        <p class="text-secondary">Já possui cadastro?
+          <button
+            class="ps-1 btn btn-link link-danger link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover"
+            @click.stop="onLogin">ENTRAR</button>
+        </p>
+      </div>
     </template>
-  </Modal>
+  </ModalDialog>
 </template>
 
 <script>
 
-import Modal from '../modal/ModalDefault.vue';
+import ModalDialog from '../modal/AuthDialog.vue';
 import FormRegister from './FormRegister.vue';
+import { useModalStore } from "../../stores/modal";
+
 export default {
-  emits: ['closeModal', 'openModalLogin'],
   data() {
+    const modalStore = useModalStore();
     return {
-      closeModal: null,
-      style:"max-width:800px !important;",
+      modalStore,
     };
   },
   methods: {
-    getCloseModal() {
-      this.$emit('closeModal');
+    async onLogin() {
+      this.modalStore.updateModalName("login");
     },
-    async clickedOutside() {
-      this.closeModal.click();
-      await new Promise(response => setTimeout(response, 500));
-      this.$emit("closeModal");
-    },
-    async goToLogin() {
-      this.closeModal.click();
-      await new Promise(response => setTimeout(response, 500));
-      this.$emit('openModalLogin');
-    },
-    async closeModalEsc() {
-      await new Promise(response => setTimeout(response, 500));
-      this.$emit("closeModal");
-    }
-  },
-
-  async mounted() {
-    this.$refs.modalButton.click();
-    this.closeModal = this.$refs.btnCloseModal;
   },
   components: {
-    Modal, FormRegister
+    ModalDialog, FormRegister
   },
 }
 </script>

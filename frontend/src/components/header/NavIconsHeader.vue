@@ -56,18 +56,22 @@
 <script>
 import { useAuthStore } from '../../stores/auth';
 import AuthService from '../../services/AuthService';
+import { useModalStore } from '../../stores/modal';
 export default {
-  emits: ['openModalLoginFromNavIcons', 'openModalRegisterFromNavIcons'],
+  // emits: ['openModalLoginFromNavIcons', 'openModalRegisterFromNavIcons'],
   data() {
+    const modalStore = useModalStore();
     const { makeLogout } = AuthService;
     return {
       authStore: useAuthStore(),
       makeLogout,
+      modalStore,
     }
   },
   methods: {
     openModalLogin() {
-      this.$emit('openModalLoginFromNavIcons');
+      this.modalStore.nameModalActive = 'login';
+      // this.$emit('openModalLoginFromNavIcons');
     },
     logout() {
       this.makeLogout();

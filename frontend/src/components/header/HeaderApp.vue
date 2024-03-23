@@ -4,40 +4,32 @@
       <div class="d-flex align-items-center menu gap-1">
         <LogoHeader class="me-3  flex-lg-grow-1" />
         <FormSearch class="d-lg-none form-menu flex-grow-1" />
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-          aria-controls="offcanvasWithBothOptions">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="offcanvas offcanvas-start"  tabindex="-1" id="offcanvasWithBothOptions"
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBothOptions"
         aria-labelledby="offcanvasWithBothOptionsLabel">
-        <NavbarOffcanvasHeader @openModalLoginFromNavbar="openModalLogin" @openModalLoginFromNavIcons="openModalLogin"
-          @openModalRegisterFromNavIcons="openModalRegister" />
+        <NavbarOffcanvasHeader />
       </div>
     </nav>
   </header>
-  <template v-if="modalLogin">
-    <Login @closeModal="closeModal" @openModalRegister="openModalRegister"
-      @openModalForgotPassword="openModalForgotPassword"></Login>
+  <template v-if="modalStore.nameModalActive == 'login'">
+    <Login></Login>
   </template>
-
-  <template v-if="modalRegister">
-    <Register @closeModal="closeModal" @openModalLogin="openModalLogin" />
+  <template v-if="modalStore.nameModalActive == 'register'">
+    <Register />
   </template>
-  <template v-if="modalForgotPassword">
-    <ForgotPassword @closeModal="closeModal"  @openModalLogin="openModalLogin"/>
-
+  <template v-if="modalStore.nameModalActive == 'forgot-password'">
+    <ForgotPassword />
   </template>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { useAuthStore } from '../../stores/auth';
-import NavbarHeader from './navigationheader.vue';
+import { useModalStore } from '../../stores/modal.js'
 import LogoHeader from './LogoHeader.vue';
-
-// 
-import NavIconsHeader from './NavIconsHeader.vue'
 import FormSearch from './FormHeader.vue';
 import NavbarOffcanvasHeader from './NavbarOffcanvasHeader.vue';
 
@@ -50,44 +42,18 @@ const Register = defineAsyncComponent({
 const ForgotPassword = defineAsyncComponent({
   loader: () => import('../auth/ForgotPassword.vue'),
 });
+
 export default {
-  emits: ['getStatusModal'],
   data() {
-    const authStore = useAuthStore();
+    const modalStore = useModalStore();
     return {
-      modalLogin: false,
-      modalRegister: false,
-      modalForgotPassword: false,
-      auth: true,
-      authStore,
+      modalStore,
     };
   },
-  methods: {
-    async openModalLogin() {
-      this.modalLogin = true;
-      this.modalRegister = false;
-      this.modalForgotPassword = false;
-    },
-    async openModalRegister() {
-      this.modalLogin = false;
-      this.modalRegister = true;
-      this.modalForgotPassword = false;
-    },
-    async openModalForgotPassword() {
-      this.modalLogin = false;
-      this.modalRegister = false;
-      this.modalForgotPassword = true;
-    },
-    closeModal() {
-      this.modalLogin = false;
-      this.modalRegister = false;
-      this.modalForgotPassword = false;
-    }
-  },
+  methods: {},
   components: {
-    Login, Register, FormSearch, NavbarHeader, LogoHeader, NavIconsHeader, NavbarOffcanvasHeader, ForgotPassword,
+    Login, Register, FormSearch, LogoHeader, NavbarOffcanvasHeader, ForgotPassword,
   },
-
 }
 </script>
 
