@@ -1,6 +1,6 @@
 <template>
   <Default>
-    <template #main>
+    <template v-slot:main>
       <section class="container-xxl">
         <TopHomepage />
       </section>
@@ -33,17 +33,13 @@
 
 <script>
 import Categories from '../components/category/Category.vue';
-// @ts-ignore
 import Default from '../layouts/default.vue';
 import Departaments from '../components/home/departaments/Departaments.vue';
 import Banner from '../components/carousel/CarouselBanner.vue';
-// @ts-ignore
 import FlashSales from '../components/flash-sales/FlashSales.vue';
 import BestSellers from '../components/best-sellers/BestSellers.vue';
-//@ts-ignore
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
 import OurProducts from '../components/our-products/OurProducts.vue';
-//@ts-ignore
 import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
 import TopHomepage from '../components/home/TopHomepage.vue';
 
@@ -55,7 +51,7 @@ export default {
     OurProducts,
     ServiceAdvantages,
     TopHomepage
-},
+  },
   data() {
     return {
       dataOfferBanner: {
