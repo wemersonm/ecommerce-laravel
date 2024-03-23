@@ -18,7 +18,7 @@
       </section>
 
       <section class="container-xxl my-5">
-        <OfferBanner :offerBanner="dataOfferBanner" />
+        <OfferBanner  />
       </section>
 
       <section class="container-xxl my-5">
@@ -32,20 +32,18 @@
 </template>
 
 <script>
-import Categories from '../components/category/Category.vue';
 import Default from '../layouts/default.vue';
-import Departaments from '../components/home/departaments/Departaments.vue';
-import Banner from '../components/carousel/CarouselBanner.vue';
+import TopHomepage from '../components/home/TopHomepage.vue';
 import FlashSales from '../components/flash-sales/FlashSales.vue';
+import Categories from '../components/category/Category.vue';
 import BestSellers from '../components/best-sellers/BestSellers.vue';
 import OfferBanner from '../components/offer-banner/OfferBanner.vue';
 import OurProducts from '../components/our-products/OurProducts.vue';
 import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
-import TopHomepage from '../components/home/TopHomepage.vue';
 
 export default {
   components: {
-    Default, Departaments, Banner, FlashSales, Categories,
+    Default, FlashSales, Categories,
     BestSellers,
     OfferBanner,
     OurProducts,
@@ -54,12 +52,7 @@ export default {
   },
   data() {
     return {
-      dataOfferBanner: {
-        src: 'https://fastly.picsum.photos/id/833/1400/500.jpg?hmac=cH9p46o3cruEIwezIHv9TQ6xq2S0WQ-oTgliO2n98BU',
-        product_slug: '/product/placa-de-video-gtx-1660-6gb-zotac',
-      },
-
-
+     
     };
   },
   methods: {

@@ -7,9 +7,7 @@
       <div class="fw-bold">
         <span class="responsive-font">{{ title }}</span>
       </div>
-      <div class="px-1" v-if="showMiddle">
-        <slot name="middle"></slot>
-      </div>
+      <slot name="middle"></slot>
       <div class="d-flex gap-2 justify-content-end" v-if="showNavigation">
         <i class="bi bi-arrow-left-circle fs-3" type="button" @click.prevent.stop="$emit('prev')"></i>
         <i class="bi bi-arrow-right-circle fs-3" type="button" @click.prevent.stop="$emit('next')"></i>
@@ -32,7 +30,7 @@ export default {
       default: "Titulo",
       required: true,
     },
-   
+
     showNavigation: {
       type: Boolean,
       default: true,
@@ -42,7 +40,7 @@ export default {
       default: true,
     }
   },
-  emits: ['prev','next'],
+  emits: ['prev', 'next'],
   data() {
     return {
 

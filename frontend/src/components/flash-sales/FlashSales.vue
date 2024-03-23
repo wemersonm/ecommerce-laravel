@@ -15,7 +15,6 @@
 import HeaderSection from '../utils/HeaderSection.vue';
 import SliderProduct from '../product/SliderProduct.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
-//@ts-ignore
 import CountDown from '../utils/CountDown.vue';
 import HorizontalBar from '../utils/HorizontalBar.vue';
 import Slider from '../utils/Slider.vue';
@@ -65,8 +64,6 @@ export default {
           oldValue: 250,
         }
       ],
-
-
     };
   },
   methods: {
