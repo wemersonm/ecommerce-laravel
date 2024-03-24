@@ -1,16 +1,27 @@
 <template>
-  <HeaderSection :target="target" name="Mais Vendidos" title="Produtos mais vendidos" class="mb-3" />
-  <SliderProduct :products="products" :target="target" :showHorizontalCard="false" />
+  <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper" />
+  <SliderCard :items="products" :showHorizontalCard="true" @swiper="onSwiper" :swiperBreakpoints="swiperBreakpoints">
+    <template v-slot:item="{ slide }">
+      <CardProduct :product="slide" :showHorizontalCard="true" />
+    </template>
+  </SliderCard>
+
 </template>
 
 <script>
-import SliderProduct from '../product/SliderProduct.vue';
-//@ts-ignore
+import CardProduct from '../product/CardProduct.vue';
+import SliderCard from '../product/SliderCard.vue';
 import HeaderSection from '../utils/HeaderSection.vue'
 export default {
 
   data() {
     return {
+      headerSection: {
+        name: "Mais Vendidos",
+        title: "Produtos mais vendidos",
+        showNavigation: true,
+      },
+      swiper: {},
       target: "BestSellers",
       products: [ // resultado do request no backend .... '-'
         {
@@ -54,12 +65,36 @@ export default {
           oldValue: 250,
         }
       ],
+      swiperBreakpoints: {
+        1: {
+          slidesPerView: 1,
+        },
+        576: {
+          slidesPerView: 2,
+        },
+        710: {
+          slidesPerView: 3,
+        },
+        924: {
+          slidesPerView: 4,
+        },
+        1158: {
+          slidesPerView: 5,
+        },
+      },
     }
+  },
+  methods: {
+    onSwiper(swiper) {
+      this.swiper = swiper;
+    },
+
   },
 
   components: {
     HeaderSection,
-    SliderProduct
+    SliderCard,
+    CardProduct
   },
 }
 </script>

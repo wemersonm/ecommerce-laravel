@@ -18,15 +18,15 @@
       </section>
 
       <section class="container-xxl my-5">
-        <OfferBanner  />
+        <OfferBanner />
       </section>
 
       <section class="container-xxl my-5">
         <OurProducts />
       </section>
-      <section class="container-xxl my-5">
+      <!-- <section class="container-xxl my-5">
         <ServiceAdvantages />
-      </section>
+      </section>  -->
     </template>
   </Default>
 </template>
@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-     
+
     };
   },
   methods: {

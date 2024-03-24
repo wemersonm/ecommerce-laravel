@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-center flex-grow-1">
+  <div class="card text-center flex-grow-1 p-1">
     <img class="mx-auto" :src="category?.path" :alt="'category-' + category.name" />
     <div class="card-body">
       <p class="card-text">{{ category?.name }}</p>
@@ -22,7 +22,7 @@ export default {
 .card {
 
   img {
-    width: 56px;
+    max-width: 80px;
   }
 
   width: 100%;
@@ -36,7 +36,7 @@ export default {
     border-color: $red;
     color: $red;
     font-weight: bold;
-    transition: 0.5s ease-in-out;
+    transition: 0.15s ease-in-out;
   }
 
 }

@@ -1,54 +1,48 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <NameSection :name="name" />
+      <NameSection :name="headerSection.name ?? 'Seção'" />
     </div>
     <div class="d-flex justify-content-between mt-4">
       <div class="fw-bold">
-        <span class="responsive-font">{{ title }}</span>
+        <span class="responsive-font">{{ headerSection.title ?? 'Titulo' }}</span>
       </div>
       <slot name="middle"></slot>
-      <div class="d-flex gap-2 justify-content-end" v-if="showNavigation">
-        <i class="bi bi-arrow-left-circle fs-3" type="button" @click.prevent.stop="$emit('prev')"></i>
-        <i class="bi bi-arrow-right-circle fs-3" type="button" @click.prevent.stop="$emit('next')"></i>
-      </div>
+      <template v-if="headerSection.showNavigation">
+        <NavigationSlider @prev="onPrevSlide" @next="onNextSlide" />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import NameSection from './NameSection.vue';
+import NavigationSlider from './NavigationSlider.vue';
 export default {
   props: {
-    name: {
-      type: String,
-      default: "Seção",
+    headerSection: {
+      type: Object,
       required: true,
+      default: {},
     },
-    title: {
-      type: String,
-      default: "Titulo",
-      required: true,
+    swiper: {
+      type: Object,
+      default: {},
     },
-
-    showNavigation: {
-      type: Boolean,
-      default: true,
-    },
-    showMiddle: {
-      type: Boolean,
-      default: true,
-    }
   },
-  emits: ['prev', 'next'],
   data() {
     return {
-
     }
   },
   methods: {
+    onPrevSlide() {
+      this.swiper.slidePrev();
+    },
+    onNextSlide() {
+      this.swiper.slideNext();
+    }
   },
-  components: { NameSection }
+  components: { NameSection, NavigationSlider }
 }
 </script>
 

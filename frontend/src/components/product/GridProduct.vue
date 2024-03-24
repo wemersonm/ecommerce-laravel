@@ -5,8 +5,6 @@
   </div>
 </template>
 
-
-
 <script>
 // @ts-ignore
 import CardProduct from './CardProduct.vue';

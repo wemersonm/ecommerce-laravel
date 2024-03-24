@@ -1,5 +1,5 @@
 <template>
-  <HeaderSection name="Nosso Produtos" title="Conheça nossos produtos" :showNavigation="false" />
+  <HeaderSection :headerSection="headerSection" />
   <GridProduct :products="products" class="mt-4" />
   <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-5" />
 </template>
@@ -13,6 +13,11 @@ import HeaderSection from '../utils/HeaderSection.vue';
 export default {
   data() {
     return {
+      headerSection: {
+        name: "Nosso Produtos",
+        title: "Conheça nossos produtos",
+        showNavigation: false,
+      },
       products: [
         {
           name: "Placa de video Zotac GTX 1660 GB",

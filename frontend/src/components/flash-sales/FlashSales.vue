@@ -1,11 +1,15 @@
 <template>
   <div>
-    <HeaderSection name="Ofertas" title="Ofertas Relâmpago" class="mb-3" @prev="prevSlider" @next="nextSlider">
+    <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper">
       <template v-slot:middle>
         <CountDown />
       </template>
     </HeaderSection>
-    <SliderProduct :products="products" :showHorizontalCard="true" @swiper="onSwiper"  />
+    <SliderCard :items="products" :showHorizontalCard="true" :swiperBreakpoints="swiperBreakpoints" @swiper="onSwiper">
+      <template v-slot:item="{ slide }">
+        <CardProduct :product="slide" :showHorizontalCard="true" :key="slide.name" />
+      </template>
+    </SliderCard>
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
     <HorizontalBar />
   </div>
@@ -13,15 +17,20 @@
 
 <script>
 import HeaderSection from '../utils/HeaderSection.vue';
-import SliderProduct from '../product/SliderProduct.vue';
+import SliderCard from '../product/SliderCard.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
 import CountDown from '../utils/CountDown.vue';
 import HorizontalBar from '../utils/HorizontalBar.vue';
-import Slider from '../utils/Slider.vue';
+import CardProduct from '../product/CardProduct.vue';
 export default {
   data() {
     return {
-      swiper: null,
+      headerSection: {
+        name: "Ofertas",
+        title: "Ofertas Relâmpago",
+        showNavigation: true,
+      },
+      swiper: {},
       products: [ // request do backend ... '-'
         {
           name: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita reprehenderit odio quis amet accusamus quos. Nobis delectus placeat quo provident sit, explicabo ratione laborum quisquam inventore amet ut aliquam exercitationem.",
@@ -64,27 +73,36 @@ export default {
           oldValue: 250,
         }
       ],
+      swiperBreakpoints: {
+        1: {
+          slidesPerView: 1,
+        },
+        576: {
+          slidesPerView: 2,
+        },
+        710: {
+          slidesPerView: 3,
+        },
+        924: {
+          slidesPerView: 4,
+        },
+        1158: {
+          slidesPerView: 5,
+        },
+      },
     };
   },
   methods: {
     onSwiper(swiper) {
-      this.swiper = swiper;
+      this.swiper = swiper
     },
-    prevSlider() {
-      console.log("GG prev");
-      this.swiper.slidePrev();
-    },
-    nextSlider() {
-      console.log("GG next");
-      this.swiper.slideNext();
-    }
   },
   components: {
-    SliderProduct, HeaderSection,
+    SliderCard, HeaderSection,
     ButtonLink,
     CountDown,
     HorizontalBar,
-    Slider
+    CardProduct
   },
 
 }
