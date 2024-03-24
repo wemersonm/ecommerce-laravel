@@ -24,9 +24,9 @@
       <section class="container-xxl my-5">
         <OurProducts />
       </section>
-      <!-- <section class="container-xxl my-5">
+      <section class="container-xxl my-5">
         <ServiceAdvantages />
-      </section>  -->
+      </section>
     </template>
   </Default>
 </template>
@@ -34,11 +34,11 @@
 <script>
 import Default from '../layouts/default.vue';
 import TopHomepage from '../components/home/TopHomepage.vue';
-import FlashSales from '../components/flash-sales/FlashSales.vue';
-import Categories from '../components/category/Category.vue';
-import BestSellers from '../components/best-sellers/BestSellers.vue';
-import OfferBanner from '../components/offer-banner/OfferBanner.vue';
-import OurProducts from '../components/our-products/OurProducts.vue';
+import FlashSales from '../components/home/FlashSales.vue';
+import Categories from '../components/home/Category.vue';
+import BestSellers from '../components/home/BestSellers.vue';
+import OfferBanner from '../components/home/OfferBanner.vue';
+import OurProducts from '../components/home/OurProducts.vue';
 import ServiceAdvantages from '../components/home/ServiceAdvantages.vue';
 
 export default {

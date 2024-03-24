@@ -119,4 +119,4 @@ export default {
   color: $colorInStock;
   font-weight: bold;
 }
-</style>
+</style>../../composables/Counter.js../../utils/FunctionsHelper.js./InfoProduct.vue/index.js

@@ -13,7 +13,7 @@
 import HorizontalBar from '../utils/HorizontalBar.vue';
 import HeaderSection from '../utils/HeaderSection.vue';
 import SliderCard from '../product/SliderCard.vue';
-import CardCategory from './CardCategory.vue';
+import CardCategory from '../utils/CardCategory.vue';
 export default {
 
   data() {
