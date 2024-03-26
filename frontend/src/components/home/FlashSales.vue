@@ -7,7 +7,7 @@
     </HeaderSection>
     <SliderCard :items="products" :swiperBreakpoints="swiperBreakpoints" @swiper="onSwiper">
       <template v-slot:item="{ slide }">
-        <CardProduct :product="slide" :key="slide.name" class="w-100" />
+        <CardProduct :product="slide" :key="slide.name" class="w-100 d-flex justify-content-center" />
       </template>
     </SliderCard>
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
