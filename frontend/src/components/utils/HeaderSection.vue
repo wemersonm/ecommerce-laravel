@@ -3,9 +3,9 @@
     <div class="col-12">
       <NameSection :name="headerSection.name ?? 'Seção'" />
     </div>
-    <div class="d-flex justify-content-between align-items-center mt-4 border">
-      <div class="fw-bold border border-danger">
-        <span class="responsive-font border border-success ">{{ headerSection.title ?? 'Titulo' }}</span>
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <div class="fw-bold">
+        <span class="responsive-font">{{ headerSection.title ?? 'Titulo' }}</span>
       </div>
       <slot name="middle"></slot>
       <template v-if="headerSection.showNavigation">
