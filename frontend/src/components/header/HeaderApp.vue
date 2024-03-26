@@ -1,5 +1,5 @@
 <template>
-  <header class="container-fluid container-xl ">
+  <header class="container-fluid">
     <nav class="navbar navbar-expand-lg">
       <div class="d-flex align-items-center menu gap-1">
         <LogoHeader class="me-3  flex-lg-grow-1" />

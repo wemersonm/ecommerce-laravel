@@ -1,9 +1,9 @@
 <template>
-  <div class="card card-horizontal d-xs-block d-sm-none">
+  <div class="card">
     <a href="#" class="no-decoration" @click.prevent>
       <div class="row g-0">
         <div class="col-5">
-          <img class="card-img-top" width="100%" :src="'https://via.placeholder.com/600/d1212'" alt="Title" />
+          <img class="card-img-top w-100" :src="'https://via.placeholder.com/600/d1212'" alt="Title" />
         </div>
         <div class="col-7 mb-1">
           <div class="card-body pt-0">
@@ -19,7 +19,7 @@
                 class=" small text-decoration-line-through ms-1 text-secondary"> {{ product.oldValue }}</span>
             </p>
             <div class="card-text">
-              <RatingProduct :rating="rating" />
+              <RatingProduct :rating="product.rating" :qtyReview="59" />
             </div>
 
           </div>
@@ -31,10 +31,8 @@
 </template>
 
 <script>
-// @ts-ignore
-import IconsCard from './IconsCard.vue';
-// @ts-ignore
-import RatingProduct from './RatingProduct.vue';
+import IconsCard from './IconsCardProduct.vue';
+import RatingProduct from '../utils/RatingProduct.vue';
 
 export default {
   emits: ['buyProduct'],
@@ -46,19 +44,20 @@ export default {
   },
   data() {
     return {
-      rating: 3.5
     };
   },
+  methods: {
+
+  },
+
   components: { RatingProduct, IconsCard }
 }
 </script>
 
 <style lang="scss" scoped>
-.card-horizontal {
+.card {
   &:hover {
     border-color: $red;
-    transform: scale(1.01);
-    // transition: 0.5s ease-in-out;
   }
 
   .no-decoration {
@@ -78,10 +77,11 @@ export default {
     -webkit-box-orient: vertical;
   }
 
-  min-width: 290px;
+  // min-width: 290px;
   width: 100%;
-  // max-height: 400px;
-  // min-height: 400px;
+  // max-height: 232px;
 
 }
+
+
 </style>

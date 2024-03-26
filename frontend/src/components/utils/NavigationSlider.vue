@@ -11,4 +11,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+i {
+  transition: transform 0.3s ease, color 0.3s ease-in-out;
+}
+
+i:active {
+  color: $red;
+  transform: scale(1.2);
+}
+i:hover{
+  color: $red;
+}
+
+.disable{
+  pointer-events: none;
+   cursor: not-allowed;
+}
+</style>

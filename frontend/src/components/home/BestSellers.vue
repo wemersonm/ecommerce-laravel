@@ -1,16 +1,16 @@
 <template>
   <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper" />
-  <SliderCard :items="products" :showHorizontalCard="true" @swiper="onSwiper" :swiperBreakpoints="swiperBreakpoints">
+  <SliderCard :items="products" @swiper="onSwiper" :swiperBreakpoints="swiperBreakpoints">
     <template v-slot:item="{ slide }">
-      <CardProduct :product="slide" :showHorizontalCard="true" />
+      <CardProduct :product="slide" :customClass="['d-flex justify-content-center','w-100']" />
     </template>
   </SliderCard>
 
 </template>
 
 <script>
-import CardProduct from '../product/CardProduct.vue';
-import SliderCard from '../product/SliderCard.vue';
+import CardProduct from '../cards/CardProduct.vue';
+import SliderCard from '../utils/SliderCard.vue';
 import HeaderSection from '../utils/HeaderSection.vue'
 export default {
 
@@ -25,7 +25,7 @@ export default {
       target: "BestSellers",
       products: [ // resultado do request no backend .... '-'
         {
-          name: "Placa de video Zotac GTX 1660 GB",
+          name: "Placa",
           newValue: 1533,
           oldValue: 1788,
         },
@@ -69,17 +69,21 @@ export default {
         1: {
           slidesPerView: 1,
         },
-        576: {
+        482: {
           slidesPerView: 2,
+          spaceBetween: 10,
         },
-        710: {
+        622: {
           slidesPerView: 3,
         },
-        924: {
+        792: {
           slidesPerView: 4,
         },
-        1158: {
+        998: {
           slidesPerView: 5,
+        },
+        1158: {
+          slidesPerView: 6,
         },
       },
     }

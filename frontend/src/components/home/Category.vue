@@ -12,8 +12,8 @@
 <script>
 import HorizontalBar from '../utils/HorizontalBar.vue';
 import HeaderSection from '../utils/HeaderSection.vue';
-import SliderCard from '../product/SliderCard.vue';
-import CardCategory from '../utils/CardCategory.vue';
+import SliderCard from '../utils/SliderCard.vue';
+import CardCategory from '../cards/CardCategory.vue';
 export default {
 
   data() {
@@ -44,23 +44,26 @@ export default {
         1: {
           slidesPerView: 1,
         },
-        391: {
+        372: {
           slidesPerView: 2,
         },
-        576: {
+        472: {
           slidesPerView: 3,
         },
-        768: {
+        632: {
           slidesPerView: 4,
         },
-        992: {
+        752: {
           slidesPerView: 5,
         },
-        1200: {
+        932: {
           slidesPerView: 6,
         },
-        1201: {
+        1062: {
           slidesPerView: 7,
+        },
+        1228: {
+          slidesPerView: 8,
         },
       },
     }

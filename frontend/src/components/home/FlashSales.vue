@@ -5,9 +5,9 @@
         <CountDown />
       </template>
     </HeaderSection>
-    <SliderCard :items="products" :showHorizontalCard="true" :swiperBreakpoints="swiperBreakpoints" @swiper="onSwiper">
+    <SliderCard :items="products" :swiperBreakpoints="swiperBreakpoints" @swiper="onSwiper">
       <template v-slot:item="{ slide }">
-        <CardProduct :product="slide" :showHorizontalCard="true" :key="slide.name" />
+        <CardProduct :product="slide" :key="slide.name" class="w-100" />
       </template>
     </SliderCard>
     <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
@@ -17,11 +17,11 @@
 
 <script>
 import HeaderSection from '../utils/HeaderSection.vue';
-import SliderCard from '../product/SliderCard.vue';
+import SliderCard from '../utils/SliderCard.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
 import CountDown from '../utils/CountDown.vue';
 import HorizontalBar from '../utils/HorizontalBar.vue';
-import CardProduct from '../product/CardProduct.vue';
+import CardProduct from '../cards/CardProduct.vue';
 export default {
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
           oldValue: 999,
         },
         {
-          name: "Memoria Ram DDR4 8gb Atermiter",
+          name: "Memoria",
           newValue: 122,
           oldValue: 169,
         },
@@ -77,17 +77,20 @@ export default {
         1: {
           slidesPerView: 1,
         },
-        576: {
+        482: {
           slidesPerView: 2,
         },
-        710: {
+        622: {
           slidesPerView: 3,
         },
-        924: {
+        792: {
           slidesPerView: 4,
         },
-        1158: {
+        998: {
           slidesPerView: 5,
+        },
+        1158: {
+          slidesPerView: 6,
         },
       },
     };

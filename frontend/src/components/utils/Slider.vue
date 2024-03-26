@@ -1,6 +1,6 @@
 <template>
   <swiper :modules="swiperModules" v-bind="$attrs">
-    <swiper-slide v-for="(slide, index) in slides" :key="index" class="d-flex justify-content-center">
+    <swiper-slide v-for="(slide, index) in slides" :key="index" class="">
       <slot name="slide" :slide="slide"></slot>
     </swiper-slide>
 

@@ -1,5 +1,5 @@
 <template>
-  <Slider :slides="items" :breakpoints="swiperBreakpoints" :spaceBetween="10">
+  <Slider :slides="items" :breakpoints="swiperBreakpoints" :spaceBetween="10" >
     <template v-slot:slide="{ slide }">
       <slot name="item" :slide="slide"></slot>
     </template>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CardProduct from '../product/CardProduct.vue';
+import CardProduct from '../cards/CardProduct.vue';
 import Slider from '../utils/Slider.vue';
 export default {
   props: {
@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+     
     };
   },
   methods: {
