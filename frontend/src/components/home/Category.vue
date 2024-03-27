@@ -2,11 +2,11 @@
   <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper" />
   <SliderCard :items="categories" :swiperBreakpoints="swiperBreakpoints" @swiper="onSwiper">
     <template v-slot:item="{ slide }">
-      <CardCategory :category="slide" class="d-flex justify-content-center" />
+      <CardCategory :category="slide" class="d-flex justify-content-center"/>
     </template>
   </SliderCard>
-
-  <HorizontalBar class="my-5 " />
+  <ButtonLink href="/flash-sales" title="Ver Todas Categorias" class="my-4 my-md-5"></ButtonLink>
+  <HorizontalBar />
 </template>
 
 <script>
@@ -14,6 +14,7 @@ import HorizontalBar from '../utils/HorizontalBar.vue';
 import HeaderSection from '../utils/HeaderSection.vue';
 import SliderCard from '../utils/SliderCard.vue';
 import CardCategory from '../cards/CardCategory.vue';
+import ButtonLink from '../utils/ButtonLink.vue';
 export default {
 
   data() {
@@ -30,7 +31,7 @@ export default {
         { path: 'https://via.placeholder.com/100/f1290', name: 'Processadores' },
         { path: 'https://via.placeholder.com/100/f1290', name: 'Memoria RAM' },
         { path: 'https://via.placeholder.com/100/f1290', name: 'Monitores' },
-        { path: 'https://via.placeholder.com/100/f1290', name: 'Fonte de Alimentação' },
+        { path: 'https://via.placeholder.com/100/f1290', name: 'Fonte de Alimentação Fonte de Alimentação Fonte de Alimentação' },
         { path: 'https://via.placeholder.com/100/f1290', name: 'Mouse' },
         { path: 'https://via.placeholder.com/100/f1290', name: 'Teclados' },
         { path: 'https://via.placeholder.com/100/f1290', name: 'Coolers' },
@@ -79,6 +80,7 @@ export default {
     HorizontalBar,
     CardCategory,
     SliderCard,
+    ButtonLink
   },
 }
 </script>

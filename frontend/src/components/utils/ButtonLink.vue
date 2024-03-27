@@ -1,6 +1,6 @@
 <template>
   <div class="w-100 d-flex justify-content-center align-items-center">
-    <a :href="href" class="btn btn-danger px-5 py-2"><span class="small">{{ title }}</span></a>
+    <a :href="href" class="btn btn-danger btn-sm"><span class="small">{{ title }}</span></a>
   </div>
 </template>
 

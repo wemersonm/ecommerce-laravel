@@ -10,7 +10,7 @@
         <CardProduct :product="slide" :key="slide.name" class="w-100 d-flex justify-content-center" />
       </template>
     </SliderCard>
-    <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-5"></ButtonLink>
+    <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-4 my-md-5"></ButtonLink>
     <HorizontalBar />
   </div>
 </template>

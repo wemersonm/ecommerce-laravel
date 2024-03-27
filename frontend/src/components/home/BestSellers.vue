@@ -5,6 +5,9 @@
       <CardProduct :product="slide" class='d-flex justify-content-center w-100' />
     </template>
   </SliderCard>
+  <ButtonLink href="/flash-sales" title="Ver Todos Produtos" class="my-4 my-md-5"></ButtonLink>
+  
+
 
 </template>
 
@@ -12,6 +15,7 @@
 import CardProduct from '../cards/CardProduct.vue';
 import SliderCard from '../utils/SliderCard.vue';
 import HeaderSection from '../utils/HeaderSection.vue'
+import ButtonLink from '../utils/ButtonLink.vue';
 export default {
 
   data() {
@@ -98,7 +102,7 @@ export default {
   components: {
     HeaderSection,
     SliderCard,
-    CardProduct
+    CardProduct,ButtonLink
   },
 }
 </script>

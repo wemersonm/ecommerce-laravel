@@ -4,9 +4,11 @@
       <NameSection :name="headerSection.name ?? 'Seção'" />
     </div>
     <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-      <div class="fw-bold order-1 order-sm-0">
-        <span class="responsive-font">{{ headerSection.title ?? 'Titulo' }}</span>
-      </div>
+      <template v-if="headerSection.title">
+        <div class="fw-bold order-1 order-sm-0">
+          <span class="responsive-font">{{ headerSection.title }}</span>
+        </div>
+      </template>
       <div class="order-0 order-sm-1 m-auto">
         <slot name="middle"></slot>
       </div>

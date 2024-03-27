@@ -5,26 +5,26 @@
         <TopHomepage />
       </section>
 
-      <section class="container-xxl mt-5">
+      <section class="container-xxl mt-3 mt-md-5">
         <FlashSales />
       </section>
 
-      <section class="container-xxl mt-5">
+      <section class="container-xxl mt-3 mt-md-5">
         <Categories />
       </section>
 
-      <section class="container-xxl mt-5">
+      <section class="container-xxl mt-3 mt-md-5">
         <BestSellers />
       </section>
 
-      <section class="container-xxl my-5">
+      <section class="container-xxl mt-3 mt-md-5">
         <OfferBanner />
       </section>
 
-      <section class="container-xxl my-5">
+      <section class="container-xxl  mt-3 mt-md-5">
         <OurProducts />
       </section>
-      <section class="container-xxl my-5">
+      <section class="container-xxl  mt-3 mt-md-5">
         <ServiceAdvantages />
       </section>
     </template>

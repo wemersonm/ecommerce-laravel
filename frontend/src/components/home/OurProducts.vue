@@ -1,13 +1,15 @@
 <template>
   <HeaderSection :headerSection="headerSection" class="mb-3" />
   <GridProduct :products="products" />
-  <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-5" />
+  <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-4 my-md-5" />
+  <HorizontalBar />
 </template>
 
 <script>
 import GridProduct from '../utils/GridProducts.vue';
 import ButtonLink from '../utils/ButtonLink.vue';
 import HeaderSection from '../utils/HeaderSection.vue';
+import HorizontalBar from '../utils/HorizontalBar.vue';
 
 export default {
   data() {
@@ -75,7 +77,7 @@ export default {
       ],
     };
   },
-  components: { GridProduct, HeaderSection, ButtonLink }
+  components: { GridProduct, HeaderSection, ButtonLink,HorizontalBar }
 }
 </script>
 

@@ -1,8 +1,10 @@
 <template>
-  <div class="card text-center flex-grow-1 p-1">
-    <img class="mx-auto" :src="category?.path" :alt="'category-' + category.name" />
-    <div class="card-body">
-      <p class="card-text">{{ category?.name }}</p>
+  <div>
+    <div class="card text-center flex-grow-1 p-1">
+      <img class="mx-auto" :src="category?.path" :alt="'category-' + category.name" />
+      <div class="card-text pt-2">
+        <p class="fw-bold p-0 m-0">{{ category?.name }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .card {
+  box-sizing: border-box !important;
 
   img {
     max-width: 80px;
@@ -27,10 +30,15 @@ export default {
 
   width: 100%;
   max-width: 200px;
+  height: 140px;
 
+  .card-text {
+    height: 100%;
 
-  max-height: 145px;
-  min-height: 145px;
+    p {
+      font-size: clamp(12px,calc(9px + 0.5vw),14px);
+    }
+  }
 
   &:hover {
     border-color: $red;
