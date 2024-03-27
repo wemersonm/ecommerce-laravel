@@ -1,7 +1,10 @@
 <template>
   <div class="d-flex align-items-end gap-1 align-items-end responsive-font">
+    <div class="me-2">
+      <i class="bi bi-stopwatch fs-5"></i>
+    </div>
     <div v-if="dias > 0">
-      <span>{{ dias }}</span>
+      <span>{{ dias }}D</span>
       <span>:</span>
     </div>
     <div>
@@ -53,7 +56,6 @@ export default {
         this.minutos = minutosRestantes < 10 ? '0' + minutosRestantes : minutosRestantes.toString();
         this.segundos = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes.toString();
 
-        let tempo = this.dias + ' - ' + this.horas + ':' + this.minutos + ':' + this.segundos;
       }, 1000);
     }
   },
