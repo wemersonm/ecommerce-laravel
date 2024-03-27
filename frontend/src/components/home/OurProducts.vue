@@ -1,6 +1,6 @@
 <template>
-  <HeaderSection :headerSection="headerSection" />
-  <GridProduct :products="products" class="mt-4" />
+  <HeaderSection :headerSection="headerSection" class="mb-3" />
+  <GridProduct :products="products" />
   <ButtonLink href="/products" title="Ver Todos os Produtos" class="my-5" />
 </template>
 
