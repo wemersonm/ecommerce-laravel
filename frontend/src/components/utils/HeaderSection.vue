@@ -3,7 +3,8 @@
     <div class="col-12">
       <NameSection :name="headerSection.name ?? 'Seção'" />
     </div>
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+    <div :class="['d-flex justify-content-between align-items-center flex-wrap',
+        { 'mt-3': headerSection.title || $slots.middle || headerSection.showNavigation }]">
       <template v-if="headerSection.title">
         <div class="fw-bold order-1 order-sm-0">
           <span class="responsive-font">{{ headerSection.title }}</span>
