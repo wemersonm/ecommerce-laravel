@@ -3,13 +3,16 @@
     <div class="col-12">
       <NameSection :name="headerSection.name ?? 'Seção'" />
     </div>
-    <div class="d-flex justify-content-between align-items-center mt-4">
-      <div class="fw-bold">
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+      <div class="fw-bold order-1 order-sm-0">
         <span class="responsive-font">{{ headerSection.title ?? 'Titulo' }}</span>
       </div>
-      <slot name="middle"></slot>
+      <div class="order-0 order-sm-1 m-auto">
+        <slot name="middle"></slot>
+      </div>
+      <div class="w-100 d-sm-none"></div>
       <template v-if="headerSection.showNavigation">
-        <NavigationSlider @prev="onPrevSlide" @next="onNextSlide" />
+        <NavigationSlider @prev="onPrevSlide" @next="onNextSlide" class="order-3" />
       </template>
     </div>
   </div>

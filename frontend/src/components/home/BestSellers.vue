@@ -2,7 +2,7 @@
   <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper" />
   <SliderCard :items="products" @swiper="onSwiper" :swiperBreakpoints="swiperBreakpoints">
     <template v-slot:item="{ slide }">
-      <CardProduct :product="slide" :customClass="['d-flex justify-content-center','w-100']" />
+      <CardProduct :product="slide" class='d-flex justify-content-center w-100' />
     </template>
   </SliderCard>
 

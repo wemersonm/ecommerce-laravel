@@ -1,5 +1,5 @@
 <template>
-  <div :class="[customClass, ]">
+  <div :class="customClass">
     <VerticalCardProduct :product="product" :class="{ 'd-none': windowWidth < horizontalWhen }" />
     <HorizontalCardProduct :product="product" @buyProduct="buyProduct"
       :class="[{ 'd-none': windowWidth >= horizontalWhen }]" />

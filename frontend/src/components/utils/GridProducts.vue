@@ -1,6 +1,7 @@
 <template>
   <div :class="{ 'row g-3': true, ['row-cols-' + cols]: true, }" ref="containerGrid">
-    <CardProduct :customClass="['col d-flex justify-content-center']" v-for="(product, index) in products" :product="product" :key="index" />
+    <CardProduct class="['col d-flex justify-content-center']" v-for="(product, index) in products" :product="product"
+      :key="index" />
   </div>
 </template>
 

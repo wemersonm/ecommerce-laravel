@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderSection :headerSection="headerSection" class="mb-3" :swiper="swiper">
-      <template v-slot:middle>
+      <template v-slot:middle >
         <CountDown />
       </template>
     </HeaderSection>
