@@ -55,8 +55,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL_SERVER', 'http://localhost:8000'),
-    'client' => env('APP_URL_CLIENT', 'http://localhost:5173'),
+    'url' => env('APP_URL_SERVER'),
+    'client' => env('APP_URL_CLIENT'),
 
 
     'asset_url' => env('ASSET_URL'),

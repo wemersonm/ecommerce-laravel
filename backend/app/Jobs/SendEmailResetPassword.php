@@ -36,7 +36,7 @@ class SendEmailResetPassword implements ShouldQueue
             Mail::to($this->user)->send(new ResetPasswordEmail($this->user, $this->token));
 
         } catch (\Exception $e) {
-            Log::info('vindo do job: ' . $e->getMessage());
+            Log::info('Jobs/' . class_basename($this) . $e->getMessage());
         }
     }
 }

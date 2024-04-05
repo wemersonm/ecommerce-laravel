@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,5 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/produto/{name}/option/{brand}', function (Request $request) {
-
-
+Route::get('/', function (Request $request) {
 });

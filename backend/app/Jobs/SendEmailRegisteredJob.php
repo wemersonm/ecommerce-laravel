@@ -2,15 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Mail\UserRegisteredEmail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Mail\UserRegisteredEmail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class SendEmailRegisteredJob implements ShouldQueue
 {
@@ -30,6 +31,12 @@ class SendEmailRegisteredJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user)->queue(new UserRegisteredEmail($this->user->name));
+        try {
+            Mail::to($this->user)->send(new UserRegisteredEmail($this->user->name));
+
+        } catch (\Exception $e) {
+            Log::info('Jobs/' . class_basename($this) . $e->getMessage());
+        }
+
     }
 }
