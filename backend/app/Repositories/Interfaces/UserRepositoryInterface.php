@@ -7,9 +7,9 @@ use App\Models\User;
 interface UserRepositoryInterface
 {
   public function updateUser(User $user, array $data);
-  public function createEmailReset(string $new_email);
+  public function createEmailReset(string $email, string $new_email, string $token);
   public function emailExist(string $new_email);
-  public function validateToken(string $token, string $new_email);
+  public function validateToken(string $token, string $current_email);
 
   public function createUser(array $data);
 

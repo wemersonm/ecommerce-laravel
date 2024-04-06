@@ -6,12 +6,12 @@ use App\Events\ChangeEmail;
 use App\Exceptions\EmailAlreadyExistExeception;
 use App\Exceptions\EmailSameRegisteredException;
 use App\Exceptions\TokenOrEmailChangeEmailInvalidException;
-use Throwable;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\PasswordInvalidException;
 use App\Exceptions\CurrentPasswordInvalidException;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Throwable;
 
 class MeService
 {
@@ -47,7 +47,6 @@ class MeService
 
     }
   }
-
   public function changePassword(array $data)
   {
     try {
@@ -63,7 +62,6 @@ class MeService
 
     }
   }
-
   public function editProfile(array $data)
   {
     try {
@@ -75,10 +73,14 @@ class MeService
       return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
     }
   }
-  public function changeEmail(string $new_email)
+  public function changeEmail(string $new_email, string $password)
   {
     try {
       $user = auth()->user();
+
+      if (!Hash::check($password, $user->password)) {
+        throw new PasswordInvalidException();
+      }
       $userEmail = $user->email;
       if ($userEmail == $new_email) {
         throw new EmailSameRegisteredException;
@@ -86,9 +88,8 @@ class MeService
       if ($this->userRepository->emailExist($new_email)) {
         throw new EmailAlreadyExistExeception;
       }
-
-      $email_reset = $this->userRepository->createEmailReset($user->email);
-      event(new ChangeEmail($user, $email_reset->token));
+      $email_reset_instance = $this->userRepository->createEmailReset($userEmail, $new_email, rand(100000, 999999));
+      event(new ChangeEmail($user, $email_reset_instance->token));
       return response()->json([
         'success' => true,
         'message' => 'email send successfully',
@@ -96,20 +97,20 @@ class MeService
     } catch (Throwable $th) {
       return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
     }
-
   }
-  public function confirmChangeEmail(array $data)
+  public function confirmChangeEmail(string $token)
   {
     try {
-      $token_is_valid = $this->userRepository->validateToken($data['token'], $data['email']);
+      $user = auth()->user();
+      $token_is_valid = $this->userRepository->validateToken($token, $user->email);
       if (!$token_is_valid)
         throw new TokenOrEmailChangeEmailInvalidException;
 
-      if ($this->userRepository->emailExist($data['email'])) {
+      if ($this->userRepository->emailExist($token_is_valid['new_email'])) {
         throw new EmailAlreadyExistExeception;
       }
-      $updated = $this->editProfile(['email' => $data['email']]);
-
+      $updated = $this->editProfile(['email' => $token_is_valid['new_email']]);
+      // updated ? desabilitar o token de mudar senha.
       return response()->json([
         'success' => true,
         'message' => 'email updated successfully'

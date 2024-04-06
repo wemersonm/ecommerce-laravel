@@ -45,16 +45,15 @@ class MeController extends Controller
     {
         $data = $request->validate([
             'new_email' => ['required', 'email', 'confirmed'],
+            'password' => ['required',],
         ]);
-        dd($data);
-        return $this->meService->changeEmail($data['new_email']);
+        return $this->meService->changeEmail($data['new_email'], $data['password']);
     }
     public function confirmChangeEmail(Request $request)
     {
         $data = $request->validate([
             'token' => ['required'],
-            'email' => ['required', 'email'],
         ]);
-        return $this->meService->confirmChangeEmail($data);
+        return $this->meService->confirmChangeEmail($data['token']);
     }
 }

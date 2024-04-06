@@ -11,7 +11,8 @@ class ResetEmail extends Model
 
     protected $table = 'email_reset_tokens';
     protected $fillable = [
-        'email',
+        'current_email',
+        'new_email',
         'token',
     ];
 

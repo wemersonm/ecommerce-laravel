@@ -13,18 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -42,13 +30,14 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
         route::get('/', 'index')->name('index');
-        route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
-        route::post('/change-password', 'changePassword')->name('change-password');
-        route::put('/profile', 'edit')->name('edit');
-        route::post('/change-email', 'changeEmail')->name('change-email');
-        route::patch('/confirm-change-email', 'confirmChangeEmail')->name('confirm-change-email');
 
+        route::post('/password', 'notifyChangePassword')->name('notify-change-password');
+        route::put('/password', 'changePassword')->name('change-password');
 
+        route::put('/', 'edit')->name('edit');
+
+        route::post('/email', 'notifyChangeEmail')->name('notify-change-email');
+        route::put('/email', 'changeEmail')->name('change-email');
     });
 
     Route::group(['controller' => FavoritesController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {

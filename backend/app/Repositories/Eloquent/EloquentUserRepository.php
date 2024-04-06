@@ -11,19 +11,19 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 class EloquentUserRepository implements UserRepositoryInterface
 {
 
-
   public function updateUser(User $user, array $data)
   {
     $user->fill($data);
     $updated = $user->save();
     return $updated ? $user : null;
   }
-  public function createEmailReset(string $new_email)
+  public function createEmailReset(string $email, string $new_email, string $token)
   {
     return ResetEmail::create(
       [
-        'email' => $new_email,
-        'token' => Str::random(120),
+        'current_email' => $email,
+        'new_email' => $new_email,
+        'token' => $token,
       ]
     );
   }
@@ -32,16 +32,15 @@ class EloquentUserRepository implements UserRepositoryInterface
     return User::where('email', $new_email)->first();
   }
 
-  public function validateToken(string $token, string $new_email)
+  public function validateToken(string $token, string $current_email)
   {
-    $token = ResetEmail::where('token', $token)->where('email', $new_email)->first();
+    $token = ResetEmail::where('token', $token)->where('current_email', $current_email)->first();
     return $token;
   }
 
 
   public function createUser(array $data)
   {
-
     return User::create($data);
   }
 
