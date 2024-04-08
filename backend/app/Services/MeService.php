@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
+use App\Exceptions\DiscountCuponAlreadyAppliedExcepion;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Throwable;
 use App\Events\ChangeEmail;
-use App\Exceptions\EmailAlreadyExistExeception;
-use App\Exceptions\EmailSameRegisteredException;
-use App\Exceptions\TokenOrEmailChangeEmailInvalidException;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\PasswordInvalidException;
+use App\Exceptions\EmailAlreadyExistExeception;
+use App\Exceptions\EmailSameRegisteredException;
 use App\Exceptions\CurrentPasswordInvalidException;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Exceptions\TokenOrEmailChangeEmailInvalidException;
 
 class MeService
 {
@@ -28,9 +31,10 @@ class MeService
         'token' => request()->bearerToken(),
         'type' => 'Bearer',
       );
+      $cookie = cookie('USR_LG',)
       return (new UserResouce(auth()->user()))->additional(['authorization' => $authorization]);
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+      return $this->responseError($th, 'error at get user');
     }
   }
 
@@ -43,8 +47,7 @@ class MeService
       }
       return response()->json(['valid' => true]);
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
-
+      return $this->responseError($th, 'error at confirm password');
     }
   }
   public function changePassword(array $data)
@@ -58,7 +61,7 @@ class MeService
       $user->save();
       return new UserResouce($user);
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+      return $this->responseError($th, 'error at change password');
 
     }
   }
@@ -70,7 +73,8 @@ class MeService
       $updated = $this->userRepository->updateUser($user, $data);
       return new UserResouce($updated);
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+      return $this->responseError($th, 'error at edit user');
+
     }
   }
   public function changeEmail(string $new_email, string $password)
@@ -95,7 +99,8 @@ class MeService
         'message' => 'email send successfully',
       ], 200);
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+      return $this->responseError($th, 'error at change email');
+
     }
   }
   public function confirmChangeEmail(string $token)
@@ -117,15 +122,19 @@ class MeService
       ], 200);
 
     } catch (Throwable $th) {
-      return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+      return $this->responseError($th, 'error at confirm change email');
     }
   }
-  public function responseError(string $error, string $message, int $code = 400, $data = [])
+  public function responseError($th, string $message = "", $data = [])
   {
+    $code =
+      $th instanceof HttpException ?
+      $th->getStatusCode() :
+      ($th->statusCode ?? 500);
     return response()->json([
-      'error' => $error,
-      'message' => $message,
+      'error' => class_basename($th),
+      'message' => !empty($th->getMessage()) ? $th->getMessage() : $message,
       'data' => $data,
-    ], $code);
+    ], $code ?? 500);
   }
 }

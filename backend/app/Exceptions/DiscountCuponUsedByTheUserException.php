@@ -7,7 +7,7 @@ use Exception;
 class DiscountCuponUsedByTheUserException extends Exception
 {
     protected $message = "discount cupon used by the user";
-    public int $statusCode = 400;
+    public int $statusCode = 409;
 
     public function render()
     {
