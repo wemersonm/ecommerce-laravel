@@ -7,7 +7,7 @@ use Exception;
 class CurrentPasswordInvalidException extends Exception
 {
     protected $message = 'current password invalid';
-    public int $statusCode = 400;
+    public int $statusCode = 403;
 
     public function render()
     {

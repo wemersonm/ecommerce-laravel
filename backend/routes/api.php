@@ -31,6 +31,8 @@ Route::prefix('v1')->group(function () {
     Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
         route::get('/', 'index')->name('index');
 
+        route::post('/confirm-password', 'confirmPassword')->name('confirm-password');
+
         route::post('/password', 'notifyChangePassword')->name('notify-change-password');
         route::put('/password', 'changePassword')->name('change-password');
 

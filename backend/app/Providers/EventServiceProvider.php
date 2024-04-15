@@ -30,9 +30,10 @@ class EventServiceProvider extends ServiceProvider
         ForgotPassword::class => [
             SendNotificationForgotPassword::class,
         ],
-        ChangeEmail::class => [
-            SendNotificationChangeEmail::class,
-        ]
+        'App\Events\ChangeEmail' => [
+            'App\Listeners\SendNotificationChangeEmail',
+        ],
+
 
     ];
 

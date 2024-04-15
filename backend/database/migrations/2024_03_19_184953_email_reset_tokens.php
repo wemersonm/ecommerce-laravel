@@ -12,9 +12,10 @@ return new class extends Migration {
     {
         Schema::create('email_reset_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('email', 255);
+            $table->string('email', 400);
             $table->string('token', 255);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
         });
     }
 

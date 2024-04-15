@@ -58,6 +58,7 @@ return [
     'url' => env('APP_URL_SERVER'),
     'client' => env('APP_URL_CLIENT'),
 
+    'call_center_page' => env('CALL_CENTER_PAGE'),
 
     'asset_url' => env('ASSET_URL'),
 
@@ -113,7 +114,7 @@ return [
     |
     */
 
-    'faker_locale' => 'pt_BT',
+    'faker_locale' => 'pt_BR',
 
     /*
     |--------------------------------------------------------------------------

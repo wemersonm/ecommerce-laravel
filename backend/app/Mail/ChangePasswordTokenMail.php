@@ -4,13 +4,14 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ChangeEmailMail extends Mailable 
+class ChangePasswordTokenMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,10 +19,10 @@ class ChangeEmailMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public $user,
-        public string $token,
+        private User $user,
+        private $token
     ) {
-        //
+
     }
 
     /**
@@ -30,7 +31,7 @@ class ChangeEmailMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Troca de Email",
+            subject: 'Código de verificação',
         );
     }
 
@@ -40,12 +41,12 @@ class ChangeEmailMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.ChangeEmailToken',
+            view: 'mail.ChangePasswordToken',
             with: [
-                "name" => $this->user->name,
-                "token" => $this->token,
-                "subject" => $this->subject,
-            ],
+                'token' => $this->token,
+                'name' => $this->user->name,
+                'subject' => $this->subject,
+            ]
         );
     }
 

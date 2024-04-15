@@ -4,10 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class EmailSameRegisteredException extends Exception
+class TokenValidationInvalidException extends Exception
 {
-    protected $message = 'Email same registered';
-    public int $statusCode = 404;
+
+    protected $message = 'token invalid or used or expired';
+    public int $statusCode = 422;
 
     public function render()
     {

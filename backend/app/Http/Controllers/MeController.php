@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\EditProfileRequest;
+use App\Http\Requests\changeEmailRequest;
 use App\Services\MeService;
 use Illuminate\Http\Request;
+use App\Http\Requests\EditProfileRequest;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\NotifyChangePasswordRequest;
 
 class MeController extends Controller
 {
@@ -16,6 +18,7 @@ class MeController extends Controller
         private MeService $meService,
     ) {
         $this->middleware("auth:sanctum");
+
     }
 
     public function index()
@@ -26,28 +29,32 @@ class MeController extends Controller
     public function confirmPassword(Request $request)
     {
         $data = $request->validate(['password' => ['required']]);
-        return $this->meService->confirmPassord($data['password']);
+        return $this->meService->confirmPassword($data['password']);
     }
 
+    public function notifyChangePassword()
+    {
+        return $this->meService->notifyChangePassword();
+    }
     public function changePassword(ChangePasswordRequest $request)
     {
         $data = $request->validated();
         return $this->meService->changePassword($data);
     }
-
     public function edit(EditProfileRequest $request)
     {
-        $data = $request->validated();
-        return $this->meService->editProfile($data);
+        $request_data = $request->validated();
+        return $this->meService->editUser($request_data);
     }
 
-    public function changeEmail(Request $request)
+    public function notifyChangeEmail()
     {
-        $data = $request->validate([
-            'new_email' => ['required', 'email', 'confirmed'],
-            'password' => ['required',],
-        ]);
-        return $this->meService->changeEmail($data['new_email'], $data['password']);
+        return $this->meService->notifyChangeEmail();
+    }
+    public function changeEmail(changeEmailRequest $request)
+    {
+        $request_data = $request->validated();
+        return $this->meService->changeEmail($request_data);
     }
     public function confirmChangeEmail(Request $request)
     {

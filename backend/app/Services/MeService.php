@@ -2,19 +2,18 @@
 
 namespace App\Services;
 
-use App\Exceptions\DiscountCuponAlreadyAppliedExcepion;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
-use App\Events\ChangeEmail;
+use App\Exceptions\ErrorSystem;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use App\Exceptions\PasswordInvalidException;
 use App\Exceptions\EmailAlreadyExistExeception;
-use App\Exceptions\EmailSameRegisteredException;
-use App\Exceptions\CurrentPasswordInvalidException;
+use App\Exceptions\TokenValidationInvalidException;
+use App\Jobs\SendNotificationChangeEmailJob;
+use App\Jobs\SendNotificationChangePasswordJob;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Exceptions\TokenOrEmailChangeEmailInvalidException;
 
 class MeService
 {
@@ -28,101 +27,95 @@ class MeService
   {
     try {
       $authorization = array(
+        'auth' => true,
         'token' => request()->bearerToken(),
         'type' => 'Bearer',
       );
-      $cookie = cookie('USR_LG',)
-      return (new UserResouce(auth()->user()))->additional(['authorization' => $authorization]);
+      $user = auth()->user();
+      $cookie = Cookie::forever('user_token', $authorization['token'], '/', '', true, true, false, 'strict');
+      return $this->responseSuccess(['data' => ['name' => $user->name, 'email' => $user->email], 'authorization' => $authorization], 200)->cookie($cookie);
     } catch (Throwable $th) {
-      return $this->responseError($th, 'error at get user');
+      return $this->responseError($th, 'error when getting authenticated user');
     }
   }
-
-  public function confirmPassord(string $password)
+  public function confirmPassword(string $password)
   {
     try {
-      $user_password = request()->user()->password;
+      $user_password = auth()->user()->password;
       if (!Hash::check($password, $user_password)) {
         throw new PasswordInvalidException();
       }
-      return response()->json(['valid' => true]);
+      return $this->responseSuccess(['auth' => true, 'message' => 'password is valid'], 200);
     } catch (Throwable $th) {
       return $this->responseError($th, 'error at confirm password');
     }
   }
-  public function changePassword(array $data)
+  public function notifyChangePassword()
   {
     try {
       $user = auth()->user();
-      if (!Hash::check($data['current_password'], $user->password)) {
-        throw new CurrentPasswordInvalidException();
-      }
-      $user->password = Hash::make($data['new_password']);
-      $user->save();
-      return new UserResouce($user);
+      $this->userRepository->deleteAllPasswordResetToken($user->email);
+      $password_reset_token = $this->userRepository->createPasswordResetToken($user->email);
+      SendNotificationChangePasswordJob::dispatch($user, $password_reset_token, ['mail'])->onQueue('user-data-change');
+      return $this->responseSuccess(['message' => 'code sent with success', 'send_to' => $user->email], 200);
+    } catch (Throwable $th) {
+      return $this->responseError($th, 'error at send notification of change password');
+    }
+  }
+  public function changePassword(array $request_data)
+  {
+    try {
+      $user = auth()->user();
+      $password_reset_token_valid = $this->userRepository->validatePasswordResetToken($user->email, $request_data['token']);
+      !$password_reset_token_valid ? throw new TokenValidationInvalidException() : null;
+      !Hash::check($request_data['current_password'], $user->password) ? throw new PasswordInvalidException() : null;
+      $password_updated = $this->userRepository->updatePassword($user->email, $request_data['new_password']);
+      $password_updated == 1 ?
+        $this->userRepository->deleteAllPasswordResetToken($user->email) : throw new ErrorSystem();
+      return $this->responseSuccess(['message' => 'password updated with success'], 200);
     } catch (Throwable $th) {
       return $this->responseError($th, 'error at change password');
-
     }
   }
-  public function editProfile(array $data)
+  public function editUser(array $request_data)
   {
     try {
-      /** @var \App\Models\User $user */
       $user = auth()->user();
-      $updated = $this->userRepository->updateUser($user, $data);
-      return new UserResouce($updated);
+      $user_updated = $this->userRepository->updateDataUser($user->email, $request_data);
+      return $this->responseSuccess(['data' => new UserResouce($user_updated)], 200);
     } catch (Throwable $th) {
       return $this->responseError($th, 'error at edit user');
-
     }
   }
-  public function changeEmail(string $new_email, string $password)
+
+  public function notifyChangeEmail()
   {
     try {
       $user = auth()->user();
-
-      if (!Hash::check($password, $user->password)) {
-        throw new PasswordInvalidException();
-      }
-      $userEmail = $user->email;
-      if ($userEmail == $new_email) {
-        throw new EmailSameRegisteredException;
-      }
-      if ($this->userRepository->emailExist($new_email)) {
-        throw new EmailAlreadyExistExeception;
-      }
-      $email_reset_instance = $this->userRepository->createEmailReset($userEmail, $new_email, rand(100000, 999999));
-      event(new ChangeEmail($user, $email_reset_instance->token));
-      return response()->json([
-        'success' => true,
-        'message' => 'email send successfully',
-      ], 200);
+      $this->userRepository->deleteAllEmailResetToken($user->email);
+      $email_reset_token = $this->userRepository->createEmailResetToken($user->email);
+      SendNotificationChangeEmailJob::dispatch($user, $email_reset_token->token, ['mail'])->onQueue('user-data-change');
+      return $this->responseSuccess(['message' => 'code sent with success', 'send_to' => $user->email], 200);
+    } catch (Throwable $th) {
+      return $this->responseError($th, 'error when sent notification change email');
+    }
+  }
+  public function changeEmail(array $request_data)
+  {
+    try {
+      $user = auth()->user();
+      $email_reset_token_valid = $this->userRepository->validateEmailResetToken($user->email, $request_data['token']);
+      !$email_reset_token_valid ? throw new TokenValidationInvalidException() : null;
+      !Hash::check($request_data['password'], $user->password) ? throw new PasswordInvalidException() : null;
+      $user_email = $user->email;
+      $user_email == $request_data['new_email'] || $this->userRepository->verifyExistEmail($request_data['new_email']) ?
+        throw new EmailAlreadyExistExeception : null;
+      $user_email_updated = $this->userRepository->updateEmail($user_email, $request_data['new_email']);
+      !$user_email_updated ? throw new ErrorSystem : null;
+      $this->userRepository->deleteAllEmailResetToken($email_reset_token_valid->email);
+      return $this->responseSuccess(['message' => 'password changed successfully'], 200);
     } catch (Throwable $th) {
       return $this->responseError($th, 'error at change email');
-
-    }
-  }
-  public function confirmChangeEmail(string $token)
-  {
-    try {
-      $user = auth()->user();
-      $token_is_valid = $this->userRepository->validateToken($token, $user->email);
-      if (!$token_is_valid)
-        throw new TokenOrEmailChangeEmailInvalidException;
-
-      if ($this->userRepository->emailExist($token_is_valid['new_email'])) {
-        throw new EmailAlreadyExistExeception;
-      }
-      $updated = $this->editProfile(['email' => $token_is_valid['new_email']]);
-      // updated ? desabilitar o token de mudar senha.
-      return response()->json([
-        'success' => true,
-        'message' => 'email updated successfully'
-      ], 200);
-
-    } catch (Throwable $th) {
-      return $this->responseError($th, 'error at confirm change email');
     }
   }
   public function responseError($th, string $message = "", $data = [])
@@ -133,8 +126,13 @@ class MeService
       ($th->statusCode ?? 500);
     return response()->json([
       'error' => class_basename($th),
-      'message' => !empty($th->getMessage()) ? $th->getMessage() : $message,
+      'message' => $message ? $message : $th->getMessage(),
       'data' => $data,
     ], $code ?? 500);
+  }
+
+  public function responseSuccess(array $data, int $code)
+  {
+    return response()->json(array_merge(['success' => true], $data), $code);
   }
 }

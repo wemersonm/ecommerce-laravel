@@ -71,6 +71,15 @@ return [
             'after_commit' => false,
         ],
 
+
+        // QUEUES
+        // 'user-data-change' => [
+        //     'driver' => 'redis',
+        //     'connection' => 'default',
+        //     'queue' => 'user-data-change',
+        //     'after_commit' => false,
+        // ],
+
     ],
 
     /*
@@ -105,5 +114,9 @@ return [
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'failed_jobs',
     ],
+
+
+
+
 
 ];

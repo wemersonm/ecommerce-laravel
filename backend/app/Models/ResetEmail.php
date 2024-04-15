@@ -9,10 +9,11 @@ class ResetEmail extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
+
     protected $table = 'email_reset_tokens';
     protected $fillable = [
-        'current_email',
-        'new_email',
+        'email',
         'token',
     ];
 

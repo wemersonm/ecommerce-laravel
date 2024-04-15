@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class ChangePasswordRequest extends FormRequest
+class changeEmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +23,8 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'token' => ['required', 'numeric', 'digits:6'],
-            'current_password' => ['required',],
-            'new_password' => ['required', Password::min(8), 'max:32', 'confirmed'],
-
+            'new_email' => ['required', 'email', 'confirmed'],
+            'password' => ['required'],
         ];
     }
 }
