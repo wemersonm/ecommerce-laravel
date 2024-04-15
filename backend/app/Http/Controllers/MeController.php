@@ -56,11 +56,4 @@ class MeController extends Controller
         $request_data = $request->validated();
         return $this->meService->changeEmail($request_data);
     }
-    public function confirmChangeEmail(Request $request)
-    {
-        $data = $request->validate([
-            'token' => ['required'],
-        ]);
-        return $this->meService->confirmChangeEmail($data['token']);
-    }
 }
