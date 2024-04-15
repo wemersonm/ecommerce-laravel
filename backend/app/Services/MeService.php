@@ -21,7 +21,6 @@ class MeService
   public function __construct(
     private UserRepositoryInterface $userRepository,
   ) {
-
   }
   public function getUserAuthenticate()
   {
@@ -122,8 +121,7 @@ class MeService
   {
     $code =
       $th instanceof HttpException ?
-      $th->getStatusCode() :
-      ($th->statusCode ?? 500);
+      $th->getStatusCode() : ($th->statusCode ?? 500);
     return response()->json([
       'error' => class_basename($th),
       'message' => $message ? $message : $th->getMessage(),

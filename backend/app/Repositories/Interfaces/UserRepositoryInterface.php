@@ -10,10 +10,8 @@ interface UserRepositoryInterface
 {
   // public function updateUser(User $user, array $data);
   public function createEmailReset(string $email, string $new_email, string $token);
-  public function emailExist(string $new_email);
   public function validateToken(string $token, string $current_email);
 
-  public function createUser(array $data);
 
   public function validateTokenPasswordReset(string $email, string $token);
   public function deletePasswordReset(int $id);
@@ -21,12 +19,17 @@ interface UserRepositoryInterface
 
   // refactpor ....
 
+
+  public function emailExist(string $email): bool;
+
+  public function createUser(array $data): User;
+
   public function createPasswordResetToken(string $email): ResetPassword;
 
   public function validatePasswordResetToken(string $email, string $token): ResetPassword|null;
 
   public function updatePassword(string $email, string $password): int;
- 
+
   public function deletePasswordResetToken(int $id): int;
   public function deleteAllPasswordResetToken(string $email): int;
   public function updateDataUser(string $email, array $user_data): User;

@@ -34,7 +34,7 @@ class AuthController extends Controller
         return $this->authService->deleteSession();
     }
 
-    public function register(UserRegisterRequest $request)
+    public function register(Request $request)
     {
         $requestData = $request->validated();
         return $this->authService->createUser($requestData);

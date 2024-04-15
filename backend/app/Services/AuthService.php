@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use Throwable;
-use App\Models\User;
 use Illuminate\Support\Str;
-use App\Models\ResetPassword;
 use App\Events\ForgotPassword;
 use App\Events\UserRegistered;
 use App\Http\Resources\UserResouce;
@@ -24,7 +22,6 @@ class AuthService
   public function __construct(
     private UserRepositoryInterface $userRepository,
   ) {
-
   }
   public function createLogin(array $data)
   {
@@ -130,5 +127,4 @@ class AuthService
       'data' => $data,
     ], $code);
   }
-
 }

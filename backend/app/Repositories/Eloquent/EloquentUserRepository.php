@@ -11,8 +11,6 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
-
-
   public function createEmailReset(string $email, string $new_email, string $token)
   {
     return ResetEmail::create(
@@ -23,10 +21,7 @@ class EloquentUserRepository implements UserRepositoryInterface
       ]
     );
   }
-  public function emailExist(string $new_email)
-  {
-    return User::where('email', $new_email)->first();
-  }
+
 
   public function validateToken(string $token, string $current_email)
   {
@@ -35,10 +30,7 @@ class EloquentUserRepository implements UserRepositoryInterface
   }
 
 
-  public function createUser(array $data)
-  {
-    return User::create($data);
-  }
+
 
 
 
@@ -53,6 +45,18 @@ class EloquentUserRepository implements UserRepositoryInterface
 
 
   // .. refactor
+
+  public function emailExist(string $new_email): bool
+  {
+    return User::where('email', $new_email)->exists();
+  }
+
+
+  public function createUser(array $data): User
+  {
+    return User::create($data);
+  }
+
   public function createPasswordResetToken(string $email): ResetPassword
   {
     return ResetPassword::create([

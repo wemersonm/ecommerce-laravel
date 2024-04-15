@@ -9,6 +9,7 @@ use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserRegistrationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
 
     Route::group(['controller' => AuthController::class, 'as' => 'auth'], function () {
-        route::post('/login', 'store')->name('store');
+
+        route::post('/', 'store')->name('store');
         route::post('/logout', 'destroy')->name('destroy');
-        route::post('/register', 'register')->name('register');
         route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
         route::post('/reset-password', 'resetPassword')->name('reset-password');
 
+    });
+
+    Route::group(['controller' => UserRegistrationController::class,], function () {
+        route::post('/register', 'store')->name('register');
     });
 
     Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
