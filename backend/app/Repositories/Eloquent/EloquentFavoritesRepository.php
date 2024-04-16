@@ -7,10 +7,9 @@ use App\Repositories\Interfaces\FavoritesRepositoryInterface;
 
 class EloquentFavoritesRepository implements FavoritesRepositoryInterface
 {
-  public function getAllProductFavorites(User $user)
-  {
-  
-    return $user->favorites()->with('product.brand')->latest()->get();
-  }
+    public function getAllProductFavorites(User $user)
+    {
 
+        return $user->favorites()->with('product.brand')->latest()->get();
+    }
 }

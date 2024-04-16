@@ -27,13 +27,13 @@ class AddAddressRequest extends FormRequest
             "Recipient" => ['required', 'min:4', 'max:220'],
             "cep" => ['required', 'size:8'],
             "street" => ['required', 'max:300'],
-            "number" => ['sometimes','max:100'],
+            "number" => ['sometimes', 'max:100'],
             "complement" => ['sometimes', 'max:300'],
             "neighborhood" => ['required', 'max:225'],
             "city" => ['required', 'max:170'],
             "uf" => ['required', 'size:2'],
-            "reference" => ['sometimes','max:320'],
-            "main" => ['sometimes','boolean'],
+            "reference" => ['sometimes', 'max:320'],
+            "main" => ['sometimes', 'boolean'],
         ];
     }
 }

@@ -25,7 +25,7 @@ class AddProductAtCartRequest extends FormRequest
     {
         return [
             'id' => ['numeric'],
-            'quantity' => ['sometimes','numeric'],
+            'quantity' => ['sometimes', 'numeric'],
         ];
     }
 

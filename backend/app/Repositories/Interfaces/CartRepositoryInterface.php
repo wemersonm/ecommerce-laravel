@@ -37,5 +37,4 @@ interface CartRepositoryInterface
     public function setDiscountCuponValuesInCartItem(array $idsAplicables, array $idsCartItem, string $nameDiscountCupon);
 
     public function deleteItemFromCart(CartItem $item);
-
 }

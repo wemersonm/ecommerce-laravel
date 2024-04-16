@@ -27,7 +27,6 @@ class AuthController extends Controller
     {
         $input = $request->validated();
         return $this->authService->createLogin(['email' => $input['email'], 'password' => $input['password']]);
-
     }
     public function destroy()
     {
@@ -38,7 +37,6 @@ class AuthController extends Controller
     {
         $requestData = $request->validated();
         return $this->authService->createUser($requestData);
-
     }
 
     public function forgotPassword(ForgotPasswordRequest $request)
@@ -52,7 +50,4 @@ class AuthController extends Controller
         $requestData = $request->validated();
         return $this->authService->resetPassword($requestData);
     }
-
-
-
 }

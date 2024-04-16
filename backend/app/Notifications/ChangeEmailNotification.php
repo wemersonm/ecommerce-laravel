@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ChangeEmailNotification extends Notification 
+class ChangeEmailNotification extends Notification
 {
     use Queueable;
 
@@ -53,5 +53,4 @@ class ChangeEmailNotification extends Notification
             //
         ];
     }
-
 }

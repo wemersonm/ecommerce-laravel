@@ -8,16 +8,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ReviewService
 {
-  public function __construct(
-    private ReviewRepositoryInterface $reviewRepository
-  ) {
+    public function __construct(
+        private ReviewRepositoryInterface $reviewRepository
+    ) {
+    }
 
-  }
-
-  public function getReviewsFromProduct(int $id, int $items_per_page)
-  {
-    $reviews = $this->reviewRepository->getReviewsFromProduct($id, $items_per_page);
-    return ReviewsResource::collection($reviews);
-  }
-
+    public function getReviewsFromProduct(int $id, int $items_per_page)
+    {
+        $reviews = $this->reviewRepository->getReviewsFromProduct($id, $items_per_page);
+        return ReviewsResource::collection($reviews);
+    }
 }

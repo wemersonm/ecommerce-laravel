@@ -10,7 +10,7 @@ use App\Http\Requests\UserRegistrationRequest;
 class UserRegistrationController extends Controller
 {
     public function __construct(
-        private UserService $userService,
+        private  $userService,
     ) {
         $this->middleware("guest");
     }

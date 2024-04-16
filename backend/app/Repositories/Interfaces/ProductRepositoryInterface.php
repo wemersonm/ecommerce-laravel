@@ -27,5 +27,4 @@ interface ProductRepositoryInterface
     public function getProductBySlug(string $slug);
 
     public function getInfoProduct(Product $product);
-
 }

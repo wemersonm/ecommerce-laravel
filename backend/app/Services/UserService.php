@@ -22,8 +22,7 @@ class AuthService
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-    )
-    {
+    ) {
     }
 
     public function userRegistration(array $request_data)

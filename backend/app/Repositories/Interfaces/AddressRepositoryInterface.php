@@ -19,6 +19,4 @@ interface AddressRepositoryInterface
     public function deleteAddress(User $user, int $id);
 
     public function setAddressToMain(User $user, int $id);
-
-
 }

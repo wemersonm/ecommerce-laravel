@@ -27,5 +27,4 @@ class AuthLoginRequest extends FormRequest
 
         ];
     }
-   
 }

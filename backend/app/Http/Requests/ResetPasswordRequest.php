@@ -31,5 +31,4 @@ class ResetPasswordRequest extends FormRequest
             "token" => ["required", "string", "size:75"],
         ];
     }
-   
 }
