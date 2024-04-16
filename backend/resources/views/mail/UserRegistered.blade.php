@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang=pt-BR>
 
 <head>
     <title>Bem-vindo à MyStore !</title>
@@ -7,6 +7,11 @@
         /* Estilos CSS para o e-mail */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+            opacity: 0.8;
+            max-width: 670px;
+            width: 100%;
+            margin: 20px auto;
         }
 
         .container-email {
@@ -30,7 +35,7 @@
 
         .content .btn-link {
             padding: 6px 10px;
-            background-color: #888;
+            background-color: darkred;
             color: #fff;
             border-radius: 6px;
             text-decoration: none;
@@ -48,12 +53,11 @@
 <body>
     <div class="container-email">
         <div class="header">
-            <h1>Bem-vindo à MyStore</h1>
+            <h1>Bem-vindo à {{ $app_name}}</h1>
         </div>
         <div class="content">
-            <p>Prezado(a) <strong>{{ $name ?? 'Nome' }}</strong>,</p>
-            <h3>Seja muito bem-vindo(a) à nossa loja virtual! É um prazer tê-lo(a) como parte da nossa comunidade de
-                clientes.</h3>
+            <p>Prezado(a) <strong>{{ $name ?? 'Cliente' }}</strong>,</p>
+            <h3>Seja muito bem-vindo(a) à nossa loja! É um prazer tê-lo(a) como parte da nossa comunidade de clientes.</h3>
             <p>Estamos animados por você ter escolhido a nossa loja para suas necessidades de compras online.</p>
             <p>1. <strong>Produtos de Qualidade:</strong> Oferecemos uma ampla variedade de produtos de alta qualidade
                 para atender às suas necessidades.</p>
@@ -63,13 +67,13 @@
                 novidades.</p>
             <p>Aproveite para explorar nosso site e descobrir todos os produtos incríveis que temos para oferecer. Para
                 começar a navegar</p>
-            <a class="btn-link" href={{ config('app.url') }} target="_blank">clique aqui</a>
+            <a class="btn-link" href={{ config('app.client') }} target="_blank">Ir para a Loja</a>
             <p>Agradecemos por escolher a nossa loja e estamos à disposição para ajudá-lo(a) em sua jornada de compras
                 online.</p>
         </div>
         <div class="footer">
-            <p>Atenciosamente,<br>{{ config('mail.from.name') }}</p>
-            <p>Entre em contato conosco: {{ config('mail.from.address') }}</p>
+            <p>Atenciosamente,<br>{{ $app_name }}</p>
+            <p>Entre em contato conosco: {{ $contact }}</p>
         </div>
     </div>
 </body>

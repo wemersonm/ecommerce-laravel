@@ -19,7 +19,6 @@ class UserRegisteredEmail extends Mailable
     public function __construct(
         public string $name,
     ) {
-
     }
 
     /**
@@ -28,7 +27,7 @@ class UserRegisteredEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bem vindo a MyStore',
+            subject: 'Bem vindo a ' . config('app.name'),
         );
     }
 
@@ -41,6 +40,8 @@ class UserRegisteredEmail extends Mailable
             view: 'mail.UserRegistered',
             with: [
                 'name' => $this->name,
+                'app_name' => config('app.name'),
+                'contact' => config('mail.from.address')
             ]
         );
     }

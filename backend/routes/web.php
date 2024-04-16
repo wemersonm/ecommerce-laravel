@@ -21,11 +21,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function (Request $request) {
-
-    return User::query()->update([
-        'password' => Hash::make('password'),
-    ]);
-
-    //   Mail::to($user)->send(new ChangePasswordTokenMail($user,153333));
-
+   
 });

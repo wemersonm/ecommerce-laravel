@@ -21,15 +21,10 @@ interface UserRepositoryInterface
 
 
     public function emailExist(string $email): bool;
-
     public function createUser(array $data): User;
-
     public function createPasswordResetToken(string $email): ResetPassword;
-
     public function validatePasswordResetToken(string $email, string $token): ResetPassword|null;
-
     public function updatePassword(string $email, string $password): int;
-
     public function deletePasswordResetToken(int $id): int;
     public function deleteAllPasswordResetToken(string $email): int;
     public function updateDataUser(string $email, array $user_data): User;

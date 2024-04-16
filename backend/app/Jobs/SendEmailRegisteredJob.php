@@ -23,9 +23,9 @@ class SendEmailRegisteredJob implements ShouldQueue
     public function __construct(
         private User $user,
     ) {
-
     }
-
+    public $tries = 3;
+    public $backoff = 5;
     /**
      * Execute the job.
      */
@@ -33,10 +33,8 @@ class SendEmailRegisteredJob implements ShouldQueue
     {
         try {
             Mail::to($this->user)->send(new UserRegisteredEmail($this->user->name));
-
         } catch (\Exception $e) {
             Log::info('Jobs/' . class_basename($this) . $e->getMessage());
         }
-
     }
 }
