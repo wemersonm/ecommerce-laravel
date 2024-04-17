@@ -15,8 +15,8 @@ class EloquentUserRepository implements UserRepositoryInterface
 
     public function emailExist(string $new_email, bool $model = false): bool|User
     {
-        return $model ?  User::where('email', $new_email)->first() :
-        User::where('email', $new_email)->exists();
+        return $model ? User::where('email', $new_email)->first() :
+            User::where('email', $new_email)->exists();
     }
 
 
@@ -52,9 +52,9 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         return ResetPassword::destroy($id);
     }
-    public function deleteAllPasswordResetToken(string $email): int
+    public function deleteAllPasswordResetToken(string $email, string|int $type): int
     {
-        return ResetPassword::where('email', $email)->delete();
+        return ResetPassword::where('email', $email)->where('type', $type)->delete();
     }
 
     public function updateDataUser(string $email, array $user_data): User
@@ -65,9 +65,13 @@ class EloquentUserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function createEmailResetToken(string $email): ResetEmail
+    public function createEmailResetToken(string $email, string|int $type): ResetEmail
     {
-        return ResetEmail::create(['email' => $email, 'token' => rand(100000, 999999)]);
+        $token =
+            ($type == 1 || $type == 'NUMERIC') ? rand(100000, 999999) :
+            ($type == 2 || $type == 'HASH') ? Str::random(32) : null;
+
+        return ResetEmail::create(['email' => $email, 'token' => $token, 'type' => $type]);
     }
     public function verifyExistEmail(string $email): bool
     {
@@ -87,8 +91,8 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         return ResetEmail::destroy($id);
     }
-    public function deleteAllEmailResetToken(string $email): int
+    public function deleteAllEmailResetToken(string $email, string|int $type): int
     {
-        return ResetEmail::where('email', $email)->delete();
+        return ResetEmail::where('email', $email)->where('type', $type)->delete();
     }
 }

@@ -43,7 +43,7 @@ class MeService
             if (!Hash::check($password, $user_password)) {
                 throw new PasswordInvalidException();
             }
-            return $this->responseSuccess(['auth' => true, 'message' => 'password is valid'], 200);
+            return $this->responseSuccess(['message' => 'password is valid'], 200);
         } catch (Throwable $th) {
             return $this->responseError($th, 'error at confirm password');
         }
@@ -52,8 +52,8 @@ class MeService
     {
         try {
             $user = auth()->user();
-            $this->userRepository->deleteAllPasswordResetToken($user->email);
-            $password_reset_token = $this->userRepository->createPasswordResetToken($user->email);
+            $this->userRepository->deleteAllPasswordResetToken($user->email, 'NUMERIC');
+            $password_reset_token = $this->userRepository->createPasswordResetToken($user->email, 'NUMERIC');
             SendNotificationChangePasswordJob::dispatch($user, $password_reset_token, ['mail'])->onQueue('user-data-change');
             return $this->responseSuccess(['message' => 'code sent with success', 'send_to' => $user->email], 200);
         } catch (Throwable $th) {
@@ -69,7 +69,7 @@ class MeService
             !Hash::check($request_data['current_password'], $user->password) ? throw new PasswordInvalidException() : null;
             $password_updated = $this->userRepository->updatePassword($user->email, $request_data['new_password']);
             $password_updated == 1 ?
-                $this->userRepository->deleteAllPasswordResetToken($user->email) : throw new ErrorSystem();
+                $this->userRepository->deleteAllPasswordResetToken($user->email, 'NUMERIC') : throw new ErrorSystem();
             return $this->responseSuccess(['message' => 'password updated with success'], 200);
         } catch (Throwable $th) {
             return $this->responseError($th, 'error at change password');
@@ -90,8 +90,8 @@ class MeService
     {
         try {
             $user = auth()->user();
-            $this->userRepository->deleteAllEmailResetToken($user->email);
-            $email_reset_token = $this->userRepository->createEmailResetToken($user->email);
+            $this->userRepository->deleteAllEmailResetToken($user->email, 'NUMERIC');
+            $email_reset_token = $this->userRepository->createEmailResetToken($user->email, 'NUMERIC');
             SendNotificationChangeEmailJob::dispatch($user, $email_reset_token->token, ['mail'])->onQueue('user-data-change');
             return $this->responseSuccess(['message' => 'code sent with success', 'send_to' => $user->email], 200);
         } catch (Throwable $th) {
@@ -110,7 +110,7 @@ class MeService
                 throw new EmailAlreadyExistExeception : null;
             $user_email_updated = $this->userRepository->updateEmail($user_email, $request_data['new_email']);
             !$user_email_updated ? throw new ErrorSystem : null;
-            $this->userRepository->deleteAllEmailResetToken($email_reset_token_valid->email);
+            $this->userRepository->deleteAllEmailResetToken($email_reset_token_valid->email, 'NUMERIC');
             return $this->responseSuccess(['message' => 'password changed successfully'], 200);
         } catch (Throwable $th) {
             return $this->responseError($th, 'error at change email');

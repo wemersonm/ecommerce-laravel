@@ -53,7 +53,7 @@ class AuthService
             if (!$email_exist) {
                 throw new EmailNotExistsException();
             }
-            $this->userRepository->deleteAllPasswordResetToken($email_exist->email);
+            $this->userRepository->deleteAllPasswordResetToken($email_exist->email, 'HASH');
             $token = $this->userRepository->createPasswordResetToken($email, 'HASH');
             SendNotificationResetPasswordJob::dispatch($email_exist, $token->token, ['mail'])->onQueue('user-data');
             return $this->responseSuccess(['message' => 'notification reset password sent successfully'], 200);
@@ -73,7 +73,7 @@ class AuthService
                 $password_reset_token_valid->email,
                 $request_data['password']
             );
-            $password_updated ? $tokens_deleted = $this->userRepository->deleteAllPasswordResetToken($password_reset_token_valid->email) : throw new ErrorSystem('erro when update password');
+            $password_updated ? $tokens_deleted = $this->userRepository->deleteAllPasswordResetToken($password_reset_token_valid->email, 'HASH') : throw new ErrorSystem('erro when update password');
             return $this->responseSuccess(['message' => 'password updated with success'], 200);
         } catch (Throwable $th) {
             return $this->responseError($th, 'erro when reset password');
