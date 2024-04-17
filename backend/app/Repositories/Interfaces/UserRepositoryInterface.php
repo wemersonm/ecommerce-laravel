@@ -8,21 +8,9 @@ use App\Models\User;
 
 interface UserRepositoryInterface
 {
-    // public function updateUser(User $user, array $data);
-    public function createEmailReset(string $email, string $new_email, string $token);
-    public function validateToken(string $token, string $current_email);
-
-
-    public function validateTokenPasswordReset(string $email, string $token);
-    public function deletePasswordReset(int $id);
-
-
-    // refactpor ....
-
-
-    public function emailExist(string $email): bool;
+    public function emailExist(string $email, bool $model = false): bool|User;
     public function createUser(array $data): User;
-    public function createPasswordResetToken(string $email): ResetPassword;
+    public function createPasswordResetToken(string $email, string|int $type): ResetPassword;
     public function validatePasswordResetToken(string $email, string $token): ResetPassword|null;
     public function updatePassword(string $email, string $password): int;
     public function deletePasswordResetToken(int $id): int;

@@ -3,18 +3,16 @@
 namespace App\Services;
 
 use Throwable;
-use Illuminate\Support\Str;
-use App\Events\ForgotPassword;
+use App\Exceptions\ErrorSystem;
 use App\Traits\ResponseService;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use App\Exceptions\LoginInvalidException;
-use App\Exceptions\UserNotExistsException;
 use App\Exceptions\EmailNotExistsException;
+use App\Jobs\SendNotificationResetPasswordJob;
+use App\Exceptions\TokenValidationInvalidException;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Exceptions\CredentialsInvalidResetTokenException;
 
 class AuthService
 {
@@ -31,10 +29,10 @@ class AuthService
             if (!$auth) {
                 throw new LoginInvalidException();
             }
-            /** @var \App\Models\User $user */
             $user = auth()->user();
             $token = $user->createToken('auth')->plainTextToken;
             $cookie = Cookie::forever('user_token', $token, sameSite: 'Strict');
+
             return $this->responseSuccess([
                 'data' => new UserResouce($user),
                 'token' => [
@@ -48,56 +46,47 @@ class AuthService
         }
     }
 
-    public function forgotPassword(string $email)
+    public function notifyForgotPassword(string $email)
     {
         try {
-            $emailExist = $this->userRepository->emailExist($email);
-            if (!$emailExist) {
+            $email_exist = $this->userRepository->emailExist($email, true);
+            if (!$email_exist) {
                 throw new EmailNotExistsException();
             }
-            $token = $this->userRepository->createPasswordReset([
-                'email' => $email,
-                'token' => Str::random(120),
-            ]);
-            event(new ForgotPassword($emailExist, $token['token']));
-            return response()->json(['success' => true, 'message' => 'email sent for user'], 200);
+            $this->userRepository->deleteAllPasswordResetToken($email_exist->email);
+            $token = $this->userRepository->createPasswordResetToken($email, 'HASH');
+            SendNotificationResetPasswordJob::dispatch($email_exist, $token->token, ['mail'])->onQueue('user-data');
+            return $this->responseSuccess(['message' => 'notification reset password sent successfully'], 200);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
+            return $this->responseError($th, 'error when send notification recover password');
         }
     }
-    public function resetPassword(array $data)
+    public function resetPassword(array $request_data)
     {
         try {
-            $tokenExist = $this->userRepository->validateTokenPasswordReset($data['email'], $data['password']);
-            if (!$tokenExist) {
-                throw new CredentialsInvalidResetTokenException();
+            $password_reset_token_valid =
+                $this->userRepository->validatePasswordResetToken($request_data['email'], $request_data['token']);
+            if (!$password_reset_token_valid) {
+                throw new TokenValidationInvalidException;
             }
-            $user = $this->userRepository->emailExist($data['email']);
-            if (!$user) {
-                throw new UserNotExistsException();
-            }
-            $updated = $this->userRepository->updateUser($user, ['password' => Hash::make($data['password'])]);
-
-            $deleted = $this->userRepository->deletePasswordReset($tokenExist->id);
-
-            return $updated && $deleted ?
-                response()->json(['success' => true, 'message' => 'password reseted sucessfully']) :
-                response()->json(['success' => false, 'message' => 'error at update password and delete token'], 400);
+            $password_updated = $this->userRepository->updatePassword(
+                $password_reset_token_valid->email,
+                $request_data['password']
+            );
+            $password_updated ? $tokens_deleted = $this->userRepository->deleteAllPasswordResetToken($password_reset_token_valid->email) : throw new ErrorSystem('erro when update password');
+            return $this->responseSuccess(['message' => 'password updated with success'], 200);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
+            return $this->responseError($th, 'erro when reset password');
         }
     }
-
     public function deleteSession()
     {
         try {
-            $deleted = auth()->user()->currentAccessToken()->delete();
-            return response()->json([
-                'success' => (bool) $deleted,
-                'message' => 'token deleted with successfully'
-            ], 200);
+            $user = auth()->user();
+            $user->currentAccessToken()->delete();
+            return $this->responseSuccess(['message' => 'session user destroyed'], 200);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
+            return $this->responseError($th, 'user session destroyed with success');
         }
     }
 }

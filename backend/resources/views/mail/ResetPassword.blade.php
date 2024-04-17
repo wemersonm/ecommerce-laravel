@@ -5,51 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>[{{ config('app.name') }}] Recuperar Senha</title>
+    <title>{{$subject}}</title>
 </head>
 <style>
-    .container-email {
-        background-color: #f2f2f2;
-        padding: 10px;
-        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5);
+    body {
+        max-width: 670px;
+        margin: 20px auto;
     }
 
-    .url {
-        font-size: small;
-        color: rgb(77, 77, 239);
-
+    body a.link-call-center-page {
+        color: #1E90FF;
     }
 
-    .footer {
-        text-align: center;
-        padding-top: 20px;
-        color: #888;
-        font-size: 14px;
+    body .body {
+        opacity: 0.75;
     }
 </style>
 
 <body>
-    <div class="container-email">
-        <h2>Redefinição de Senha do {{ config('app.name') }}</h2>
-        <p>Olá, <strong>{{ $name }}</strong>,</p>
-        <p>Você está recebendo este e-mail porque solicitou a redefinição de senha para sua conta.</p>
-        <p>
-            Se você solicitou a redefinição de senha, clique no link abaixo para criar uma nova senha:
+    <div class="header">Header</div>
+    <div class="body">
+        <p>Olá {{$name}}</p>
+        <p>Recebemos uma solicitação de recuperação de senha. Para cadastrar uma nova senha acesse o link
+            <a href="{{$url}}">"Clique aqui"</a>.
         </p>
-        <a href="{{ $url }}"
-            style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px;">
-            Recuperar Senha</a>
-        <p>
-        <p>Ou simplesmente, copie e cole o link abaixo no seu navegador</p>
-        <p>{{ $url }}</p>
-        Se você não solicitou a redefinição de senha, nenhuma ação adicional é necessária.
-        </p>
-        <p>Obrigado!</p>
-        <div class="footer">
-            <p>Atenciosamente,<br>{{ config('mail.from.name') }}</p>
-            <p>Entre em contato conosco: {{ config('mail.from.address') }}</p>
-        </div>
+        <p>Se não foi você quem mudou, entre em contato conosco através de nossa central de atendimento.</p>
+        <a class="link_call_center_page" href="{{$link_call_center_page}}">{{$link_call_center_page}} </a>
+        <p>Equipe {{$app_name}} </p>
     </div>
+    <div class="footer">Footer</div>
 </body>
 
 </html>

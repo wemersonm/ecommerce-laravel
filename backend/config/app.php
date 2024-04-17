@@ -57,6 +57,7 @@ return [
 
     'url' => env('APP_URL_SERVER'),
     'client' => env('APP_URL_CLIENT'),
+    'forgot_password' => env('APP_URL_CLIENT') . '/recuperar-senha?',
 
     'call_center_page' => env('CALL_CENTER_PAGE'),
 

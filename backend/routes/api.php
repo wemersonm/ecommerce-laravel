@@ -20,13 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
 
-    Route::group(['controller' => AuthController::class, 'as' => 'auth'], function () {
+    Route::group(['controller' => AuthController::class,], function () {
 
-        route::post('/', 'store')->name('store');
+        route::post('/login', 'store')->name('store');
         route::post('/logout', 'destroy')->name('destroy');
         route::post('/forgot-password', 'notifyForgotPassword')->name('forgot-password');
         route::post('/reset-password', 'resetPassword')->name('reset-password');
-
     });
 
     Route::group(['controller' => UserRegistrationController::class,], function () {
@@ -59,7 +58,6 @@ Route::prefix('v1')->group(function () {
         route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
         route::get('/', 'show')->name('show');
-
     });
 
     Route::group(['controller' => ReviewController::class, 'prefix' => 'review', 'as' => 'review'], function () {
@@ -87,7 +85,5 @@ Route::prefix('v1')->group(function () {
         route::put('/', 'update')->name('update');
         route::delete('/', 'destroy')->name('destroy');
         route::put('/main-address', 'mainAddress')->name('main-address');
-
     });
-
 });

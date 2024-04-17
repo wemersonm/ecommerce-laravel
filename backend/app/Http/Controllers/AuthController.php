@@ -25,8 +25,8 @@ class AuthController extends Controller
 
     public function store(AuthLoginRequest $request)
     {
-        $input = $request->validated();
-        return $this->authService->createLogin(['email' => $input['email'], 'password' => $input['password']]);
+        $request_data = $request->validated();
+        return $this->authService->createLogin(['email' => $request_data['email'], 'password' => $request_data['password']]);
     }
     public function destroy()
     {
@@ -35,13 +35,13 @@ class AuthController extends Controller
 
     public function notifyForgotPassword(ForgotPasswordRequest $request)
     {
-        $requestData = $request->validated();
-        return $this->authService->forgotPassword($requestData['email']);
+        $request_data = $request->validated();
+        return $this->authService->notifyForgotPassword($request_data['email']);
     }
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        $requestData = $request->validated();
-        return $this->authService->resetPassword($requestData);
+        $request_data = $request->validated();
+        return $this->authService->resetPassword($request_data);
     }
 }

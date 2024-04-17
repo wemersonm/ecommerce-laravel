@@ -25,7 +25,7 @@ trait ResponseService
     public function responseSuccess($data, $code = 200, $cookie = null)
     {
         $response = Response::json($data, $code);
-        $response = $cookie && $cookie instanceof Cookie ? $response->cookie($cookie) : $response;
+        $response = $cookie ? $response->cookie($cookie) : $response;
         return $response;
     }
 }

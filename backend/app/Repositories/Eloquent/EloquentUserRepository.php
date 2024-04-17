@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Exceptions\ErrorSystem;
 use App\Models\User;
 use App\Models\ResetEmail;
 use Illuminate\Support\Str;
@@ -11,44 +12,11 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
-    public function createEmailReset(string $email, string $new_email, string $token)
+
+    public function emailExist(string $new_email, bool $model = false): bool|User
     {
-        return ResetEmail::create(
-            [
-                'current_email' => $email,
-                'new_email' => $new_email,
-                'token' => $token,
-            ]
-        );
-    }
-
-
-    public function validateToken(string $token, string $current_email)
-    {
-        $token = ResetEmail::where('token', $token)->where('current_email', $current_email)->first();
-        return $token;
-    }
-
-
-
-
-
-
-    public function validateTokenPasswordReset(string $email, string $token)
-    {
-        return ResetPassword::where('email', $email)->where('token', $token)->first();
-    }
-    public function deletePasswordReset(int $id)
-    {
-        return ResetPassword::destroy($id);
-    }
-
-
-    // .. refactor
-
-    public function emailExist(string $new_email): bool
-    {
-        return User::where('email', $new_email)->exists();
+        return $model ?  User::where('email', $new_email)->first() :
+        User::where('email', $new_email)->exists();
     }
 
 
@@ -57,11 +25,17 @@ class EloquentUserRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
-    public function createPasswordResetToken(string $email): ResetPassword
+    public function createPasswordResetToken(string $email, string|int $type): ResetPassword
     {
+        $token =
+            ($type == 'NUMERIC' || $type == 1) ? rand(100000, 999999) : (
+                ($type == 'HASH' || $type == 2) ? Str::random(32) : null
+            );
+        is_null($token) ? throw new ErrorSystem : null;
         return ResetPassword::create([
             'email' => $email,
-            'token' => rand(100000, 999999),
+            'token' => $token,
+            'type' => $type,
         ]);
     }
     public function validatePasswordResetToken(string $email, string $token): ResetPassword|null
