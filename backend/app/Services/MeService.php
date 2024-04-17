@@ -6,17 +6,17 @@ use Throwable;
 use App\Exceptions\ErrorSystem;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cookie;
 use App\Exceptions\PasswordInvalidException;
 use App\Exceptions\EmailAlreadyExistExeception;
 use App\Exceptions\TokenValidationInvalidException;
 use App\Jobs\SendNotificationChangeEmailJob;
 use App\Jobs\SendNotificationChangePasswordJob;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Traits\ResponseService;
 
 class MeService
 {
+    use ResponseService;
 
     public function __construct(
         private UserRepositoryInterface $userRepository,
@@ -25,14 +25,13 @@ class MeService
     public function getUserAuthenticate()
     {
         try {
-            $authorization = array(
-                'auth' => true,
-                'token' => request()->bearerToken(),
-                'type' => 'Bearer',
-            );
             $user = auth()->user();
-            $cookie = Cookie::forever('user_token', $authorization['token'], '/', '', true, true, false, 'strict');
-            return $this->responseSuccess(['data' => ['name' => $user->name, 'email' => $user->email], 'authorization' => $authorization], 200)->cookie($cookie);
+            return $this->responseSuccess(
+                [
+                    'data' => new UserResouce($user),
+                ],
+                200
+            );
         } catch (Throwable $th) {
             return $this->responseError($th, 'error when getting authenticated user');
         }
@@ -116,21 +115,5 @@ class MeService
         } catch (Throwable $th) {
             return $this->responseError($th, 'error at change email');
         }
-    }
-    public function responseError($th, string $message = "", $data = [])
-    {
-        $code =
-            $th instanceof HttpException ?
-            $th->getStatusCode() : ($th->statusCode ?? 500);
-        return response()->json([
-            'error' => class_basename($th),
-            'message' => $message ? $message : $th->getMessage(),
-            'data' => $data,
-        ], $code ?? 500);
-    }
-
-    public function responseSuccess(array $data, int $code)
-    {
-        return response()->json(array_merge(['success' => true], $data), $code);
     }
 }

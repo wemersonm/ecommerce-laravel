@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use App\Exceptions\EmailAlreadyExistExeception;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Traits\ResponseService;
 
 class UserService
 {
+    use ResponseService;
+
     public function __construct(
         private UserRepositoryInterface $userRepository,
     ) {
@@ -32,28 +34,16 @@ class UserService
             SendEmailRegisteredJob::dispatch($user)->onQueue('user-data');
             $token = $user->createToken('auth')->plainTextToken;
             $cookie = Cookie::forever('user_token', $token, sameSite: 'Strict');
-            return response()->json([
-                'success' => true,
+            return $this->responseSuccess([
                 'data' => new UserResouce($user),
                 'token' => [
                     'access_token' => $token,
                     'expires' => now()->addMinutes(config('sanctum.expiration')),
                 ],
                 'message' => 'user athenticated with success',
-            ], 201)->cookie($cookie);
+            ], 201, $cookie);
         } catch (Throwable $th) {
             return $this->responseError($th, 'error when registering in the system');
         }
-    }
-    public function responseError($th, string $message = "", $data = [])
-    {
-        $code =
-            $th instanceof HttpException ?
-            $th->getStatusCode() : ($th->statusCode ?? 500);
-        return response()->json([
-            'error' => class_basename($th),
-            'message' => $message ? $message : $th->getMessage(),
-            'data' => $data,
-        ], $code ?? 500);
     }
 }
