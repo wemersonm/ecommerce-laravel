@@ -33,13 +33,7 @@ class AuthController extends Controller
         return $this->authService->deleteSession();
     }
 
-    public function register(Request $request)
-    {
-        $requestData = $request->validated();
-        return $this->authService->createUser($requestData);
-    }
-
-    public function forgotPassword(ForgotPasswordRequest $request)
+    public function notifyForgotPassword(ForgotPasswordRequest $request)
     {
         $requestData = $request->validated();
         return $this->authService->forgotPassword($requestData['email']);

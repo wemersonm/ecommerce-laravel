@@ -5,19 +5,20 @@ namespace App\Services;
 use Throwable;
 use Illuminate\Support\Str;
 use App\Events\ForgotPassword;
-use App\Events\UserRegistered;
+use App\Traits\ResponseService;
 use App\Http\Resources\UserResouce;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use App\Exceptions\LoginInvalidException;
 use App\Exceptions\UserNotExistsException;
 use App\Exceptions\EmailNotExistsException;
-use App\Exceptions\EmailAlreadyExistExeception;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Exceptions\CredentialsInvalidResetTokenException;
 
 class AuthService
 {
+    use ResponseService;
 
     public function __construct(
         private UserRepositoryInterface $userRepository,
@@ -30,41 +31,23 @@ class AuthService
             if (!$auth) {
                 throw new LoginInvalidException();
             }
-            $authorization = array(
-                'token' => auth()->user()->createToken('auth')->plainTextToken,
-                'type' => 'Bearer',
-            );
-            return (new UserResouce(auth()->user()))->additional(['authorization' => $authorization]);
-        } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
-
-        }
-    }
-
-    public function createUser(array $data)
-    {
-        try {
-            $userExist = $this->userRepository->emailExist($data['email']);
-            if ($userExist)
-                throw new EmailAlreadyExistExeception();
-
-            $userCreated = $this->userRepository->createUser($data);
             /** @var \App\Models\User $user */
-            Auth::login($userCreated);
             $user = auth()->user();
-            event(new UserRegistered($user));
-            $authorization = array(
-                'token' => auth()->user()->createToken('auth')->plainTextToken,
-                'type' => 'Bearer',
-            );
-            return (new UserResouce($user))->additional(
-                ['authorization' => $authorization,]
-            );
+            $token = $user->createToken('auth')->plainTextToken;
+            $cookie = Cookie::forever('user_token', $token, sameSite: 'Strict');
+            return $this->responseSuccess([
+                'data' => new UserResouce($user),
+                'token' => [
+                    'access_token' => $token,
+                    'expires' => now()->addMinutes(config('sanctum.expiration')),
+                ],
+                'message' => 'user athenticated with success',
+            ], 200, $cookie);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
-
+            return $this->responseError($th, 'error when authenticate user');
         }
     }
+
     public function forgotPassword(string $email)
     {
         try {
@@ -79,7 +62,7 @@ class AuthService
             event(new ForgotPassword($emailExist, $token['token']));
             return response()->json(['success' => true, 'message' => 'email sent for user'], 200);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
         }
     }
     public function resetPassword(array $data)
@@ -101,7 +84,7 @@ class AuthService
                 response()->json(['success' => true, 'message' => 'password reseted sucessfully']) :
                 response()->json(['success' => false, 'message' => 'error at update password and delete token'], 400);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
+            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
         }
     }
 
@@ -114,17 +97,7 @@ class AuthService
                 'message' => 'token deleted with successfully'
             ], 200);
         } catch (Throwable $th) {
-            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400); // phpcs:ignore
-
+            return $this->responseError(class_basename($th), $th->getMessage(), $th->statusCode ?? 400);
         }
-    }
-
-    public function responseError(string $error, string $message, int $code = 400, $data = [])
-    {
-        return response()->json([
-            'error' => $error,
-            'message' => $message,
-            'data' => $data,
-        ], $code);
     }
 }

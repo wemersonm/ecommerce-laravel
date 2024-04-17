@@ -24,7 +24,7 @@ Route::prefix('v1')->group(function () {
 
         route::post('/', 'store')->name('store');
         route::post('/logout', 'destroy')->name('destroy');
-        route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
+        route::post('/forgot-password', 'notifyForgotPassword')->name('forgot-password');
         route::post('/reset-password', 'resetPassword')->name('reset-password');
 
     });
