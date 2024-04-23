@@ -42,7 +42,7 @@ class AddressController extends Controller
     public function destroy(Request $request)
     {
         $data = $request->validate(['id' => ['required', 'numeric']]);
-        return $this->addressService->deleteAddress($data);
+        return $this->addressService->deleteAddress($data['id']);
     }
 
     public function mainAddress(Request $request)

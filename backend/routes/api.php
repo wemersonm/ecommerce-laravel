@@ -27,11 +27,9 @@ Route::prefix('v1')->group(function () {
         route::post('/forgot-password', 'notifyForgotPassword')->name('forgot-password');
         route::post('/reset-password', 'resetPassword')->name('reset-password');
     });
-
     Route::group(['controller' => UserRegistrationController::class,], function () {
         route::post('/register', 'store')->name('register');
     });
-
     Route::group(['controller' => MeController::class, 'as' => 'me', 'prefix' => 'me'], function () {
         route::get('/', 'index')->name('index');
 
@@ -45,6 +43,18 @@ Route::prefix('v1')->group(function () {
         route::post('/email', 'notifyChangeEmail')->name('notify-change-email');
         route::put('/email', 'changeEmail')->name('change-email');
     });
+
+    Route::group(['controller' => AddressController::class, 'as' => 'address', 'prefix' => 'address'], function () {
+
+        route::get('/', 'index')->name('index');
+        route::post('/', 'store')->name('store');
+        route::get('/info', 'show')->name('show');
+        route::patch('/', 'update')->name('update');
+        route::delete('/', 'destroy')->name('destroy');
+        route::put('/main-address', 'mainAddress')->name('main-address');
+    });
+
+
 
     Route::group(['controller' => FavoritesController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {
         route::post('/', 'store')->name('store');
@@ -77,13 +87,5 @@ Route::prefix('v1')->group(function () {
         route::get('/banners', 'index')->name('index');
     });
 
-    Route::group(['controller' => AddressController::class, 'as' => 'address', 'prefix' => 'address'], function () {
 
-        route::get('/', 'index')->name('index');
-        route::post('/', 'store')->name('store');
-        route::get('/info', 'show')->name('show');
-        route::put('/', 'update')->name('update');
-        route::delete('/', 'destroy')->name('destroy');
-        route::put('/main-address', 'mainAddress')->name('main-address');
-    });
 });

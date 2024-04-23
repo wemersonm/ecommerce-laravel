@@ -16,7 +16,10 @@ class AddressResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'address_type' => $this->address_type == 1 ? 'Residencial' : ($this->address_type == 2 ? 'Comercial' : 'Outro'),
+            'address_type' => [
+                'address_type_id' => $this->address_type_id,
+                'address_type_name' => $this->address_type_name
+            ],
             'recipient' => $this->recipient,
             'cep' => $this->cep,
             'street' => $this->street,

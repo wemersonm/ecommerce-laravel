@@ -24,7 +24,7 @@ class AddAddressRequest extends FormRequest
         return [
             "name" => ['required', 'max:255'],
             "address_type" => ['required', 'size:1'],
-            "Recipient" => ['required', 'min:4', 'max:220'],
+            "recipient" => ['required', 'min:4', 'max:220'],
             "cep" => ['required', 'size:8'],
             "street" => ['required', 'max:300'],
             "number" => ['sometimes', 'max:100'],

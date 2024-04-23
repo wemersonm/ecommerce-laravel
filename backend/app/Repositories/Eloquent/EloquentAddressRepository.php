@@ -2,94 +2,83 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Exceptions\ErrorSystem;
 use Throwable;
 use App\Models\User;
+use App\Models\Address;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 
 class EloquentAddressRepository implements AddressRepositoryInterface
 {
-    public function insertNewAddress(User $user, mixed $data)
+    public function getAllAddress(int $user_id): Collection
     {
+        return Address::where('user_id', $user_id)->orderByDesc('main')->latest('created_at')->get();
+    }
+    public function createAddress(array $data): Address
+    {
+        DB::beginTransaction();
         try {
-            /** @var \App\Models\User $user */
-
-            DB::beginTransaction();
             if ($data['main']) {
-                $this->resetFieldMainForFalse($user);
+                Address::where('user_id', $data['user_id'])->where('main', 1)->update(['main' => 0]);
             }
-            $created = $user->addresses()->create($data);
+            $address_created = Address::create($data);
             DB::commit();
-            return $created;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            throw $e;
-        }
-    }
-    public function getAllAddress(User $user)
-    {
-        $addresses = $user->addresses()->orderByMainAndLatest()->get();
-        $existActive = $addresses->first(fn ($item) => $item->active);
-        if (!$existActive) {
-            $addresses = $this->setFirstActive($user, $addresses);
-        }
-        return $addresses;
-    }
-
-
-    public function findById(User $user, int $id)
-    {
-        return $user->addresses()->whereId($id)->first();
-    }
-
-
-
-    public function updateAddress(User $user, array $data)
-    {
-        try {
-            DB::beginTransaction();
-            if ($data['main']) {
-                $this->resetFieldMainForFalse($user);
-            }
-            $user->addresses()->whereId($data['id'])->update($data);
-            DB::commit();
-            return true;
-        } catch (Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
-    }
-    public function setAddressToMain(User $user, int $id)
-    {
-        try {
-            DB::beginTransaction();
-            $this->resetFieldMainForFalse($user);
-            $this->setAddressActive($user, $id);
-            DB::commit();
-            return true;
+            return $address_created;
         } catch (Throwable $th) {
             DB::rollBack();
             throw $th;
         }
     }
 
-
-    public function deleteAddress(User $user, int $id)
+    public function findByIdAddress(int $user_id, int $id): Address|null
     {
-        return $user->addresses()->whereId($id)->delete();
-    }
-    public function resetFieldMainForFalse(User $user)
-    {
-        return $user->addresses()->where('main', '!=', false)->update(['main' => 0]);
+        return Address::whereId($id)->where('user_id', $user_id)->first();
     }
 
-    public function setAddressActive($user, $id)
+
+
+    public function updateAddress(int $user_id, int $id, array $data): bool
     {
-        return $user->addresses()->whereId($id)->update(['main' => 1]);
+        try {
+            DB::beginTransaction();
+            if ($data['main']) {
+                Address::where('user_id', $user_id)->where('main', 1)->update(['main' => 0]);
+            }
+            Address::where('id', $data['id'])->update($data);
+            DB::commit();
+            return true;
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return false;
+        }
     }
-    public function setFirstActive(User $user, $addresses)
+    public function deleteAddress(int $user_id, int $id): int
     {
-        $addresses->first()->update(['main' => 1]);
-        return $addresses;
+        $address = Address::where('user_id', $user_id)->whereId($id)->first();
+        if ($address->main) {
+            Address::where('user_id', $user_id)->whereNot('id', $id)->latest()->first()->update(['main' => true]);
+        }
+        return $address->delete();
     }
+    public function setAddressToMain(int $user_id, int $id): bool
+    {
+        try {
+            DB::beginTransaction();
+            Address::where('user_id', $user_id)->where('id', $id)->update(['main' => true]);
+            Address::where('user_id', $user_id)->whereNot('id', $id)->update(['main' => false]);
+            DB::commit();
+            return true;
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
+
+
+
+
 }

@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function (Request $request) {
+
    
-    return view('mail.ResetPassword')->with(['name'=>'wems', 'url' => "dgdsg",'subject'=>"Esqueci senha"]);
 });
