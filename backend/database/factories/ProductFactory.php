@@ -34,11 +34,9 @@ class ProductFactory extends Factory
             'rating' => fake()->randomFloat(1, 3, 5),
             'reviews' => fake()->numberBetween(10, 100),
             'discount' => $this->faker->numberBetween(0, 12),
-            'cash_price' => function (array $attributes) {
-                return $attributes['discount'] > 0 ?
-                    $attributes['price'] * ((100 - $attributes['discount']) / 100) :
-                    $attributes['cash_price'];
-            },
+            'cash_price' => $this->faker->numberBetween(0, 12) > 0 ?
+                $this->faker->randomFloat(2, 40, 2000) * ((100 - $this->faker->numberBetween(0, 12)) / 100) :
+                $this->faker->randomFloat(2, 40, 2000),
             'is_flash_sale' => $this->faker->boolean,
             'max_quantity' => $this->faker->numberBetween(1, 15),
             'sold' => $this->faker->numberBetween(22, 150),

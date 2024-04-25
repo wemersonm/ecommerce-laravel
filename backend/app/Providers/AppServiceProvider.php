@@ -4,13 +4,13 @@ namespace App\Providers;
 
 use App\Repositories\Eloquent\EloquentAddressRepository;
 use App\Repositories\Eloquent\EloquentCartRepository;
-use App\Repositories\Eloquent\EloquentFavoritesRepository;
+use App\Repositories\Eloquent\EloquentFavoriteRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
 use App\Repositories\Eloquent\EloquentReviewRepository;
 use App\Repositories\Eloquent\EloquentUserRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Repositories\Interfaces\CartRepositoryInterface;
-use App\Repositories\Interfaces\FavoritesRepositoryInterface;
+use App\Repositories\Interfaces\FavoriteRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public array $bindings = [
         CartRepositoryInterface::class => EloquentCartRepository::class,
         ProductRepositoryInterface::class => EloquentProductRepository::class,
-        FavoritesRepositoryInterface::class => EloquentFavoritesRepository::class,
+        FavoriteRepositoryInterface::class => EloquentFavoriteRepository::class,
         ReviewRepositoryInterface::class => EloquentReviewRepository::class,
         AddressRepositoryInterface::class => EloquentAddressRepository::class,
         UserRepositoryInterface::class => EloquentUserRepository::class,

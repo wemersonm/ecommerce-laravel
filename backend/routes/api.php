@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -54,11 +54,10 @@ Route::prefix('v1')->group(function () {
         route::put('/main-address', 'mainAddress')->name('main-address');
     });
 
-
-
-    Route::group(['controller' => FavoritesController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {
-        route::post('/', 'store')->name('store');
+    Route::group(['controller' => FavoriteController::class, 'prefix' => 'favorites', 'as' => 'favorites'], function () {
         route::get('/', 'index')->name('index');
+        route::post('/', 'store')->name('store');
+        route::delete('/', 'destroy')->name('destroy');
     });
 
 

@@ -22,7 +22,7 @@ trait ResponseService
         ], $code ?? 500);
     }
 
-    public function responseSuccess($data, $code = 200, $cookie = null)
+    public function responseSuccess($data, $code = 200, $cookie = null): JsonResponse
     {
         $response = Response::json($data, $code);
         $response = $cookie ? $response->cookie($cookie) : $response;
