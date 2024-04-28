@@ -1,4 +1,5 @@
 <?php
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', function (Request $request) {
 
-   
+    Cache::put('flash_sales_cache', json_encode(Product::where('is_flash_sale', true)->get(), JSON_FORCE_OBJECT));
 });

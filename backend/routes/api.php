@@ -62,7 +62,6 @@ Route::prefix('v1')->group(function () {
 
 
     Route::group(['prefix' => 'product', 'controller' => ProductController::class, 'as' => 'product'], function () {
-
         route::get('/flash_sales', 'getFlashSales')->name('flash-sales');
         route::get('/best-sellers', 'getBestSellers')->name('best-sellers');
         route::get('/our-products', 'getOurProducts')->name('our-products');
