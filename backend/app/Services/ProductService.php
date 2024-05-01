@@ -6,10 +6,12 @@ namespace App\Services;
 use Throwable;
 use App\Traits\ResponseService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use PhpParser\ErrorHandler\Collecting;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\CardProductResource;
+use App\Http\Resources\ProductInfoResource;
 use App\Exceptions\ProductNotExistException;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 
@@ -65,15 +67,16 @@ class ProductService
         }
     }
 
-    public function getInfoProduct(string $slug): JsonResponse
+    public function getInfoProduct(string $slug)
     {
         try {
+            $user = auth()->guard('sanctum')->user();
             $product_exist = $this->productRepository->getProductBySlug($slug);
             if (!$product_exist) {
                 throw new ProductNotExistException;
             }
-            $product_info = $this->productRepository->getInfoProduct($product_exist);
-            return $this->responseSuccess(['data' => new ProductResource($product_info)]);
+            $product_info = $this->productRepository->getInfoProduct($product_exist, $user->id ?? null);
+            return $this->responseSuccess(['data' => new ProductInfoResource($product_info)]);
         } catch (Throwable $th) {
             return $this->responseError($th, 'error when get info product');
         }

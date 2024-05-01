@@ -15,5 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', function (Request $request) {
 
-    Cache::put('flash_sales_cache', json_encode(Product::where('is_flash_sale', true)->get(), JSON_FORCE_OBJECT));
+    $relationships = [
+        'brand',
+        'category',
+        'promotions.promotion',
+    ];
+    $user_id = 1;
+    $relationships['favorites'] = function ($query) use ($user_id) {
+        if ($user_id) {
+            $query->where('user_id', $user_id);
+        }
+    };
+    $product = Product::take(2)->get();
+    echo $product->load($relationships);
 });

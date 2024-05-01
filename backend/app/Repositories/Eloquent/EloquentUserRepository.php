@@ -69,7 +69,7 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         $token =
             ($type == 1 || $type == 'NUMERIC') ? rand(100000, 999999) :
-            ($type == 2 || $type == 'HASH') ? Str::random(32) : null;
+            (($type == 2 || $type == 'HASH') ? Str::random(32) : null);
 
         return ResetEmail::create(['email' => $email, 'token' => $token, 'type' => $type]);
     }

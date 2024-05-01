@@ -40,4 +40,13 @@ class Product extends Model
     {
         return $this->hasMany(PromotionProduct::class, 'product_id', 'id');
     }
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'product_id', 'id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'product_id', 'id');
+    }
 }

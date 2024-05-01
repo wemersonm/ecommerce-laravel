@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProductService;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
     public function __construct(
         private ProductService $productService
     ) {
-        
+
     }
     public function getFlashSales()
     {

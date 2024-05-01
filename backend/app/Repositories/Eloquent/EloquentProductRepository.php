@@ -29,8 +29,20 @@ class EloquentProductRepository implements ProductRepositoryInterface
     {
         return Product::where('slug', $slug)->first();
     }
-    public function getInfoProduct(Product $product)
+    public function getInfoProduct(Product $product, int|null $user_id)
     {
-        return $product->load(['brand', 'category', 'promotions.promotion']);
+        $relationships = [
+            'brand',
+            'category',
+            'promotions.promotion',
+        ];
+        if ($user_id) {
+            $relationships['favorites'] = function ($query) use ($user_id) {
+                if ($user_id) {
+                    $query->where('user_id', $user_id);
+                }
+            };
+        }
+        return $product->load($relationships);
     }
 }
