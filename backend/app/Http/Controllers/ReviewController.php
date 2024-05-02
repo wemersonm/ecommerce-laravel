@@ -13,11 +13,11 @@ class ReviewController extends Controller
     }
     public function index(Request $request)
     {
-        $data = $request->validate([
-            'id' => ['required', 'numeric'],
-            'items_per_page' => ['required', 'numeric', 'min:1'],
+        $request_data = $request->validate([
+            'product_id' => ['required',],
+            'items_per_page' => ['required', 'numeric', 'min:1','max:8'],
         ]);
 
-        return $this->reviewService->getReviewsFromProduct($data['id'], $data['items_per_page']);
+        return $this->reviewService->getReviewsFromProduct($request_data['product_id'], $request_data['items_per_page']);
     }
 }
