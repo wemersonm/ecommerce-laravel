@@ -71,19 +71,21 @@ Route::prefix('v1')->group(function () {
     Route::group(['controller' => ReviewController::class, 'prefix' => 'review', 'as' => 'review'], function () {
         route::get('/', 'index')->name('index');
     });
+    Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
+        route::get('/categories', 'index')->name('index');
+    });
+    
+    // refactor ...
+    Route::group(['controller' => BannerController::class, 'as' => 'banner'], function () {
+        route::get('/banners', 'index')->name('index');
+    });
+
 
     Route::group(['controller' => CartController::class, 'as' => 'cart', 'prefix' => 'cart'], function () {
         route::post('/', 'index')->name('index');
         route::post('/', 'store')->name('store');
     });
 
-    Route::group(['controller' => CategoryController::class, 'as' => 'category'], function () {
-        route::get('/categories', 'index')->name('index');
-    });
-
-    Route::group(['controller' => BannerController::class, 'as' => 'banner'], function () {
-        route::get('/banners', 'index')->name('index');
-    });
 
 
 });
